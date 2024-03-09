@@ -13,7 +13,7 @@
 
 fetch-for is a small, bare-bones simple fetch web component.  For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch). fetch-for provides no support for rendering while streaming.  For such support, see alternatives, such as [be-written](https://github.com/bahrus/be-written).
 
-fetch-for can act as a base web component for "web components as a service".  [be-kvetching](https://github.com/bahrus/be-kvetching) and [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually do just that - they can dynamically create such a web component on the fly, declaratively, that extends this base class.
+fetch-for can act as a base web component for "web components as a service".  [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
 Markup:
 
@@ -50,6 +50,79 @@ fetch-for caches get's based on the localName of the custom element as the base 
 ```
 
 fetch-for will set aria-busy to true while fetch is in progress, and also set aria-live=polite if no aria-live value is found.
+
+## Specifying dependencies
+
+Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can also specify the event(s) to listen for:
+
+```html
+<other-stuff>
+    <input name=greeting>
+    <span itemprop=surname contenteditable></span>
+    <div part=my-part contenteditable></div>
+    <my-form-associated-custom-element></my-form-associated-custom-element>
+</other-stuff>
+<form itemscope>
+    <section>
+        <input id=isVegetarian type=checkbox switch>
+        <input name=greeting>
+        <span itemprop=surname contenteditable></span>
+        <div part=my-part contenteditable></div>
+        <my-form-associated-custom-element></my-form-associated-custom-element>
+        <div itemscope>
+            <fetch-for 
+                href=https://newton.now.sh/api/v2/integrate/x^2 
+                target=json-viewer[-object]
+                onerror=console.error(href)
+                for="isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %my-part ~my-form-associated-custom-element"
+                oninput=...
+                onchange
+            >
+            </fetch-for>
+        </div>
+    </section>
+</form>
+```
+
+Be default, event "input" is used, and the value of the element is obtained by using "value" if value is in the element definition.  Only one other event is supported:  "change" - to specify that, add an exclamation at the end, as is done for @greeting.
+
+Be default, @ is used within the closest "form" element, | within the closest itemscope.  All the others are searched within the root node by default.  This is problematic for surname, my-part, my-form-associated-custom-element due to the presence of elements with the same attribute values / names.
+
+To specify the closest element to search within, use the ^ character:
+
+
+```html
+<other-stuff>
+    <input name=greeting>
+    <span itemprop=surname contenteditable></span>
+    <div part=my-part contenteditable></div>
+    <my-form-associated-custom-element></my-form-associated-custom-element>
+</other-stuff>
+<form itemscope>
+    <section>
+        <input id=isVegetarian type=checkbox switch>
+        <input name=greeting>
+        <span itemprop=surname contenteditable></span>
+        <div part=my-part contenteditable></div>
+        <my-form-associated-custom-element></my-form-associated-custom-element>
+        <div itemscope>
+            <fetch-for 
+                href=https://newton.now.sh/api/v2/integrate/x^2 
+                target=json-viewer[-object]
+                onerror=console.error(href)
+                for="isVegetarian /myHostElementEventTargetSubObject @greeting! |surname^section %my-part^section ~my-form-associated-custom-element^section"
+                oninput=...
+                onchange
+            >
+            </fetch-for>
+        </div>
+    </section>
+</form>
+```
+
+
+
+
 
 ## Viewing Demos Locally
 
