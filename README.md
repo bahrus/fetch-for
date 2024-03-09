@@ -11,9 +11,15 @@
 
 ## [Demo](https://jsfiddle.net/bahrus/ma0vtbnx/1/)
 
-fetch-for is a small, bare-bones simple fetch web component.  For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch). fetch-for provides no support for rendering while streaming.  For such support, see alternatives, such as [be-written](https://github.com/bahrus/be-written).
+fetch-for is a small-ish, bare-bones simple fetch web component. For fewer features, but a smaller foot print, consider using [https://github.com/k-fetch].  What k-fetch lacks which this component adopts is form-like support.
 
-fetch-for can act as a base web component for "web components as a service".  [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
+ For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch), that is in serious need for an update [TODO]. 
+
+fetch-for hopes to be "just the right amount" of size for many purposes. It *may* provide support for streaming HTML.  If not, or for other scenarios where it might work better, see alternatives that focus on that scenario, such as [be-written](https://github.com/bahrus/be-written).
+
+Like *k-fetch*, *fetch-for* can act as a base web component for "web components as a service".  [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
+
+## Example 1 -- Simple html to (stream?) html to the browser [TODO]
 
 Markup:
 
@@ -28,15 +34,15 @@ For this very specific example shown above, due to restrictions of the cors-anyw
 
 Required attributes are href and at least one of these attributes: onerror, oninput, onload, onchange.  The reason for insisting on at least one of these on* attributes is this:  Since these attributes can't pass through any decent sanitizer that prevents xss attacks, the presence of one or more of them indicates that the web site trusts the content from which the data is being retrieved.
 
-When the fetch is complete, event "load" is fired, which can allow for manipulation of the data.  The (modified) data is then stored in the "value" field of the fetch-for (or subclassed) instance. Also, event "change" is fired. 
+When the fetch is complete, event "load" is fired, which can allow for manipulation of the data.  The (modified) data is then stored in the "value" field of the fetch-for (or subclassed) instance. Also, event "change" is fired (which is not picked up by the onchange attribute below, but that's getting ahead of ourselves). 
 
 If as=html, the response is inserted into the innerHTML of the fetch-for element, unless attribute shadow is present, in which case it will first create a shadowRoot, then insert the innerHTML.
 
 fetch-for has no support for "href" or "as" properties, only attributes.
 
-fetch-for caches get's based on the localName of the custom element as the base key of the cache. 
+fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP methods, based on the localName of the custom element as the base key of the cache. To disable this feature, specify attribute/property: noCache/no-cache
 
-## Sending data to a target:
+## Example 2 - Sending data to a target:
 
 ```html
 <fetch-for 
@@ -51,6 +57,10 @@ fetch-for caches get's based on the localName of the custom element as the base 
 
 fetch-for will set aria-busy to true while fetch is in progress, and also set aria-live=polite if no aria-live value is found.
 
+## Specifying dependencies - simple example
+
+
+
 ## Specifying dependencies
 
 Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can also specify the event(s) to listen for:
@@ -59,7 +69,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <other-stuff>
     <input name=greeting>
     <span itemprop=surname contenteditable></span>
-    <div part=my-part contenteditable></div>
+    <div part=myPart contenteditable></div>
     <my-form-associated-custom-element></my-form-associated-custom-element>
 </other-stuff>
 <form itemscope>
@@ -67,14 +77,14 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
         <input id=isVegetarian type=checkbox switch>
         <input name=greeting>
         <span itemprop=surname contenteditable></span>
-        <div part=my-part contenteditable></div>
+        <div part=myPart contenteditable></div>
         <my-form-associated-custom-element></my-form-associated-custom-element>
         <div itemscope>
             <fetch-for 
                 href=https://newton.now.sh/api/v2/integrate/x^2 
                 target=json-viewer[-object]
                 onerror=console.error(href)
-                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %my-part ~my-form-associated-custom-element"
+                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %myPart ~myFormAssociatedCustomElement"
                 oninput=...
                 onchange
             >
@@ -86,7 +96,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 
 Be default, event "input" is used, and the value of the element is obtained by using "value" if value is in the element definition.  Only one other event is supported:  "change" - to specify that, add an exclamation at the end, as is done for @greeting.
 
-Be default, @ is used within the closest "form" element, | within the closest itemscope.  All the others are searched within the root node by default.  This is problematic for surname, my-part, my-form-associated-custom-element due to the presence of elements with the same attribute values / names.
+Be default, @ is used within the closest "form" element, | within the closest itemscope.  All the others are searched within the root node by default.  This is problematic for surname, myPart, myFormAssociatedCustomElement due to the presence of elements with the same attribute values / names.
 
 To specify the closest element to search within, use the ^ character:
 
@@ -95,7 +105,7 @@ To specify the closest element to search within, use the ^ character:
 <other-stuff>
     <input name=greeting>
     <span itemprop=surname contenteditable></span>
-    <div part=my-part contenteditable></div>
+    <div part=myPart contenteditable></div>
     <my-form-associated-custom-element></my-form-associated-custom-element>
 </other-stuff>
 <form itemscope>
@@ -103,14 +113,14 @@ To specify the closest element to search within, use the ^ character:
         <input id=isVegetarian type=checkbox switch>
         <input name=greeting>
         <span itemprop=surname contenteditable></span>
-        <div part=my-part contenteditable></div>
+        <div part=myPart contenteditable></div>
         <my-form-associated-custom-element></my-form-associated-custom-element>
         <div itemscope>
             <fetch-for 
                 href=https://newton.now.sh/api/v2/integrate/x^2 
                 target=json-viewer[-object]
                 onerror=console.error(href)
-                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname^section %my-part^section ~my-form-associated-custom-element^section"
+                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname^section %myPart^section ~myFormAssociatedCustomElement^section"
                 oninput=...
                 onchange
             >
@@ -120,9 +130,33 @@ To specify the closest element to search within, use the ^ character:
 </form>
 ```
 
+## Formulating the url [TODO]
 
+```html
+<fetch-for 
+    href=https://newton.now.sh/api/v2/integrate/x^2 
+    target=json-viewer[-object]
+    onerror=console.error(href)
+    for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %myPart ~myFormAssociatedCustomElement"
+    oninput="
+        const {forData} = event;
+        const {
+            isVegetarian, 
+            myHostElementEventTargeSubObject, 
+            greeting, 
+            surname, 
+            myPart, 
+            myFormAssociatedCustomElement
+        } = forData;
+        href = `https://example.com/${surname}/...`;
 
+    "
+    onchange
+>
+</fetch-for>
+```
 
+## Filtering the data [TODO]
 
 ## Viewing Demos Locally
 
