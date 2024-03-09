@@ -1,0 +1,19 @@
+{
+  "name": "fetch-for",
+  "version": "0.0.0",
+  "description": "Base class for web components as a service",
+  "main": "fetch-for.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bahrus/fetch-for.git"
+  },
+  "author": "Bruce B. Anderson (anderson.bruce.b@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bahrus/fetch-for/issues"
+  },
+  "homepage": "https://github.com/bahrus/fetch-for#readme"
+}
