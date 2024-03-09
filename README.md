@@ -74,7 +74,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
                 href=https://newton.now.sh/api/v2/integrate/x^2 
                 target=json-viewer[-object]
                 onerror=console.error(href)
-                for="isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %my-part ~my-form-associated-custom-element"
+                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %my-part ~my-form-associated-custom-element"
                 oninput=...
                 onchange
             >
@@ -110,7 +110,7 @@ To specify the closest element to search within, use the ^ character:
                 href=https://newton.now.sh/api/v2/integrate/x^2 
                 target=json-viewer[-object]
                 onerror=console.error(href)
-                for="isVegetarian /myHostElementEventTargetSubObject @greeting! |surname^section %my-part^section ~my-form-associated-custom-element^section"
+                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname^section %my-part^section ~my-form-associated-custom-element^section"
                 oninput=...
                 onchange
             >
