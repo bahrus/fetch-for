@@ -7,10 +7,13 @@ export class FetchFor extends HTMLElement {
                 console.error('on* required');
                 return;
             }
-            const { target } = self;
+            const { target, noCache } = self;
             if (target && target.ariaLive === null)
                 target.ariaLive = 'polite';
-            let data = cache.get(this.localName)?.get(href);
+            let data;
+            if (!noCache) {
+                data = cache.get(this.localName)?.get(href);
+            }
             const as = this.as;
             if (data === undefined) {
                 if (target) {
@@ -34,7 +37,7 @@ export class FetchFor extends HTMLElement {
                 const loadEvent = new LoadEvent(data);
                 this.dispatchEvent(loadEvent);
                 data = loadEvent.data;
-                if (!cache.has(this.localName)) {
+                if (!noCache && !cache.has(this.localName)) {
                     cache.set(this.localName, new Map());
                 }
                 //TODO increment ariaBusy / decrement in case other components are affecting
@@ -131,7 +134,8 @@ const xe = new XE({
         propDefaults: {
             credentials: 'omit',
             method: 'GET',
-            as: 'json'
+            as: 'json',
+            noCache: false,
         },
         propInfo: {
             href: {

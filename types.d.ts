@@ -22,6 +22,8 @@ export interface EndUserProps{
 
     shadow?: ShadowRootMode,
 
+    noCache?: boolean,
+
 }
 
 export interface OverridableGetters{

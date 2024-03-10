@@ -10,9 +10,12 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                 console.error('on* required');
                 return;
             }
-            const {target} = self;
+            const {target, noCache} = self;
             if(target && target.ariaLive === null) target.ariaLive = 'polite';
-            let data: any = cache.get(this.localName)?.get(href);
+            let data: any;
+            if(!noCache) {
+                data = cache.get(this.localName)?.get(href);
+            } 
             const as = this.as;
             if(data === undefined){
                 if(target){
@@ -35,7 +38,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                 const loadEvent = new LoadEvent(data);
                 this.dispatchEvent(loadEvent);
                 data = loadEvent.data;
-                if(!cache.has(this.localName)){
+                if(!noCache && !cache.has(this.localName)){
                     cache.set(this.localName, new Map());
                 }
                 //TODO increment ariaBusy / decrement in case other components are affecting
@@ -134,7 +137,8 @@ const xe = new XE<AllProps, Actions>({
         propDefaults: {
             credentials: 'omit',
             method: 'GET',
-            as: 'json'
+            as: 'json',
+            noCache: false,
         },
         propInfo: {
             href:{

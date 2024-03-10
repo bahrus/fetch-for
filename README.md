@@ -1,4 +1,4 @@
-# fetch-for [TODO]
+# fetch-for [WIP]
 
 [![NPM version](https://badge.fury.io/js/fetch-for.png)](http://badge.fury.io/js/fetch-for)
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/fetch-for?style=for-the-badge)](https://bundlephobia.com/result?p=fetch-for)
@@ -12,7 +12,7 @@ fetch-for is a small-ish, bare-bones simple fetch web component.
 
 Like *k-fetch*, *fetch-for* can act as a base web component for "web components as a service".  [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
-## Example 1 -- Simple html to (stream?) html to the browser [TODO]
+## Example 1 -- Simple html include
 
 Markup:
 
@@ -27,15 +27,30 @@ For this very specific example shown above, due to restrictions of the cors-anyw
 
 Required attributes/properties are href and at least one of these attributes/properties being set: onerror, oninput, onload, onchange.  The reason for insisting on at least one of these on* attributes/properties is this:  Since these attributes can't pass through any decent sanitizer that prevents xss attacks, the presence of one or more of them indicates that the web site trusts the content from which the data is being retrieved.
 
-When the fetch is complete, event "load" is fired, which can allow for manipulation of the data.  The (modified) data is then stored in the "value" field of the fetch-for (or subclassed) instance. Also, event "change" is fired (which is not picked up by the onchange attribute below, but that's getting ahead of ourselves). 
+At the risk of getting ahead of ourselves, I want to summarize what this is doing.  Plenty of examples that follow will illustrate  what I mean:  
 
-If as=html, the response is inserted into the innerHTML of the fetch-for element, unless attribute shadow is present, in which case it will first create a shadowRoot, then insert the innerHTML.
+When the fetch is complete, event "load" is fired, which can allow for manipulation of the data.  The (modified) data is then stored in the "value" field of the fetch-for (or subclassed) instance. Also, event "change" is fired (which is not picked up by the onchange attribute). 
 
-fetch-for has no support for "href" or "as" properties, only attributes.
+If as=html, the response is inserted into the innerHTML of the fetch-for element, unless attribute shadow is present, in which case it will first attach a shadowRoot, then insert the innerHTML.
 
-fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP methods, based on the localName of the custom element as the base key of the cache. To disable this feature, specify attribute/property: noCache/no-cache
+fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP methods, based on the localName of the custom element as the base key of the cache, and of course on the exact string of the href property. To disable this feature, specify attribute/property: noCache/no-cache
 
-## Example 2 - Sending data to a target:
+## Example 2 - Stream HTML to a target [TODO]
+
+```html
+<fetch-for 
+stream
+href=https://cors-anywhere.herokuapp.com/https://www.theonion.com/ 
+as=html
+target=#target
+shadow=open 
+onerror="console.error(href)"></fetch-for>
+
+<div id=target></div>
+    
+```
+
+## Example 3 - Sending data to a target:
 
 ```html
 <fetch-for 
