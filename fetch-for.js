@@ -1,5 +1,6 @@
 import { XE } from 'xtal-element/XE.js';
 export class FetchFor extends HTMLElement {
+    #abortController;
     async do(self) {
         try {
             const { href } = self;
@@ -19,6 +20,12 @@ export class FetchFor extends HTMLElement {
                 if (target) {
                     target.ariaBusy = 'true';
                 }
+                if (this.#abortController !== undefined) {
+                    this.#abortController.abort();
+                    this.#abortController = new AbortController();
+                }
+                this.#abortController = new AbortController();
+                this.init.signal = this.#abortController?.signal;
                 const resp = await fetch(href, this.init);
                 if (!this.validateResp(resp)) {
                     throw [resp.statusText, resp.status];
