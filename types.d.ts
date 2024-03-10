@@ -20,6 +20,7 @@ export interface EndUserProps{
 
     targetSelector?: string,
 
+    shadow?: ShadowRootMode,
 
 }
 
@@ -27,6 +28,7 @@ export interface OverridableGetters{
     init: RequestInit,
     accept?: string,
     value?: any,
+    isAttrParsed?: boolean,
 }
 
 export interface AllProps extends EndUserProps, OverridableGetters{
@@ -40,7 +42,7 @@ export type PPE = [PP, ActionOnEventConfigs<AllProps, Actions>];
 export interface Methods{
     validateResp(resp: Response): boolean,
     validateOn(): boolean,
-    setTargetProp(target: Element | null, data: any, shadow: ShadowRootMode | null): void,
+    setTargetProp(target: Element | null, data: any, shadow?: ShadowRootMode): void,
 }
 
 export interface Actions{

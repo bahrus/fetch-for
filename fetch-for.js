@@ -47,18 +47,18 @@ export class FetchFor extends HTMLElement {
                     this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
-                    await this.setTargetProp(target, data, null);
+                    await this.setTargetProp(target, data);
                     break;
                 case 'html':
-                    const shadow = this.getAttribute('shadow');
-                    if (this.target !== null) {
+                    const { shadow } = this;
+                    if (this.target) {
                         this.hidden = true;
                         await this.setTargetProp(target, data, shadow);
                     }
                     else {
                         const target = this.target || this;
                         let root = this;
-                        if (shadow !== null) {
+                        if (shadow !== undefined) {
                             if (this.shadowRoot === null)
                                 this.attachShadow({ mode: shadow });
                             root = this.shadowRoot;
@@ -68,8 +68,9 @@ export class FetchFor extends HTMLElement {
                     break;
             }
         }
-        catch {
-            this.dispatchEvent(new Event('error'));
+        catch (e) {
+            const err = e;
+            this.dispatchEvent(new ErrorEvent('error', err));
         }
     }
     get init() {
@@ -111,7 +112,7 @@ export class FetchFor extends HTMLElement {
         const rawPath = targetSelector.substring(lastPos + 2, targetSelector.length - 1);
         const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
         const propPath = lispToCamel(rawPath);
-        if (shadow !== null && propPath === 'innerHTML') {
+        if (shadow !== undefined && propPath === 'innerHTML') {
             let root = target.shadowRoot;
             if (root === null) {
                 root = target.attachShadow({ mode: shadow });
@@ -132,9 +133,18 @@ const xe = new XE({
             method: 'GET',
             as: 'json'
         },
-        propInfo: {},
+        propInfo: {
+            href: {
+                type: 'String',
+            },
+            shadow: {
+                type: 'String',
+            }
+        },
         actions: {
-            do: 'href',
+            do: {
+                ifAllOf: ['isAttrParsed', 'href']
+            },
         }
     },
     superclass: FetchFor

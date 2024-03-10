@@ -48,17 +48,17 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                     this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
-                    await this.setTargetProp(target, data, null);
+                    await this.setTargetProp(target, data);
                     break;
                 case 'html':
-                    const shadow = this.getAttribute('shadow') as ShadowRootMode;
-                    if(this.target !== null){
+                    const {shadow} = this;
+                    if(this.target){
                         this.hidden = true;
                         await this.setTargetProp(target, data, shadow);
                     }else{
                         const target = this.target || this;
                         let root : Element | ShadowRoot = this;
-                        if(shadow !== null){
+                        if(shadow !== undefined){
                             if(this.shadowRoot === null) this.attachShadow({mode: shadow});
                             root = this.shadowRoot!;
                         }
@@ -67,8 +67,9 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
 
                     break;
             }
-        }catch{
-            this.dispatchEvent(new Event('error'));
+        }catch(e){
+            const err = e as Error
+            this.dispatchEvent(new ErrorEvent('error', err));
         }
     }
 
@@ -101,7 +102,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         return this.onerror !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
     }
 
-    async setTargetProp(target: Element | null | undefined, data: any, shadow: ShadowRootMode | null){
+    async setTargetProp(target: Element | null | undefined, data: any, shadow?: ShadowRootMode){
         if(!target) return;
         const {targetSelector} = this;
         if(targetSelector === undefined) return;
@@ -110,7 +111,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         const rawPath =  targetSelector.substring(lastPos + 2, targetSelector.length - 1);
         const {lispToCamel} = await import('trans-render/lib/lispToCamel.js');
         const propPath = lispToCamel(rawPath);
-        if(shadow !== null && propPath === 'innerHTML'){
+        if(shadow !== undefined && propPath === 'innerHTML'){
             let root = target.shadowRoot;
             if(root === null) {
                 root = target.attachShadow({mode: shadow});
@@ -136,10 +137,17 @@ const xe = new XE<AllProps, Actions>({
             as: 'json'
         },
         propInfo: {
-
+            href:{
+                type: 'String',
+            },
+            shadow:{
+                type: 'String',
+            }
         },
         actions:{
-            do: 'href',
+            do: {
+                ifAllOf: ['isAttrParsed', 'href']
+            },
         }
     },
     superclass: FetchFor
