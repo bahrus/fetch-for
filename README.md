@@ -1,8 +1,5 @@
 # fetch-for [TODO]
 
-<a href="https://nodei.co/npm/fetch-for/"><img src="https://nodei.co/npm/p-fetch.png"></a>
-# fetch-for
-
 [![NPM version](https://badge.fury.io/js/fetch-for.png)](http://badge.fury.io/js/fetch-for)
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/fetch-for?style=for-the-badge)](https://bundlephobia.com/result?p=fetch-for)
 <img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/fetch-for?compression=gzip">
@@ -11,11 +8,7 @@
 
 ## [Demo](https://jsfiddle.net/bahrus/ma0vtbnx/1/)
 
-fetch-for is a small-ish, bare-bones simple fetch web component. For fewer features, but a smaller foot print, consider using [https://github.com/k-fetch].  What k-fetch lacks which this component adopts is form-like support.
-
- For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch), that is in serious need for an update [TODO]. 
-
-fetch-for hopes to be "just the right amount" of size for many purposes. It *may* provide support for streaming HTML.  If not, or for other scenarios where it might work better, see alternatives that focus on that scenario, such as [be-written](https://github.com/bahrus/be-written).
+fetch-for is a small-ish, bare-bones simple fetch web component.  
 
 Like *k-fetch*, *fetch-for* can act as a base web component for "web components as a service".  [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
@@ -157,6 +150,14 @@ To specify the closest element to search within, use the ^ character:
 ```
 
 ## Filtering the data [TODO]
+
+## Alternatives
+
+For fewer features, but a smaller foot print, consider using [https://github.com/k-fetch].  What k-fetch lacks which this component adopts is form-like support.
+
+ For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch), that is in serious need for an update [TODO]. 
+
+fetch-for hopes to be "just the right amount" of size for many purposes. It *may* provide support for streaming HTML.  If not, or for other scenarios where it might work better, see alternatives that focus on that scenario, such as [be-written](https://github.com/bahrus/be-written).
 
 ## Viewing Demos Locally
 
