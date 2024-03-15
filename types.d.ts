@@ -35,10 +35,11 @@ export interface OverridableGetters{
     isAttrParsed?: boolean,
 }
 
+export type EventName = string;
+
 export interface AllProps extends EndUserProps, OverridableGetters{
     resolvedTarget?: Element | null,
-    forRefs?: Map<string, WeakRef<HTMLInputElement>>,
-    changeForRefs?: Map<string, WeakRef<HTMLInputElement>>,
+    forRefs?: Map<string, [WeakRef<HTMLInputElement>, EventName]>,
 }
 
 export type PP = Partial<AllProps>;
@@ -57,7 +58,7 @@ export interface Actions{
     do(self: this): Promise<void>;
     parseFor(self: this): ProPP;
     listenForInput(self: this): ProPP;
-    listenForSelect(self: this): ProPP;
+    //listenForSelect(self: this): ProPP;
     doInitialLoad(self: this): ProPP;
 }
 
@@ -70,7 +71,6 @@ export interface EventForFetch {
     href?: string;
     trigger?: Element,
     forData: ForData,
-    changeForData: ForData,
 }
 
 export type ForData = {[key: string]: HTMLInputElement}

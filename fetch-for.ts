@@ -1,6 +1,6 @@
 import {
     Actions, Methods, AllProps, loadEventName, ProPP, 
-    ForData, EventForFetch, inputEventName, selectionChangeEventName
+    ForData, EventForFetch, inputEventName, EventName
 } from './types';
 import {XE, ActionOnEventConfigs} from 'xtal-element/XE.js';
 
@@ -12,10 +12,16 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         const {for: f, } = self;
         const split = f!.split(' ');
         const {findRealm} = await import('trans-render/lib/findRealm.js');
-        const forRefs: Map<string, WeakRef<HTMLInputElement>> = new Map();
+        const forRefs: Map<string, [WeakRef<HTMLInputElement>, EventName]> = new Map();
         for(const token of split){
             const headChar = token[0];
-            const tailStr = token.substring(1);
+            let tailStr = token.substring(1);
+            let eventName: EventName = 'input';
+            const splitTail = tailStr.split('::');
+            if(splitTail.length > 1){
+                eventName = splitTail[1];
+                tailStr = splitTail[0];
+            }
             let inputEl: EventTarget | null | undefined;
             switch(headChar){
                 case '@':
@@ -25,7 +31,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                     throw 'NI';
             }
             if(!(inputEl instanceof HTMLElement)) throw 404;
-            forRefs.set(tailStr, new WeakRef(inputEl as HTMLInputElement));
+            forRefs.set(tailStr, [new WeakRef(inputEl as HTMLInputElement), eventName]);
         }
         return {
             forRefs
@@ -126,7 +132,8 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         const returnObj: ForData = {};
         if(forRefs === undefined) return returnObj;
         for(const [key, value] of forRefs.entries()){
-            const inputEl = value.deref();
+            const [forRef, eventName] = value;
+            const inputEl = forRef.deref();
             if(inputEl === undefined){
                 forRefs.delete(key);
                 continue;
@@ -144,61 +151,48 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
     }
 
-    async passForData(self: this, eventType: 'input' | 'select', trigger: Element){
+    async passForData(self: this, trigger: Element){
         const forData = this.#forData(self);
         for(const key in forData){
             const otherInputEl= forData[key];
             if(otherInputEl.checkValidity && !otherInputEl.checkValidity()) return;
         }
-        let eventForFetch: Event & EventForFetch | undefined;
-        switch(eventType){
-            case 'select':
-                eventForFetch = new SelectionChangeEvent(forData, trigger);
-                break;
-            case 'input':
-                eventForFetch = new InputEvent(forData, trigger);
-                break;
-        }
+        const eventForFetch: Event & EventForFetch = new InputEvent(forData, trigger);
         self.dispatchEvent(eventForFetch);
         if(eventForFetch.href){
             self.href = eventForFetch.href;
         }
     }
 
-    async listenForX(self: this, eventType: 'input' | 'select'){
+    async listenForX(self: this){
         const {forRefs} = self;
         for(const [key, value] of forRefs!.entries()){
-            const inputEl = value.deref() as HTMLInputElement;
+            const [forRef, eventName] = value;
+            const inputEl = forRef.deref() as HTMLInputElement;
             const ac = new AbortController();
-            inputEl.addEventListener(eventType, async e => {
+            inputEl.addEventListener(eventName, async e => {
                 const inputEl = e.target as HTMLInputElement;
                 if(inputEl.checkValidity && !inputEl.checkValidity()) return;
-                await self.passForData(self, eventType, inputEl);
+                await self.passForData(self, inputEl);
             }, {signal: ac.signal});
             this.#abortControllers.push(ac)
         }
     }
 
     async listenForInput(self: this): ProPP {
-        await self.listenForX(self, 'input');
+        await self.listenForX(self);
         return {
 
         }
     }
 
-    async listenForSelect(self: this): ProPP {
-        await self.listenForX(self, 'select');
-        return {
-            
-        }
-    }
 
     async doInitialLoad(self: this): ProPP {
         const {oninput, onselect} = self;
         if(oninput){
-            self.passForData(self, 'input', self)
+            self.passForData(self, self)
         }else if(onselect){
-            self.passForData(self, 'select', self);
+            self.passForData(self, self);
         }
         return {
 
@@ -290,9 +284,6 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             listenForInput:{
                 ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
             },
-            listenForSelect:{
-                ifAllOf: ['isAttrParsed', 'forRefs', 'onselect']
-            },
             doInitialLoad:{
                 ifAllOf: ['isAttrParsed', 'forRefs'],
                 ifAtLeastOneOf: ['oninput', 'onselect'],
@@ -317,14 +308,5 @@ export class InputEvent extends Event implements EventForFetch{
 
     constructor(public forData: ForData, public trigger: Element){
         super(InputEvent.EventName);
-    }
-}
-
-export class SelectionChangeEvent extends Event implements EventForFetch{
-
-    static EventName: selectionChangeEventName = 'select';
-
-    constructor(public forData: ForData, public trigger: Element){
-        super(SelectionChangeEvent.EventName);
     }
 }

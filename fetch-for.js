@@ -8,7 +8,13 @@ export class FetchFor extends HTMLElement {
         const forRefs = new Map();
         for (const token of split) {
             const headChar = token[0];
-            const tailStr = token.substring(1);
+            let tailStr = token.substring(1);
+            let eventName = 'input';
+            const splitTail = tailStr.split('::');
+            if (splitTail.length > 1) {
+                eventName = splitTail[1];
+                tailStr = splitTail[0];
+            }
             let inputEl;
             switch (headChar) {
                 case '@':
@@ -19,7 +25,7 @@ export class FetchFor extends HTMLElement {
             }
             if (!(inputEl instanceof HTMLElement))
                 throw 404;
-            forRefs.set(tailStr, new WeakRef(inputEl));
+            forRefs.set(tailStr, [new WeakRef(inputEl), eventName]);
         }
         return {
             forRefs
@@ -123,7 +129,8 @@ export class FetchFor extends HTMLElement {
         if (forRefs === undefined)
             return returnObj;
         for (const [key, value] of forRefs.entries()) {
-            const inputEl = value.deref();
+            const [forRef, eventName] = value;
+            const inputEl = forRef.deref();
             if (inputEl === undefined) {
                 forRefs.delete(key);
                 continue;
@@ -138,56 +145,45 @@ export class FetchFor extends HTMLElement {
             ac.abort();
         }
     }
-    async passForData(self, eventType, trigger) {
+    async passForData(self, trigger) {
         const forData = this.#forData(self);
         for (const key in forData) {
             const otherInputEl = forData[key];
             if (otherInputEl.checkValidity && !otherInputEl.checkValidity())
                 return;
         }
-        let eventForFetch;
-        switch (eventType) {
-            case 'select':
-                eventForFetch = new SelectionChangeEvent(forData, trigger);
-                break;
-            case 'input':
-                eventForFetch = new InputEvent(forData, trigger);
-                break;
-        }
+        const eventForFetch = new InputEvent(forData, trigger);
         self.dispatchEvent(eventForFetch);
         if (eventForFetch.href) {
             self.href = eventForFetch.href;
         }
     }
-    async listenForX(self, eventType) {
+    async listenForX(self) {
         const { forRefs } = self;
         for (const [key, value] of forRefs.entries()) {
-            const inputEl = value.deref();
+            const [forRef, eventName] = value;
+            const inputEl = forRef.deref();
             const ac = new AbortController();
-            inputEl.addEventListener(eventType, async (e) => {
+            inputEl.addEventListener(eventName, async (e) => {
                 const inputEl = e.target;
                 if (inputEl.checkValidity && !inputEl.checkValidity())
                     return;
-                await self.passForData(self, eventType, inputEl);
+                await self.passForData(self, inputEl);
             }, { signal: ac.signal });
             this.#abortControllers.push(ac);
         }
     }
     async listenForInput(self) {
-        await self.listenForX(self, 'input');
-        return {};
-    }
-    async listenForSelect(self) {
-        await self.listenForX(self, 'select');
+        await self.listenForX(self);
         return {};
     }
     async doInitialLoad(self) {
         const { oninput, onselect } = self;
         if (oninput) {
-            self.passForData(self, 'input', self);
+            self.passForData(self, self);
         }
         else if (onselect) {
-            self.passForData(self, 'select', self);
+            self.passForData(self, self);
         }
         return {};
     }
@@ -273,9 +269,6 @@ const xe = new XE({
             listenForInput: {
                 ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
             },
-            listenForSelect: {
-                ifAllOf: ['isAttrParsed', 'forRefs', 'onselect']
-            },
             doInitialLoad: {
                 ifAllOf: ['isAttrParsed', 'forRefs'],
                 ifAtLeastOneOf: ['oninput', 'onselect'],
@@ -298,16 +291,6 @@ export class InputEvent extends Event {
     static EventName = 'input';
     constructor(forData, trigger) {
         super(InputEvent.EventName);
-        this.forData = forData;
-        this.trigger = trigger;
-    }
-}
-export class SelectionChangeEvent extends Event {
-    forData;
-    trigger;
-    static EventName = 'select';
-    constructor(forData, trigger) {
-        super(SelectionChangeEvent.EventName);
         this.forData = forData;
         this.trigger = trigger;
     }

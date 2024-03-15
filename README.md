@@ -75,7 +75,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <input name=op value=integrate>
 <input name=expr value=x^2>
 <fetch-for
-    for="@op @expr"
+    for="@op::change @expr"
     oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
     target=json-viewer[-object]
     onerror=console.error(href)
