@@ -138,7 +138,7 @@ export class FetchFor extends HTMLElement {
             ac.abort();
         }
     }
-    async passForData(self, eventType) {
+    async passForData(self, eventType, trigger) {
         const forData = this.#forData(self);
         for (const key in forData) {
             const otherInputEl = forData[key];
@@ -148,10 +148,10 @@ export class FetchFor extends HTMLElement {
         let eventForFetch;
         switch (eventType) {
             case 'select':
-                eventForFetch = new SelectionChangeEvent(forData);
+                eventForFetch = new SelectionChangeEvent(forData, trigger);
                 break;
             case 'input':
-                eventForFetch = new InputEvent(forData);
+                eventForFetch = new InputEvent(forData, trigger);
                 break;
         }
         self.dispatchEvent(eventForFetch);
@@ -168,7 +168,7 @@ export class FetchFor extends HTMLElement {
                 const inputEl = e.target;
                 if (inputEl.checkValidity && !inputEl.checkValidity())
                     return;
-                await self.passForData(self, eventType);
+                await self.passForData(self, eventType, inputEl);
             }, { signal: ac.signal });
             this.#abortControllers.push(ac);
         }
@@ -184,10 +184,10 @@ export class FetchFor extends HTMLElement {
     async doInitialLoad(self) {
         const { oninput, onselect } = self;
         if (oninput) {
-            self.passForData(self, 'input');
+            self.passForData(self, 'input', self);
         }
         else if (onselect) {
-            self.passForData(self, 'select');
+            self.passForData(self, 'select', self);
         }
         return {};
     }
@@ -294,17 +294,21 @@ export class LoadEvent extends Event {
 }
 export class InputEvent extends Event {
     forData;
+    trigger;
     static EventName = 'input';
-    constructor(forData) {
+    constructor(forData, trigger) {
         super(InputEvent.EventName);
         this.forData = forData;
+        this.trigger = trigger;
     }
 }
 export class SelectionChangeEvent extends Event {
     forData;
+    trigger;
     static EventName = 'select';
-    constructor(forData) {
+    constructor(forData, trigger) {
         super(SelectionChangeEvent.EventName);
         this.forData = forData;
+        this.trigger = trigger;
     }
 }

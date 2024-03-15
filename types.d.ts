@@ -8,7 +8,9 @@ export interface EndUserProps{
      */
     href?: string,
 
-    for?: string, 
+    for?: string,
+    
+    changeFor?: string,
 
     as?: 'html' | 'json' | 'text',
 
@@ -36,6 +38,7 @@ export interface OverridableGetters{
 export interface AllProps extends EndUserProps, OverridableGetters{
     resolvedTarget?: Element | null,
     forRefs?: Map<string, WeakRef<HTMLInputElement>>,
+    changeForRefs?: Map<string, WeakRef<HTMLInputElement>>,
 }
 
 export type PP = Partial<AllProps>;
@@ -65,7 +68,9 @@ export type selectionChangeEventName = 'select';
 
 export interface EventForFetch {
     href?: string;
-    forData: {[key: string]: HTMLInputElement}
+    trigger?: Element,
+    forData: ForData,
+    changeForData: ForData,
 }
 
 export type ForData = {[key: string]: HTMLInputElement}

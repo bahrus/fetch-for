@@ -144,7 +144,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
     }
 
-    async passForData(self: this, eventType: 'input' | 'select'){
+    async passForData(self: this, eventType: 'input' | 'select', trigger: Element){
         const forData = this.#forData(self);
         for(const key in forData){
             const otherInputEl= forData[key];
@@ -153,10 +153,10 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         let eventForFetch: Event & EventForFetch | undefined;
         switch(eventType){
             case 'select':
-                eventForFetch = new SelectionChangeEvent(forData);
+                eventForFetch = new SelectionChangeEvent(forData, trigger);
                 break;
             case 'input':
-                eventForFetch = new InputEvent(forData);
+                eventForFetch = new InputEvent(forData, trigger);
                 break;
         }
         self.dispatchEvent(eventForFetch);
@@ -173,7 +173,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
             inputEl.addEventListener(eventType, async e => {
                 const inputEl = e.target as HTMLInputElement;
                 if(inputEl.checkValidity && !inputEl.checkValidity()) return;
-                await self.passForData(self, eventType);
+                await self.passForData(self, eventType, inputEl);
             }, {signal: ac.signal});
             this.#abortControllers.push(ac)
         }
@@ -196,9 +196,9 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
     async doInitialLoad(self: this): ProPP {
         const {oninput, onselect} = self;
         if(oninput){
-            self.passForData(self, 'input')
+            self.passForData(self, 'input', self)
         }else if(onselect){
-            self.passForData(self, 'select');
+            self.passForData(self, 'select', self);
         }
         return {
 
@@ -315,7 +315,7 @@ export class InputEvent extends Event implements EventForFetch{
 
     static EventName: inputEventName = 'input';
 
-    constructor(public forData: ForData){
+    constructor(public forData: ForData, public trigger: Element){
         super(InputEvent.EventName);
     }
 }
@@ -324,7 +324,7 @@ export class SelectionChangeEvent extends Event implements EventForFetch{
 
     static EventName: selectionChangeEventName = 'select';
 
-    constructor(public forData: ForData){
+    constructor(public forData: ForData, public trigger: Element){
         super(SelectionChangeEvent.EventName);
     }
 }
