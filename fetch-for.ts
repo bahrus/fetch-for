@@ -1,9 +1,36 @@
-import {Actions, Methods, AllProps, PPE, ILoadEvent, loadEventName} from './types';
+import {
+    Actions, Methods, AllProps, loadEventName, ProPP, 
+    ForData, EventForFetch, inputEventName, changeEventName
+} from './types';
 import {XE, ActionOnEventConfigs} from 'xtal-element/XE.js';
 
 export class FetchFor extends HTMLElement implements Actions, Methods{
     
     #abortController: AbortController | undefined;
+
+    async parseFor(self: this){
+        const {for: f, } = self;
+        const split = f!.split(' ');
+        const {findRealm} = await import('trans-render/lib/findRealm.js');
+        const forRefs: Map<string, WeakRef<HTMLInputElement>> = new Map();
+        for(const token of split){
+            const headChar = token[0];
+            const tailStr = token.substring(1);
+            let inputEl: EventTarget | null | undefined;
+            switch(headChar){
+                case '@':
+                    inputEl = await findRealm(self, ['wf', tailStr]);
+                    break;
+                default:
+                    throw 'NI';
+            }
+            if(!(inputEl instanceof HTMLElement)) throw 404;
+            forRefs.set(tailStr, new WeakRef(inputEl as HTMLInputElement));
+        }
+        return {
+            forRefs
+        };
+    }
 
     async do(self: this){
         try{
@@ -16,7 +43,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
             if(target && target.ariaLive === null) target.ariaLive = 'polite';
             let data: any;
             if(!noCache) {
-                data = cache.get(this.localName)?.get(href);
+                data = cache.get(this.localName)?.get(href!);
             } 
             const as = this.as;
             if(data === undefined){
@@ -94,6 +121,87 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
             body: typeof this.body === 'object' ? JSON.stringify(this.body) : this.body,
         } as RequestInit;
     }
+    #forData(self: this): ForData{
+        const {forRefs} = self;
+        const returnObj: ForData = {};
+        if(forRefs === undefined) return returnObj;
+        for(const [key, value] of forRefs.entries()){
+            const inputEl = value.deref();
+            if(inputEl === undefined){
+                forRefs.delete(key);
+                continue;
+            }
+            returnObj[key] = inputEl as HTMLInputElement;
+        }
+        return returnObj;
+    }
+    #abortControllers: Array<AbortController> = [];
+
+
+    disconnectedCallback(){
+        for(const ac of this.#abortControllers){
+            ac.abort();
+        }
+    }
+
+    async passForData(self: this, eventType: 'input' | 'change'){
+        const forData = this.#forData(self);
+        for(const key in forData){
+            const otherInputEl= forData[key];
+            if(otherInputEl.checkValidity && !otherInputEl.checkValidity()) return;
+        }
+        let eventForFetch: EventForFetch | undefined;
+        switch(eventType){
+            case 'change':
+                eventForFetch = new ChangeEvent(forData);
+                break;
+            case 'input':
+                eventForFetch = new InputEvent(forData);
+                break;
+        }
+        const inputEvent = new InputEvent(forData);
+        self.dispatchEvent(inputEvent);
+    }
+
+    async listenForX(self: this, eventType: 'input' | 'change'){
+        const {forRefs} = self;
+        for(const [key, value] of forRefs!.entries()){
+            const inputEl = value.deref() as HTMLInputElement;
+            const ac = new AbortController();
+            inputEl.addEventListener(eventType, async e => {
+                const inputEl = e.target as HTMLInputElement;
+                if(inputEl.checkValidity && !inputEl.checkValidity()) return;
+                await self.passForData(self, eventType);
+            }, {signal: ac.signal});
+            this.#abortControllers.push(ac)
+        }
+    }
+
+    async listenForInput(self: this): ProPP {
+        await self.listenForX(self, 'input');
+        return {
+
+        }
+    }
+
+    async listenForChange(self: this): ProPP {
+        await self.listenForX(self, 'input');
+        return {
+            
+        }
+    }
+
+    async doInitialLoad(self: this): ProPP {
+        const {oninput, onchange} = self;
+        if(oninput){
+            self.passForData(self, 'input')
+        }else if(onchange){
+            self.passForData(self, 'change');
+        }
+        return {
+
+        }
+    }
 
     get accept(){
         if(this.hasAttribute('accept')) return this.getAttribute('accept')!;
@@ -135,11 +243,12 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
     }
 }
 
+
 export interface FetchFor extends AllProps{}
 
 const cache: Map<string, Map<URL, any>> = new Map();
 
-const xe = new XE<AllProps, Actions>({
+const xe = new XE<AllProps & HTMLElement, Actions>({
     config:{
         tagName: 'fetch-for',
         propDefaults: {
@@ -154,22 +263,57 @@ const xe = new XE<AllProps, Actions>({
             },
             shadow:{
                 type: 'String',
+            },
+            for: {
+                type: 'String',
             }
         },
         actions:{
             do: {
                 ifAllOf: ['isAttrParsed', 'href']
             },
+            parseFor: {
+                ifAllOf: ['isAttrParsed', 'for'],
+                ifAtLeastOneOf: ['oninput', 'onchange']
+            },
+            listenForInput:{
+                ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
+            },
+            listenForChange:{
+                ifAllOf: ['isAttrParsed', 'forRefs', 'onchange']
+            },
+            doInitialLoad:{
+                ifAllOf: ['isAttrParsed', 'forRefs'],
+                ifAtLeastOneOf: ['oninput', 'onchange', 'onload'],
+            }
         }
     },
     superclass: FetchFor
 });
 
-export class LoadEvent extends Event implements ILoadEvent{
+export class LoadEvent extends Event{
 
     static EventName: loadEventName = 'load';
 
     constructor(public data: any){
         super(LoadEvent.EventName);
+    }
+}
+
+export class InputEvent extends Event implements EventForFetch{
+
+    static EventName: inputEventName = 'input';
+
+    constructor(public forData: ForData){
+        super(InputEvent.EventName);
+    }
+}
+
+export class ChangeEvent extends Event implements EventForFetch{
+
+    static EventName: changeEventName = 'change';
+
+    constructor(public forData: ForData){
+        super(ChangeEvent.EventName);
     }
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example 1</title>
+    <script type=importmap>
+        {
+            "imports": {
+                "mount-observer/": "/node_modules/mount-observer/",
+                "trans-render/": "/node_modules/trans-render/",
+                "xtal-element/": "/node_modules/xtal-element/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <fetch-for 
+        href=https://newton.now.sh/api/v2/integrate/x^2 
+        target=json-viewer[-object]
+        onerror=console.error(href)
+    >
+    </fetch-for>
+    ...
+    <json-viewer -object></json-viewer>
+    <script type=module src=/fetch-for.js></script>
+</body>
+</html>

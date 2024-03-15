@@ -1,6 +1,30 @@
 import { XE } from 'xtal-element/XE.js';
 export class FetchFor extends HTMLElement {
     #abortController;
+    async parseFor(self) {
+        const { for: f, } = self;
+        const split = f.split(' ');
+        const { findRealm } = await import('trans-render/lib/findRealm.js');
+        const forRefs = new Map();
+        for (const token of split) {
+            const headChar = token[0];
+            const tailStr = token.substring(1);
+            let inputEl;
+            switch (headChar) {
+                case '@':
+                    inputEl = await findRealm(self, ['wf', tailStr]);
+                    break;
+                default:
+                    throw 'NI';
+            }
+            if (!(inputEl instanceof HTMLElement))
+                throw 404;
+            forRefs.set(tailStr, new WeakRef(inputEl));
+        }
+        return {
+            forRefs
+        };
+    }
     async do(self) {
         try {
             const { href } = self;
@@ -93,6 +117,78 @@ export class FetchFor extends HTMLElement {
             body: typeof this.body === 'object' ? JSON.stringify(this.body) : this.body,
         };
     }
+    #forData(self) {
+        const { forRefs } = self;
+        const returnObj = {};
+        if (forRefs === undefined)
+            return returnObj;
+        for (const [key, value] of forRefs.entries()) {
+            const inputEl = value.deref();
+            if (inputEl === undefined) {
+                forRefs.delete(key);
+                continue;
+            }
+            returnObj[key] = inputEl;
+        }
+        return returnObj;
+    }
+    #abortControllers = [];
+    disconnectedCallback() {
+        for (const ac of this.#abortControllers) {
+            ac.abort();
+        }
+    }
+    async passForData(self, eventType) {
+        const forData = this.#forData(self);
+        for (const key in forData) {
+            const otherInputEl = forData[key];
+            if (otherInputEl.checkValidity && !otherInputEl.checkValidity())
+                return;
+        }
+        let eventForFetch;
+        switch (eventType) {
+            case 'change':
+                eventForFetch = new ChangeEvent(forData);
+                break;
+            case 'input':
+                eventForFetch = new InputEvent(forData);
+                break;
+        }
+        const inputEvent = new InputEvent(forData);
+        self.dispatchEvent(inputEvent);
+    }
+    async listenForX(self, eventType) {
+        const { forRefs } = self;
+        for (const [key, value] of forRefs.entries()) {
+            const inputEl = value.deref();
+            const ac = new AbortController();
+            inputEl.addEventListener(eventType, async (e) => {
+                const inputEl = e.target;
+                if (inputEl.checkValidity && !inputEl.checkValidity())
+                    return;
+                await self.passForData(self, eventType);
+            }, { signal: ac.signal });
+            this.#abortControllers.push(ac);
+        }
+    }
+    async listenForInput(self) {
+        await self.listenForX(self, 'input');
+        return {};
+    }
+    async listenForChange(self) {
+        await self.listenForX(self, 'input');
+        return {};
+    }
+    async doInitialLoad(self) {
+        const { oninput, onchange } = self;
+        if (oninput) {
+            self.passForData(self, 'input');
+        }
+        else if (onchange) {
+            self.passForData(self, 'change');
+        }
+        return {};
+    }
     get accept() {
         if (this.hasAttribute('accept'))
             return this.getAttribute('accept');
@@ -150,12 +246,29 @@ const xe = new XE({
             },
             shadow: {
                 type: 'String',
+            },
+            for: {
+                type: 'String',
             }
         },
         actions: {
             do: {
                 ifAllOf: ['isAttrParsed', 'href']
             },
+            parseFor: {
+                ifAllOf: ['isAttrParsed', 'for'],
+                ifAtLeastOneOf: ['oninput', 'onchange']
+            },
+            listenForInput: {
+                ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
+            },
+            listenForChange: {
+                ifAllOf: ['isAttrParsed', 'forRefs', 'onchange']
+            },
+            doInitialLoad: {
+                ifAllOf: ['isAttrParsed', 'forRefs'],
+                ifAtLeastOneOf: ['oninput', 'onchange', 'onload'],
+            }
         }
     },
     superclass: FetchFor
@@ -166,5 +279,21 @@ export class LoadEvent extends Event {
     constructor(data) {
         super(LoadEvent.EventName);
         this.data = data;
+    }
+}
+export class InputEvent extends Event {
+    forData;
+    static EventName = 'input';
+    constructor(forData) {
+        super(InputEvent.EventName);
+        this.forData = forData;
+    }
+}
+export class ChangeEvent extends Event {
+    forData;
+    static EventName = 'change';
+    constructor(forData) {
+        super(ChangeEvent.EventName);
+        this.forData = forData;
     }
 }

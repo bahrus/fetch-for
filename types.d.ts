@@ -6,11 +6,11 @@ export interface EndUserProps{
     /**
      * Url to invoke
      */
-    href: URL,
+    href?: URL,
+
+    for?: string, 
 
     as?: 'html' | 'json' | 'text',
-
-    
 
     method?: string,
 
@@ -35,9 +35,12 @@ export interface OverridableGetters{
 
 export interface AllProps extends EndUserProps, OverridableGetters{
     target?: Element | null,
+    forRefs?: Map<string, WeakRef<HTMLInputElement>>,
 }
 
 export type PP = Partial<AllProps>;
+
+export type ProPP = Promise<PP>
 
 export type PPE = [PP, ActionOnEventConfigs<AllProps, Actions>];
 
@@ -48,12 +51,21 @@ export interface Methods{
 }
 
 export interface Actions{
-    do(self: this): Promise<void>
+    do(self: this): Promise<void>;
+    parseFor(self: this): ProPP;
+    listenForInput(self: this): ProPP;
+    listenForChange(self: this): ProPP;
+    doInitialLoad(self: this): ProPP;
 }
 
 // https://github.com/webcomponents-cg/community-protocols/issues/12#issuecomment-872415080
 export type loadEventName = 'load';
-export interface ILoadEvent {
-    data: any
+export type inputEventName = 'input';
+export type changeEventName = 'change';
+
+export interface EventForFetch {
+    forData: {[key: string]: HTMLInputElement}
 }
+
+export type ForData = {[key: string]: HTMLInputElement}
 

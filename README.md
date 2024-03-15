@@ -65,13 +65,28 @@ onerror="console.error(href)"></fetch-for>
 
 fetch-for will set aria-busy to true while fetch is in progress, and also set aria-live=polite if no aria-live value is found.
 
-## Specifying dependencies - simple example
-
-
-
 ## Specifying dependencies
 
-Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can also specify the event(s) to listen for:
+Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can also specify the event(s) to listen for.
+
+## Simple example of formulating the url
+
+```html
+<input name=op value=integrate>
+<input name=expr value=x^2>
+<fetch-for
+    for="@op @expr"
+    oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
+    href=https://newton.now.sh/api/v2/integrate/x^2 
+    target=json-viewer[-object]
+    onerror=console.error(href)
+>
+</fetch-for>
+...
+<json-viewer -object></json-viewer>
+```
+
+## Showcasing all the bells and whistles
 
 ```html
 <other-stuff>
@@ -128,7 +143,7 @@ To specify the closest element to search within, use the ^ character:
                 href=https://newton.now.sh/api/v2/integrate/x^2 
                 target=json-viewer[-object]
                 onerror=console.error(href)
-                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname^section %myPart^section ~myFormAssociatedCustomElement^section"
+                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! ^section|surname ^section%myPart ^section~myFormAssociatedCustomElement"
                 oninput=...
                 onchange
             >
@@ -138,31 +153,7 @@ To specify the closest element to search within, use the ^ character:
 </form>
 ```
 
-## Formulating the url [TODO]
 
-```html
-<fetch-for 
-    href=https://newton.now.sh/api/v2/integrate/x^2 
-    target=json-viewer[-object]
-    onerror=console.error(href)
-    for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %myPart ~myFormAssociatedCustomElement"
-    oninput="
-        const {forData} = event;
-        const {
-            isVegetarian, 
-            myHostElementEventTargeSubObject, 
-            greeting, 
-            surname, 
-            myPart, 
-            myFormAssociatedCustomElement
-        } = forData;
-        href = `https://example.com/${surname}/...`;
-
-    "
-    onchange
->
-</fetch-for>
-```
 
 ## Filtering the data [TODO]
 
