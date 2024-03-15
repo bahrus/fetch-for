@@ -85,22 +85,18 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <json-viewer -object></json-viewer>
 ```
 
-## Specify dynamic href in onchange event
+## Specify dynamic href for onchange events
 
-We can additionally, or alternatively, formulate the href in the onchange event.  But there's one catch -- for compatibility with other custom enhancements, this web component dispatches the "change" event when new data has arrived.  We need to distinguish that change event from the change event that this component channels through from the dependent *input* or other form associated element events.
+We can additionally, or alternatively, formulate the href anytime there is a 'change' event for any of the dependent elements spelled out in the for attribute.  But there's one catch -- for compatibility with other custom enhancements, this web component dispatches the "change" event when new data has arrived.  We need to distinguish that change event from the change event that this component channels through from the dependent *input* or other form associated element events.
 
-To distinguish between the we use the onselect event:
+To distinguish between them we use the onselect event in order to listen for change events of the dependent elements:
 
 ```html
 <input name=op value=integrate>
 <input name=expr value=x^2>
 <fetch-for
     for="@op @expr"
-    onchange="
-        const {forData} = event;
-        if(!forData) return;
-        event.href=`https://newton.now.sh/api/v2/${forData.op.value}/${forData.expr.value}`
-    "
+    onselect="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
     target=json-viewer[-object]
     onerror=console.error(href)
 >
