@@ -147,8 +147,8 @@ export class FetchFor extends HTMLElement {
         }
         let eventForFetch;
         switch (eventType) {
-            case 'change':
-                eventForFetch = new ChangeEvent(forData);
+            case 'select':
+                eventForFetch = new SelectionChangeEvent(forData);
                 break;
             case 'input':
                 eventForFetch = new InputEvent(forData);
@@ -177,17 +177,17 @@ export class FetchFor extends HTMLElement {
         await self.listenForX(self, 'input');
         return {};
     }
-    async listenForChange(self) {
-        await self.listenForX(self, 'input');
+    async listenForSelectionChange(self) {
+        await self.listenForX(self, 'select');
         return {};
     }
     async doInitialLoad(self) {
-        const { oninput, onchange } = self;
+        const { oninput, onselect } = self;
         if (oninput) {
             self.passForData(self, 'input');
         }
-        else if (onchange) {
-            self.passForData(self, 'change');
+        else if (onselect) {
+            self.passForData(self, 'select');
         }
         return {};
     }
@@ -268,17 +268,17 @@ const xe = new XE({
             },
             parseFor: {
                 ifAllOf: ['isAttrParsed', 'for'],
-                ifAtLeastOneOf: ['oninput', 'onchange']
+                ifAtLeastOneOf: ['oninput', 'onselect']
             },
             listenForInput: {
                 ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
             },
-            listenForChange: {
-                ifAllOf: ['isAttrParsed', 'forRefs', 'onchange']
+            listenForSelectionChange: {
+                ifAllOf: ['isAttrParsed', 'forRefs', 'onselect']
             },
             doInitialLoad: {
                 ifAllOf: ['isAttrParsed', 'forRefs'],
-                ifAtLeastOneOf: ['oninput', 'onchange', 'onload'],
+                ifAtLeastOneOf: ['oninput', 'onselect'],
             }
         }
     },
@@ -300,11 +300,11 @@ export class InputEvent extends Event {
         this.forData = forData;
     }
 }
-export class ChangeEvent extends Event {
+export class SelectionChangeEvent extends Event {
     forData;
-    static EventName = 'change';
+    static EventName = 'select';
     constructor(forData) {
-        super(ChangeEvent.EventName);
+        super(SelectionChangeEvent.EventName);
         this.forData = forData;
     }
 }

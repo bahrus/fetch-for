@@ -54,14 +54,14 @@ export interface Actions{
     do(self: this): Promise<void>;
     parseFor(self: this): ProPP;
     listenForInput(self: this): ProPP;
-    listenForChange(self: this): ProPP;
+    listenForSelectionChange(self: this): ProPP;
     doInitialLoad(self: this): ProPP;
 }
 
 // https://github.com/webcomponents-cg/community-protocols/issues/12#issuecomment-872415080
 export type loadEventName = 'load';
 export type inputEventName = 'input';
-export type changeEventName = 'change';
+export type selectionChangeEventName = 'select';
 
 export interface EventForFetch {
     href?: string;

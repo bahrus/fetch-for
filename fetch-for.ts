@@ -1,6 +1,6 @@
 import {
     Actions, Methods, AllProps, loadEventName, ProPP, 
-    ForData, EventForFetch, inputEventName, changeEventName
+    ForData, EventForFetch, inputEventName, selectionChangeEventName
 } from './types';
 import {XE, ActionOnEventConfigs} from 'xtal-element/XE.js';
 
@@ -144,7 +144,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
     }
 
-    async passForData(self: this, eventType: 'input' | 'change'){
+    async passForData(self: this, eventType: 'input' | 'select'){
         const forData = this.#forData(self);
         for(const key in forData){
             const otherInputEl= forData[key];
@@ -152,8 +152,8 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
         let eventForFetch: Event & EventForFetch | undefined;
         switch(eventType){
-            case 'change':
-                eventForFetch = new ChangeEvent(forData);
+            case 'select':
+                eventForFetch = new SelectionChangeEvent(forData);
                 break;
             case 'input':
                 eventForFetch = new InputEvent(forData);
@@ -165,7 +165,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
     }
 
-    async listenForX(self: this, eventType: 'input' | 'change'){
+    async listenForX(self: this, eventType: 'input' | 'select'){
         const {forRefs} = self;
         for(const [key, value] of forRefs!.entries()){
             const inputEl = value.deref() as HTMLInputElement;
@@ -186,19 +186,19 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
     }
 
-    async listenForChange(self: this): ProPP {
-        await self.listenForX(self, 'input');
+    async listenForSelectionChange(self: this): ProPP {
+        await self.listenForX(self, 'select');
         return {
             
         }
     }
 
     async doInitialLoad(self: this): ProPP {
-        const {oninput, onchange} = self;
+        const {oninput, onselect} = self;
         if(oninput){
             self.passForData(self, 'input')
-        }else if(onchange){
-            self.passForData(self, 'change');
+        }else if(onselect){
+            self.passForData(self, 'select');
         }
         return {
 
@@ -285,17 +285,17 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             },
             parseFor: {
                 ifAllOf: ['isAttrParsed', 'for'],
-                ifAtLeastOneOf: ['oninput', 'onchange']
+                ifAtLeastOneOf: ['oninput', 'onselect']
             },
             listenForInput:{
                 ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
             },
-            listenForChange:{
-                ifAllOf: ['isAttrParsed', 'forRefs', 'onchange']
+            listenForSelectionChange:{
+                ifAllOf: ['isAttrParsed', 'forRefs', 'onselect']
             },
             doInitialLoad:{
                 ifAllOf: ['isAttrParsed', 'forRefs'],
-                ifAtLeastOneOf: ['oninput', 'onchange', 'onload'],
+                ifAtLeastOneOf: ['oninput', 'onselect'],
             }
         }
     },
@@ -320,11 +320,11 @@ export class InputEvent extends Event implements EventForFetch{
     }
 }
 
-export class ChangeEvent extends Event implements EventForFetch{
+export class SelectionChangeEvent extends Event implements EventForFetch{
 
-    static EventName: changeEventName = 'change';
+    static EventName: selectionChangeEventName = 'select';
 
     constructor(public forData: ForData){
-        super(ChangeEvent.EventName);
+        super(SelectionChangeEvent.EventName);
     }
 }

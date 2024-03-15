@@ -67,7 +67,7 @@ fetch-for will set aria-busy to true while fetch is in progress, and also set ar
 
 ## Specifying dependencies
 
-Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can also specify the event(s) to listen for.
+Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can formulate the href to use for the fetch request, to be triggered by the input event of these listened for elements:
 
 ## Specify dynamic href in oninput event
 
@@ -87,12 +87,12 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 
 ## Specify dynamic href in onchange event
 
-We can additionally, or alternatively, formulate the href in the onchange event.  But there's one catch -- for compatibility with other custom enhancements, this web component dispatches the "change" event when new data has arrived.  We need to distinguish that change event from the change event that this component channels through from the dependent input events.
+We can additionally, or alternatively, formulate the href in the onchange event.  But there's one catch -- for compatibility with other custom enhancements, this web component dispatches the "change" event when new data has arrived.  We need to distinguish that change event from the change event that this component channels through from the dependent *input* or other form associated element events.
 
-To distinguish between the use the following approach:
+To distinguish between the we use the onselect event:
 
 ```html
- <input name=op value=integrate>
+<input name=op value=integrate>
 <input name=expr value=x^2>
 <fetch-for
     for="@op @expr"
