@@ -87,25 +87,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 
 By default, oninput will be called on the input event of the element being observed.  But this can be overrident by specifying the name of event after two colons (::).
 
-## Specify dynamic href for onchange events
 
-We can additionally, or alternatively, formulate the href anytime there is a 'change' event for any of the dependent elements spelled out in the for attribute.  But there's one catch -- for compatibility with other custom enhancements, this web component dispatches the "change" event when new data has arrived.  We need to distinguish that change event from the change event that this component channels through from the dependent *input* or other form associated element events.
-
-To distinguish between them we use the onselect event in order to listen for change events of the dependent elements:
-
-```html
-<input name=op value=integrate>
-<input name=expr value=x^2>
-<fetch-for
-    for="@op @expr"
-    onselect="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
-    target=json-viewer[-object]
-    onerror=console.error(href)
->
-</fetch-for>
-...
-<json-viewer -object></json-viewer>
-```
 
 ## Showcasing all the bells and whistles
 
@@ -119,6 +101,7 @@ To distinguish between them we use the onselect event in order to listen for cha
 <form itemscope>
     <section>
         <input id=isVegetarian type=checkbox switch>
+        <sl-input></sl-input>
         <input name=greeting>
         <span itemprop=surname contenteditable></span>
         <div part=myPart contenteditable></div>
@@ -128,9 +111,8 @@ To distinguish between them we use the onselect event in order to listen for cha
                 href=https://newton.now.sh/api/v2/integrate/x^2 
                 target=json-viewer[-object]
                 onerror=console.error(href)
-                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %myPart ~myFormAssociatedCustomElement"
+                for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %myPart ~myFormAssociatedCustomElement ~sl-input::sl-input"
                 oninput=...
-                onchange
             >
             </fetch-for>
         </div>
@@ -138,9 +120,6 @@ To distinguish between them we use the onselect event in order to listen for cha
 </form>
 ```
 
-Be default, event "input" is used, and the value of the element is obtained by using "value" if value is in the element definition.  Only one other event is supported:  "change" - to specify that, add an exclamation at the end, as is done for @greeting.
-
-Be default, @ is used within the closest "form" element, | within the closest itemscope.  All the others are searched within the root node by default.  This is problematic for surname, myPart, myFormAssociatedCustomElement due to the presence of elements with the same attribute values / names.
 
 To specify the closest element to search within, use the ^ character:
 
@@ -166,7 +145,7 @@ To specify the closest element to search within, use the ^ character:
                 onerror=console.error(href)
                 for="#isVegetarian /myHostElementEventTargetSubObject @greeting! ^section|surname ^section%myPart ^section~myFormAssociatedCustomElement"
                 oninput=...
-                onchange
+                
             >
             </fetch-for>
         </div>
@@ -177,6 +156,12 @@ To specify the closest element to search within, use the ^ character:
 
 
 ## Filtering the data [TODO]
+
+Use the onchange event handler
+
+## Specify location of cache
+
+Can specify to cache the data in indexeddb
 
 ## Alternatives
 
