@@ -186,7 +186,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
     }
 
-    async listenForSelectionChange(self: this): ProPP {
+    async listenForSelect(self: this): ProPP {
         await self.listenForX(self, 'select');
         return {
             
@@ -290,7 +290,7 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             listenForInput:{
                 ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
             },
-            listenForSelectionChange:{
+            listenForSelect:{
                 ifAllOf: ['isAttrParsed', 'forRefs', 'onselect']
             },
             doInitialLoad:{

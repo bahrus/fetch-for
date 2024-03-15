@@ -54,7 +54,7 @@ export interface Actions{
     do(self: this): Promise<void>;
     parseFor(self: this): ProPP;
     listenForInput(self: this): ProPP;
-    listenForSelectionChange(self: this): ProPP;
+    listenForSelect(self: this): ProPP;
     doInitialLoad(self: this): ProPP;
 }
 
