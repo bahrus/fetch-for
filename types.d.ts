@@ -18,7 +18,7 @@ export interface EndUserProps{
 
     credentials?: RequestCredentials,
 
-    targetSelector?: string,
+    target?: string,
 
     shadow?: ShadowRootMode,
 
@@ -34,7 +34,7 @@ export interface OverridableGetters{
 }
 
 export interface AllProps extends EndUserProps, OverridableGetters{
-    target?: Element | null,
+    resolvedTarget?: Element | null,
     forRefs?: Map<string, WeakRef<HTMLInputElement>>,
 }
 

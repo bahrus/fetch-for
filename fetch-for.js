@@ -32,17 +32,17 @@ export class FetchFor extends HTMLElement {
                 console.error('on* required');
                 return;
             }
-            const { target, noCache } = self;
-            if (target && target.ariaLive === null)
-                target.ariaLive = 'polite';
+            const { resolvedTarget, noCache } = self;
+            if (resolvedTarget && resolvedTarget.ariaLive === null)
+                resolvedTarget.ariaLive = 'polite';
             let data;
             if (!noCache) {
                 data = cache.get(this.localName)?.get(href);
             }
             const as = this.as;
             if (data === undefined) {
-                if (target) {
-                    target.ariaBusy = 'true';
+                if (resolvedTarget) {
+                    resolvedTarget.ariaBusy = 'true';
                 }
                 if (this.#abortController !== undefined) {
                     this.#abortController.abort();
@@ -72,8 +72,8 @@ export class FetchFor extends HTMLElement {
                     cache.set(this.localName, new Map());
                 }
                 //TODO increment ariaBusy / decrement in case other components are affecting
-                if (target)
-                    target.ariaBusy = 'false';
+                if (resolvedTarget)
+                    resolvedTarget.ariaBusy = 'false';
             }
             switch (as) {
                 case 'text':
@@ -81,13 +81,13 @@ export class FetchFor extends HTMLElement {
                     this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
-                    await this.setTargetProp(target, data);
+                    await this.setTargetProp(resolvedTarget, data);
                     break;
                 case 'html':
                     const { shadow } = this;
                     if (this.target) {
                         this.hidden = true;
-                        await this.setTargetProp(target, data, shadow);
+                        await this.setTargetProp(resolvedTarget, data, shadow);
                     }
                     else {
                         const target = this.target || this;
@@ -208,27 +208,27 @@ export class FetchFor extends HTMLElement {
     validateOn() {
         return this.onerror !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
     }
-    async setTargetProp(target, data, shadow) {
-        if (!target)
+    async setTargetProp(resolvedTarget, data, shadow) {
+        if (!resolvedTarget)
             return;
-        const { targetSelector } = this;
-        if (targetSelector === undefined)
+        const { target } = this;
+        if (target === undefined)
             return;
-        const lastPos = targetSelector.lastIndexOf('[');
+        const lastPos = target.lastIndexOf('[');
         if (lastPos === -1)
             throw 'NI'; //Not implemented
-        const rawPath = targetSelector.substring(lastPos + 2, targetSelector.length - 1);
+        const rawPath = target.substring(lastPos + 2, target.length - 1);
         const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
         const propPath = lispToCamel(rawPath);
         if (shadow !== undefined && propPath === 'innerHTML') {
-            let root = target.shadowRoot;
+            let root = resolvedTarget.shadowRoot;
             if (root === null) {
-                root = target.attachShadow({ mode: shadow });
+                root = resolvedTarget.attachShadow({ mode: shadow });
             }
             root.innerHTML = data;
         }
         else {
-            target[propPath] = data;
+            resolvedTarget[propPath] = data;
         }
     }
 }
@@ -250,6 +250,9 @@ const xe = new XE({
                 type: 'String',
             },
             for: {
+                type: 'String',
+            },
+            target: {
                 type: 'String',
             }
         },

@@ -39,16 +39,16 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                 console.error('on* required');
                 return;
             }
-            const {target, noCache} = self;
-            if(target && target.ariaLive === null) target.ariaLive = 'polite';
+            const {resolvedTarget, noCache} = self;
+            if(resolvedTarget && resolvedTarget.ariaLive === null) resolvedTarget.ariaLive = 'polite';
             let data: any;
             if(!noCache) {
                 data = cache.get(this.localName)?.get(href!);
             } 
             const as = this.as;
             if(data === undefined){
-                if(target){
-                    target.ariaBusy = 'true';
+                if(resolvedTarget){
+                    resolvedTarget.ariaBusy = 'true';
                 }
                 if(this.#abortController !== undefined){
                     this.#abortController.abort();
@@ -77,7 +77,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                     cache.set(this.localName, new Map());
                 }
                 //TODO increment ariaBusy / decrement in case other components are affecting
-                if(target) target.ariaBusy = 'false';
+                if(resolvedTarget) resolvedTarget.ariaBusy = 'false';
             }
             
             switch(as){
@@ -86,13 +86,13 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                     this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
-                    await this.setTargetProp(target, data);
+                    await this.setTargetProp(resolvedTarget, data);
                     break;
                 case 'html':
                     const {shadow} = this;
                     if(this.target){
                         this.hidden = true;
-                        await this.setTargetProp(target, data, shadow);
+                        await this.setTargetProp(resolvedTarget, data, shadow);
                     }else{
                         const target = this.target || this;
                         let root : Element | ShadowRoot = this;
@@ -223,23 +223,23 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         return this.onerror !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
     }
 
-    async setTargetProp(target: Element | null | undefined, data: any, shadow?: ShadowRootMode){
-        if(!target) return;
-        const {targetSelector} = this;
-        if(targetSelector === undefined) return;
-        const lastPos = targetSelector.lastIndexOf('[');
+    async setTargetProp(resolvedTarget: Element | null | undefined, data: any, shadow?: ShadowRootMode){
+        if(!resolvedTarget) return;
+        const {target} = this;
+        if(target === undefined) return;
+        const lastPos = target.lastIndexOf('[');
         if(lastPos === -1) throw 'NI'; //Not implemented
-        const rawPath =  targetSelector.substring(lastPos + 2, targetSelector.length - 1);
+        const rawPath =  target.substring(lastPos + 2, target.length - 1);
         const {lispToCamel} = await import('trans-render/lib/lispToCamel.js');
         const propPath = lispToCamel(rawPath);
         if(shadow !== undefined && propPath === 'innerHTML'){
-            let root = target.shadowRoot;
+            let root = resolvedTarget.shadowRoot;
             if(root === null) {
-                root = target.attachShadow({mode: shadow});
+                root = resolvedTarget.attachShadow({mode: shadow});
             }
             root.innerHTML = data;
         }else{
-            (<any>target)[propPath] = data;
+            (<any>resolvedTarget)[propPath] = data;
         }
         
     }
@@ -248,7 +248,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
 
 export interface FetchFor extends AllProps{}
 
-const cache: Map<string, Map<URL, any>> = new Map();
+const cache: Map<string, Map<string, any>> = new Map();
 
 const xe = new XE<AllProps & HTMLElement, Actions>({
     config:{
@@ -267,6 +267,9 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
                 type: 'String',
             },
             for: {
+                type: 'String',
+            },
+            target: {
                 type: 'String',
             }
         },
