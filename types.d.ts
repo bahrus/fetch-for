@@ -6,7 +6,7 @@ export interface EndUserProps{
     /**
      * Url to invoke
      */
-    href?: URL,
+    href?: string,
 
     for?: string, 
 
@@ -64,6 +64,7 @@ export type inputEventName = 'input';
 export type changeEventName = 'change';
 
 export interface EventForFetch {
+    href?: string;
     forData: {[key: string]: HTMLInputElement}
 }
 

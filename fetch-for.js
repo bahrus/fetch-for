@@ -154,8 +154,10 @@ export class FetchFor extends HTMLElement {
                 eventForFetch = new InputEvent(forData);
                 break;
         }
-        const inputEvent = new InputEvent(forData);
-        self.dispatchEvent(inputEvent);
+        self.dispatchEvent(eventForFetch);
+        if (eventForFetch.href) {
+            self.href = eventForFetch.href;
+        }
     }
     async listenForX(self, eventType) {
         const { forRefs } = self;

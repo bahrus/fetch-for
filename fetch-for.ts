@@ -150,7 +150,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
             const otherInputEl= forData[key];
             if(otherInputEl.checkValidity && !otherInputEl.checkValidity()) return;
         }
-        let eventForFetch: EventForFetch | undefined;
+        let eventForFetch: Event & EventForFetch | undefined;
         switch(eventType){
             case 'change':
                 eventForFetch = new ChangeEvent(forData);
@@ -159,8 +159,10 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                 eventForFetch = new InputEvent(forData);
                 break;
         }
-        const inputEvent = new InputEvent(forData);
-        self.dispatchEvent(inputEvent);
+        self.dispatchEvent(eventForFetch);
+        if(eventForFetch.href){
+            self.href = eventForFetch.href;
+        }
     }
 
     async listenForX(self: this, eventType: 'input' | 'change'){
