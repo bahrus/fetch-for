@@ -85,6 +85,8 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <json-viewer -object></json-viewer>
 ```
 
+By default, oninput will be called on the input event of the element being observed.  But this can be overrident by specifying the name of event after two colons (::).
+
 ## Specify dynamic href for onchange events
 
 We can additionally, or alternatively, formulate the href anytime there is a 'change' event for any of the dependent elements spelled out in the for attribute.  But there's one catch -- for compatibility with other custom enhancements, this web component dispatches the "change" event when new data has arrived.  We need to distinguish that change event from the change event that this component channels through from the dependent *input* or other form associated element events.
