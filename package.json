@@ -5,7 +5,7 @@
   "main": "fetch-for.js",
   "dependencies": {
     "xtal-element": "0.0.598",
-    "trans-render": "0.0.743"
+    "trans-render": "0.0.744"
   },
   "devDependencies": {
     "may-it-serve": "0.0.6",

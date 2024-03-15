@@ -231,6 +231,12 @@ export class FetchFor extends HTMLElement {
             resolvedTarget[propPath] = data;
         }
     }
+    get resolvedTarget() {
+        const { target } = this;
+        if (!target)
+            return null;
+        return this.getRootNode().querySelector(target);
+    }
 }
 const cache = new Map();
 const xe = new XE({

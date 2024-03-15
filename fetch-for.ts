@@ -243,6 +243,12 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
         
     }
+
+    get resolvedTarget(): Element | null{
+        const {target} = this;
+        if(!target) return null;
+        return (this.getRootNode() as DocumentFragment).querySelector(target);
+    }
 }
 
 
