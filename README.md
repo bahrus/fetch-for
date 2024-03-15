@@ -69,7 +69,7 @@ fetch-for will set aria-busy to true while fetch is in progress, and also set ar
 
 Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can also specify the event(s) to listen for.
 
-## Simple example of formulating the url
+## Specify dynamic href in oninput event
 
 ```html
 <input name=op value=integrate>
@@ -77,7 +77,30 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <fetch-for
     for="@op @expr"
     oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
-    href=https://newton.now.sh/api/v2/integrate/x^2 
+    target=json-viewer[-object]
+    onerror=console.error(href)
+>
+</fetch-for>
+...
+<json-viewer -object></json-viewer>
+```
+
+## Specify dynamic href in onchange event
+
+We can additionally, or alternatively, formulate the href in the onchange event.  But there's one catch -- for compatibility with other custom enhancements, this web component dispatches the "change" event when new data has arrived.  We need to distinguish that change event from the change event that this component channels through from the dependent input events.
+
+To distinguish between the use the following approach:
+
+```html
+ <input name=op value=integrate>
+<input name=expr value=x^2>
+<fetch-for
+    for="@op @expr"
+    onchange="
+        const {forData} = event;
+        if(!forData) return;
+        event.href=`https://newton.now.sh/api/v2/${forData.op.value}/${forData.expr.value}`
+    "
     target=json-viewer[-object]
     onerror=console.error(href)
 >
