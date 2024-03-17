@@ -190,6 +190,14 @@ To specify the closest element to search within, use the ^ character:
 </my-tabs>
 ```
 
+## Specify location of cache [TODO]
+
+We can specify to cache the results of the fetch in indexeddb instead of in the more expensive RAM:
+
+```html
+<fetch-for cache-to=indexedDB store-name=myStore></fetch-for>
+```
+
 
 ## Filtering the data [TODO]
 
@@ -210,15 +218,25 @@ Then the service worker could add a special header in the response indicating wh
 
 This web component already does support headers, but perhaps some better visibility could be added for this functionality.
 
-Use the onchange event handler
+## Filtering with the onload event [TODO]
 
-## Specify location of cache [TODO]
-
-We can specify to cache the results of the fetch in indexeddb:
+However, for the less ambitious, the way we can do filtering or other manipulation of the results in the main thread is via the onload event:
 
 ```html
-<fetch-for cache-to=indexedDB store-name=myStore></fetch-for>
+<input name=op value=integrate>
+<input name=expr value=x^2>
+<fetch-for
+    for="@op @expr"
+    oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
+    target=json-viewer[-object]
+    onerror=console.error(href)
+>
+</fetch-for>
+...
+<json-viewer -object></json-viewer>
 ```
+
+
 
 ## Alternatives
 
