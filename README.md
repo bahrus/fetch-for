@@ -157,6 +157,12 @@ To specify the closest element to search within, use the ^ character:
 
 ## Filtering the data [TODO]
 
+##
+
+Ideally, to utilize the platform most effectively, and serve the user better, this component would integrate with a service worker, which could do the fetch, and parse the results, and cache the parsed results in indexedDB, and then when we filter for a (small) part of the full response, the filtering would be done in the service worker.
+
+I think for this to work declaratively, we need a special way to pass instructions to the service worker during the fetch.
+
 Use the onchange event handler
 
 ## Specify location of cache
