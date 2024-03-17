@@ -222,7 +222,7 @@ Then the service worker could add a special header in the response indicating wh
 
 This web component already does support headers, but perhaps some better visibility could be added for this functionality.
 
-## Filtering with the onload event [Untested]
+## Filtering with the onload event
 
 However, for the less ambitious, the way we can do filtering or other manipulation of the results in the main thread is via the onload event:
 
@@ -232,7 +232,10 @@ However, for the less ambitious, the way we can do filtering or other manipulati
 <fetch-for
     for="@op @expr"
     oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
-    onload="event.
+    onload="
+        console.log(event);
+        event.data.iah = true;
+    "
     target=json-viewer[-object]
     onerror=console.error(href)
 >
@@ -241,6 +244,15 @@ However, for the less ambitious, the way we can do filtering or other manipulati
 <json-viewer -object></json-viewer>
 ```
 
+## Connecting to indexed db in the filter code [TODO]
+
+*fetch-for* provides easy access to indexed db in the onload event, via the popular [idb-keyval](https://www.npmjs.com/package/idb-keyval) package.  This would help significantly with achieving the goals set out earlier of integrating fetch-for with a smart service worker.
+
+To opt-in (which imposes a small cost due to needing to load the library first):
+
+```html
+<fetch-for use-idb></fetch-for>
+```
 
 
 ## Alternatives
