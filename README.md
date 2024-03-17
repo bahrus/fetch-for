@@ -153,7 +153,7 @@ To specify the closest element to search within, use the ^ character:
 </form>
 ```
 
-## Progressively enhancing the hyperlink => routing
+## Progressively enhancing the hyperlink => routing [TODO]
 
 ```html
 <div>I don't care if <a itemprop=monday href="https://example.org/Monday">Monday</a>'s blue</div>
@@ -171,10 +171,13 @@ To specify the closest element to search within, use the ^ character:
     for="|monday::click |tuesday::click |wednesday::click |thursday::click |friday::click"
     prevent-default
     once
+    stream
     as=html
     oninput="
-        event.target = `${event.trigger.getAttribute('itemprop')}-tab`;
+        const dayOfWeek = event.trigger.getAttribute('itemprop');
+        event.target = `${dayOfWeek}-tab`;
         event.href = event.trigger.href;
+        querySelector('my-tabs').selectedTab = event.target;
     "
 ></fetch-for>
 
