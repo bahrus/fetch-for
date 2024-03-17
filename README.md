@@ -190,6 +190,8 @@ To specify the closest element to search within, use the ^ character:
 </my-tabs>
 ```
 
+This will create a separate fetch-for tag (or whatever the superclass localName is) with the actual href.  This instance won't actually do the fetching.
+
 ## Specify location of cache [TODO]
 
 We can specify to cache the results of the fetch in indexeddb instead of in the more expensive RAM:
