@@ -173,7 +173,8 @@ To specify the closest element to search within, use the ^ character:
     once
     as=html
     oninput="
-        event.target = `event.trigger.getAttribute('itemprop')
+        event.target = `${event.trigger.getAttribute('itemprop')}-tab`;
+        event.href = event.trigger.href;
     "
 ></fetch-for>
 
