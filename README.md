@@ -63,7 +63,7 @@ onerror="console.error(href)"></fetch-for>
 <json-viewer -object></json-viewer>
 ```
 
-fetch-for will set aria-busy to true while fetch is in progress, and also set aria-live=polite if no aria-live value is found.
+fetch-for will sets value is found.
 
 ## Specifying dependencies
 
@@ -85,7 +85,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <json-viewer -object></json-viewer>
 ```
 
-By default, oninput will be called on the input event of the element being observed.  But this can be overrident by specifying the name of event after two colons (::).
+By default, oninput will be called on the *input* event of the element being observed.  But this can be overridden by specifying the name of the event after two colons (::).
 
 
 

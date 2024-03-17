@@ -10,28 +10,24 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
 
     async parseFor(self: this){
         const {for: f, } = self;
-        const split = f!.split(' ');
+        const split = f!.split(' ').filter(x => !!x); // remove white spces
         const {findRealm} = await import('trans-render/lib/findRealm.js');
+        const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
         const forRefs: Map<string, [WeakRef<HTMLInputElement>, EventName]> = new Map();
         for(const token of split){
-            const headChar = token[0];
-            let tailStr = token.substring(1);
-            let eventName: EventName = 'input';
-            const splitTail = tailStr.split('::');
-            if(splitTail.length > 1){
-                eventName = splitTail[1];
-                tailStr = splitTail[0];
-            }
+            const parsed = prsElO(token);
             let inputEl: EventTarget | null | undefined;
-            switch(headChar){
+            const {elType, prop, event} = parsed;
+            if(prop === undefined) throw 'NI';
+            switch(elType){
                 case '@':
-                    inputEl = await findRealm(self, ['wf', tailStr]);
+                    inputEl = await findRealm(self, ['wf', prop]);
                     break;
                 default:
                     throw 'NI';
             }
             if(!(inputEl instanceof HTMLElement)) throw 404;
-            forRefs.set(tailStr, [new WeakRef(inputEl as HTMLInputElement), eventName]);
+            forRefs.set(prop, [new WeakRef(inputEl as HTMLInputElement), event || 'input']);
         }
         return {
             forRefs
