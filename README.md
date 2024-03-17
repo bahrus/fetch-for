@@ -67,7 +67,7 @@ fetch-for will sets value is found.
 
 ## Specifying dependencies
 
-Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can formulate the href to use for the fetch request, to be triggered by the input event of these listened for elements:
+Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can formulate the href to use for the fetch request:
 
 ## Specify dynamic href in oninput event
 
@@ -85,11 +85,11 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <json-viewer -object></json-viewer>
 ```
 
-By default, oninput will be called on the *input* event of the element being observed.  But this can be overridden by specifying the name of the event after two colons (::).
+By default, oninput will be called on the *input* event of the element being observed.  But this can be overridden by specifying the name of the event after two colons (::) as shown above.
 
 
 
-## Showcasing all the bells and whistles
+## Showcasing all the bells and whistles [TODO]
 
 ```html
 <other-stuff>
