@@ -153,6 +153,38 @@ To specify the closest element to search within, use the ^ character:
 </form>
 ```
 
+## Progressively enhancing the hyperlink => routing
+
+```html
+<div>I don't care if <a itemprop=monday href="https://example.org/Monday">Monday</a>'s blue</div>
+<div>
+    <a itemprop=tuesday href=https://example.org/Tuesday>Tuesday</a>'s gray and 
+    <a itemprop=wednesday href=https://example.org/Wednsday>Wednesday</a> too.
+    
+</div>
+<div><a itemprop=thursday href=https://example.org/Thursday>Thursday</a> I don't care about you</div>
+<div>It's <a itemprop=friday href=https://example.org/Friday>Friday</a> I'm in love</div>
+
+...
+
+<fetch-for
+    for="|monday::click |tuesday::click |wednesday::click |thursday::click |friday::click"
+    prevent-default
+    once
+    as=html
+    oninput="
+        event.target = `event.trigger.getAttribute('itemprop')
+    "
+></fetch-for>
+
+<my-tabs>
+    <monday-tab></monday-tab>
+    <tuesday-tab></tuesday-tab>
+    <wednesday-tab></wednesday-tab>
+    <thursday-tab></thursday-tab>
+    <friday-tab></friday-tab>
+</my-tabs>
+```
 
 
 ## Filtering the data [TODO]
