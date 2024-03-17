@@ -261,7 +261,7 @@ To opt-in (which imposes a small cost due to needing to load the library first):
 ```
 
 > [!NOTE]
-> This package uses the built-in support for oninput and onload.  It allows the browser to parse the JSON, and simply dispatches events "load" and "input" to integrate with the custom code.  One current limitation is that the code inside doesn't assume it is asynchronous.  It is possible to wrap the code in an async IIFE block to achieve this, which could be worth while for particularly complex manipulations.
+> This package uses the built-in support for oninput and onload.  It allows the browser to parse the JS, and simply dispatches events "load" and "input" to integrate with the custom code.  One current limitation is that the code inside doesn't assume it is asynchronous.  It is possible to wrap the code in an async IIFE block to achieve this, which could be worth while for particularly complex manipulations.
 
 ## Alternatives
 
