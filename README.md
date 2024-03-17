@@ -214,13 +214,15 @@ Ideally, to [utilize the platform most effectively](https://dassur.ma/things/rea
 
 Since, to my knowledge, there isn't a standard for doing this, or even a widely used library that follows this pattern, we are opting not to make this web component tightly coupled to such a service worker.  Instead, the focus is on making sure this component provides all the support that is needed to make such a solution work with a minimum of fuss.
 
-The way I could see that working is if this web component added an http header in the request, which the service worker watches for, and acts accordingly we it encounters the header, removing the header before it passes through to the final end point.
+Being that this class is specifically intended to be extended, we could certainly envision such a sub-classing web component adopting some sort of convention to do exactly what is described above, in partnership with an associated service worker.
+
+The way I could see that working is if this web component added an http header in the request, which the service worker watches for, and acts accordingly when it encounters the header, removing the header before it passes through to the final end point.
 
 Then the service worker could add a special header in the response indicating where to find the results in indexedDB.
 
 This web component already does support headers, but perhaps some better visibility could be added for this functionality.
 
-## Filtering with the onload event [TODO]
+## Filtering with the onload event [Untested]
 
 However, for the less ambitious, the way we can do filtering or other manipulation of the results in the main thread is via the onload event:
 
@@ -230,6 +232,7 @@ However, for the less ambitious, the way we can do filtering or other manipulati
 <fetch-for
     for="@op @expr"
     oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
+    onload="event.
     target=json-viewer[-object]
     onerror=console.error(href)
 >
