@@ -193,17 +193,32 @@ To specify the closest element to search within, use the ^ character:
 
 ## Filtering the data [TODO]
 
-##
+Ideally, to [utilize the platform most effectively](https://dassur.ma/things/react-redux-comlink/), and serve the user better, this component would integrate with a service worker, which could:
 
-Ideally, to utilize the platform most effectively, and serve the user better, this component would integrate with a service worker, which could do the fetch, and parse the results, and cache the parsed results in indexedDB, and then when we filter for a (small) part of the full response, the filtering would be done in the service worker.
+1.  Do the fetch, 
+2.  Parse the results, 
+3.  Cache the parsed full results in indexedDB, 
+4.  Filter the full results in the service worker.
+5.  Store the filtered results, also in indexedDB, in another location.
+6.  Return a key identifier to indexDB, rather than the object.
 
-I think for this to work declaratively, we need a special way to pass instructions to the service worker during the fetch.
+Since, to my knowledge, there isn't a standard for doing this, or even a widely used library that follows this pattern, we are opting not to make this web component tightly coupled to such a service worker.  Instead, the focus is on making sure this component provides all the support that is needed to make such a solution work with a minimum of fuss.
+
+The way I could see that working is if this web component added an http header in the request, which the service worker watches for, and acts accordingly we it encounters the header, removing the header before it passes through to the final end point.
+
+Then the service worker could add a special header in the response indicating where to find the results in indexedDB.
+
+This web component already does support headers, but perhaps some better visibility could be added for this functionality.
 
 Use the onchange event handler
 
-## Specify location of cache
+## Specify location of cache [TODO]
 
-Can specify to cache the data in indexeddb
+We can specify to cache the results of the fetch in indexeddb:
+
+```html
+<fetch-for cache-to=indexedDB store-name=myStore></fetch-for>
+```
 
 ## Alternatives
 
