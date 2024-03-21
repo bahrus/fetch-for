@@ -87,7 +87,14 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 
 By default, oninput will be called on the *input* event of the element being observed.  But this can be overridden by specifying the name of the event after two colons (::) as shown above.
 
+## Block fetch without user interaction [TODO]
 
+```html
+<button name=submit>Submit</button>
+<fetch-for when=submit::click>
+```
+
+The click event is assumed if not specified.
 
 ## Showcasing all the bells and whistles [TODO]
 
