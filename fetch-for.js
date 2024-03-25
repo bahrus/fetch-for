@@ -35,14 +35,13 @@ export class FetchFor extends HTMLElement {
                 console.error('on* required');
                 return;
             }
-            const { resolvedTarget, noCache } = self;
+            const { resolvedTarget, noCache, as, stream } = self;
             if (resolvedTarget && resolvedTarget.ariaLive === null)
                 resolvedTarget.ariaLive = 'polite';
             let data;
             if (!noCache) {
                 data = cache.get(this.localName)?.get(href);
             }
-            const as = this.as;
             if (data === undefined) {
                 if (resolvedTarget) {
                     resolvedTarget.ariaBusy = 'true';
@@ -53,6 +52,13 @@ export class FetchFor extends HTMLElement {
                 }
                 this.#abortController = new AbortController();
                 this.init.signal = this.#abortController?.signal;
+                if (as === 'html' && stream) {
+                    const { streamOrator } = await import('stream-orator/StreamOrator.js');
+                    const { target } = self;
+                    const targetEl = this.getRootNode().querySelector(target);
+                    streamOrator(href, this.init, targetEl);
+                    return;
+                }
                 const resp = await fetch(href, this.init);
                 if (!this.validateResp(resp)) {
                     throw [resp.statusText, resp.status];
@@ -240,6 +246,7 @@ const xe = new XE({
             method: 'GET',
             as: 'json',
             noCache: false,
+            stream: false,
         },
         propInfo: {
             href: {

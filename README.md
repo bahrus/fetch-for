@@ -10,7 +10,7 @@
 
 fetch-for is a small-ish, bare-bones simple fetch web component.  
 
-Like *k-fetch*, *fetch-for* can act as a base web component for "web components as a service".  [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
+Like [*k-fetch*](https://github.com/bahrus/k-fetch), *fetch-for* can act as a base web component for "web components as a service".  [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
 ## Example 1 -- Simple html include
 
@@ -33,9 +33,9 @@ When the fetch is complete, event "load" is fired, which can allow for manipulat
 
 If as=html, the response is inserted into the innerHTML of the fetch-for element, unless attribute shadow is present, in which case it will first attach a shadowRoot, then insert the innerHTML.
 
-fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP methods, based on the localName of the custom element as the base key of the cache, and of course on the exact string of the href property. To disable this feature, specify attribute/property: noCache/no-cache
+fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP methods, based on the localName of the custom element as the base key of the cache, and of course on the exact string of the href property. To disable this feature, specify attribute/property: no-cache/noCache
 
-## Example 2 - Stream HTML to a target [TODO]
+## Example 2 - Stream HTML to a target
 
 ```html
 <fetch-for 

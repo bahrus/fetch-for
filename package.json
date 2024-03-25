@@ -4,8 +4,9 @@
   "description": "Base class for web components as a service",
   "main": "fetch-for.js",
   "dependencies": {
-    "xtal-element": "0.0.598",
-    "trans-render": "0.0.746",
+    "stream-orator": "0.0.22",
+    "xtal-element": "0.0.600",
+    "trans-render": "0.0.749",
     "idb-keyval": "6.2.1"
   },
   "devDependencies": {

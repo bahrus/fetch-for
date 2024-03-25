@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Onion include</title>
+    <script type=importmap>
+        {
+            "imports": {
+                "mount-observer/": "/node_modules/mount-observer/",
+                "stream-orator/": "/node_modules/stream-orator/",
+                "trans-render/": "/node_modules/trans-render/",
+                "xtal-element/": "/node_modules/xtal-element/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <fetch-for
+        stream
+        href=https://html.spec.whatwg.org/ 
+        as=html shadow=open
+        target=#target
+        onerror="console.error(event.message, href)">
+    </fetch-for>
+    <div id=target></div>
+    <script type=module src=/fetch-for.js></script>
+</body>
+</html>

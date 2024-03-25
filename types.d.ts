@@ -26,6 +26,8 @@ export interface EndUserProps{
 
     noCache?: boolean,
 
+    stream?: boolean,
+
 }
 
 export interface OverridableGetters{
