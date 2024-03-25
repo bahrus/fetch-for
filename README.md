@@ -38,15 +38,14 @@ fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP meth
 ## Example 2 - Stream HTML to a target
 
 ```html
-<fetch-for 
-stream
-href=https://cors-anywhere.herokuapp.com/https://www.theonion.com/ 
-as=html
-target=#target
-shadow=open 
-onerror="console.error(href)"></fetch-for>
-
-<div id=target></div>
+    <fetch-for
+        stream
+        href=https://html.spec.whatwg.org/ 
+        as=html shadow=open
+        target=#target
+        onerror="console.error(event.message, href)">
+    </fetch-for>
+    <div id=target></div>
     
 ```
 
