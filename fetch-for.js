@@ -3,7 +3,7 @@ export class FetchFor extends HTMLElement {
     #abortController;
     async parseFor(self) {
         const { for: f, } = self;
-        const split = f.split(' ').filter(x => !!x); // remove white spces
+        const split = f.split(' ').filter(x => !!x); // remove white spaces
         const { findRealm } = await import('trans-render/lib/findRealm.js');
         const { prsElO } = await import('trans-render/lib/prs/prsElO.js');
         const forRefs = new Map();

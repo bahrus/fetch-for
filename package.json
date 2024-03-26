@@ -6,7 +6,7 @@
   "dependencies": {
     "stream-orator": "0.0.22",
     "xtal-element": "0.0.600",
-    "trans-render": "0.0.751",
+    "trans-render": "0.0.752",
     "idb-keyval": "6.2.1"
   },
   "devDependencies": {
