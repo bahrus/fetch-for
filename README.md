@@ -38,14 +38,14 @@ fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP meth
 ## Example 2 - Stream HTML to a target
 
 ```html
-    <fetch-for
-        stream
-        href=https://html.spec.whatwg.org/ 
-        as=html shadow=open
-        target=#target
-        onerror="console.error(event.message, href)">
-    </fetch-for>
-    <div id=target></div>
+<fetch-for
+    stream
+    href=https://html.spec.whatwg.org/ 
+    as=html shadow=open
+    target=#target
+    onerror="console.error(event.message, href)">
+</fetch-for>
+<div id=target></div>
     
 ```
 
@@ -62,7 +62,11 @@ fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP meth
 <json-viewer -object></json-viewer>
 ```
 
-fetch-for will sets value is found.
+fetch-for passes the results of the fetch to camel cased property obtained from the attribute marker, i.e. it will set:
+
+```JavaScript
+oJsonViewer.object = ...
+```
 
 ## Specifying dependencies
 
@@ -89,8 +93,8 @@ By default, oninput will be called on the *input* event of the element being obs
 ## Block fetch without user interaction [TODO]
 
 ```html
-<button name=submit>Submit</button>
-<fetch-for when=submit::click>
+<button type=button name=submit>Submit</button>
+<fetch-for when=@submit::click></fetch-for>
 ```
 
 The click event is assumed if not specified.

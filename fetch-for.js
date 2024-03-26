@@ -9,18 +9,11 @@ export class FetchFor extends HTMLElement {
         const forRefs = new Map();
         for (const token of split) {
             const parsed = prsElO(token);
-            let inputEl;
-            const { elType, prop, event } = parsed;
-            if (prop === undefined)
+            const { elType, prop, event, scope } = parsed;
+            if (scope === undefined || prop === undefined)
                 throw 'NI';
-            switch (elType) {
-                case '@':
-                    inputEl = await findRealm(self, ['wf', prop]);
-                    break;
-                default:
-                    throw 'NI';
-            }
-            if (!(inputEl instanceof HTMLElement))
+            const inputEl = await findRealm(self, scope);
+            if (!(inputEl instanceof EventTarget))
                 throw 404;
             forRefs.set(prop, [new WeakRef(inputEl), event || 'input']);
         }
