@@ -40,6 +40,8 @@ export interface OverridableGetters{
     isAttrParsed?: boolean,
     targetSelf?: boolean
     targetElO?: ElO,
+    whenCount?: number,
+    nextWhenCount?: number,
 }
 
 export type EventName = string;
@@ -68,6 +70,7 @@ export interface Actions{
     listenForInput(self: this): ProPP;
     //listenForSelect(self: this): ProPP;
     doInitialLoad(self: this): ProPP;
+    initializeWhen(self: this): Promise<void>;
 }
 
 // https://github.com/webcomponents-cg/community-protocols/issues/12#issuecomment-872415080

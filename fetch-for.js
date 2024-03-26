@@ -21,6 +21,30 @@ export class FetchFor extends HTMLElement {
             forRefs
         };
     }
+    #whenController;
+    async initializeWhen(self) {
+        const { when, nextWhenCount } = self;
+        if (!when) {
+            return {
+                whenCount: nextWhenCount
+            };
+        }
+        if (this.#whenController !== undefined)
+            this.#whenController.abort();
+        this.#whenController = new AbortController();
+        const { prsElO } = await import('trans-render/lib/prs/prsElO.js');
+        const elo = prsElO(when);
+        const { event, scope } = elo;
+        if (event === undefined || scope === undefined)
+            throw 'NI';
+        const { findRealm } = await import('trans-render/lib/findRealm.js');
+        const srcEl = await findRealm(self, scope);
+        if (!srcEl)
+            throw 404;
+        srcEl.addEventListener(event, e => {
+            self.whenCount++;
+        }, { signal: this.#whenController.signal });
+    }
     async parseTarget(self) {
         const { target } = self;
         if (!target) {
@@ -38,6 +62,7 @@ export class FetchFor extends HTMLElement {
     }
     async do(self) {
         try {
+            self.nextWhenCount = self.whenCount + 1;
             const { href } = self;
             if (!self.validateOn()) {
                 console.error('on* required');
@@ -156,6 +181,8 @@ export class FetchFor extends HTMLElement {
         for (const ac of this.#abortControllers) {
             ac.abort();
         }
+        if (this.#whenController !== undefined)
+            this.#whenController.abort();
     }
     async passForData(self, trigger) {
         const forData = this.#forData(self);
@@ -258,6 +285,9 @@ const xe = new XE({
             noCache: false,
             stream: false,
             targetSelf: false,
+            whenCount: 0,
+            nextWhenCount: 1,
+            when: '',
         },
         propInfo: {
             href: {
@@ -275,14 +305,16 @@ const xe = new XE({
             target: {
                 type: 'String'
             },
-            when: {
-                type: 'String'
-            }
         },
         actions: {
+            initializeWhen: {
+                ifAllOf: ['isAttrParsed'],
+                ifKeyIn: ['when']
+            },
             do: {
                 ifAllOf: ['isAttrParsed', 'href'],
-                ifAtLeastOneOf: ['targetElO', 'targetSelf']
+                ifAtLeastOneOf: ['targetElO', 'targetSelf'],
+                ifEquals: ['whenCount', 'nextWhenCount']
             },
             parseTarget: {
                 ifAllOf: ['isAttrParsed'],

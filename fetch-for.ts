@@ -27,6 +27,28 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         };
     }
 
+    #whenController: AbortController | undefined;
+    async initializeWhen(self: this){
+        const {when, nextWhenCount} = self;
+        if(!when){
+            return {
+                whenCount: nextWhenCount
+            } as PP
+        }
+        if(this.#whenController !== undefined) this.#whenController.abort();
+        this.#whenController = new AbortController();
+        const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
+        const elo = prsElO(when);
+        const {event, scope} = elo;
+        if(event === undefined || scope === undefined) throw 'NI';
+        const {findRealm} = await import('trans-render/lib/findRealm.js');
+        const srcEl = await findRealm(self, scope);
+        if(!srcEl) throw 404;
+        srcEl.addEventListener(event, e => {
+            self.whenCount!++;
+        }, {signal: this.#whenController.signal});
+    }
+
     async parseTarget(self: this){
         const {target} = self;
         if(!target){
@@ -45,6 +67,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
 
     async do(self: this){
         try{
+            self.nextWhenCount = self.whenCount! + 1;
             const {href} = self;
             if(!self.validateOn()) {
                 console.error('on* required');
@@ -161,6 +184,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         for(const ac of this.#abortControllers){
             ac.abort();
         }
+        if(this.#whenController !== undefined) this.#whenController.abort();
     }
 
     async passForData(self: this, trigger: Element){
@@ -272,6 +296,9 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             noCache: false,
             stream: false,
             targetSelf: false,
+            whenCount: 0,
+            nextWhenCount: 1,
+            when: '',
         },
         propInfo: {
             href:{
@@ -289,14 +316,18 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             target:{
                 type: 'String'
             },
-            when:{
-                type: 'String'
-            }
+            
+
         },
         actions:{
+            initializeWhen: {
+                ifAllOf: ['isAttrParsed'],
+                ifKeyIn: ['when']
+            },
             do: {
                 ifAllOf: ['isAttrParsed', 'href'],
-                ifAtLeastOneOf: ['targetElO', 'targetSelf']
+                ifAtLeastOneOf: ['targetElO', 'targetSelf'],
+                ifEquals: ['whenCount', 'nextWhenCount']
             },
             parseTarget: {
                 ifAllOf: ['isAttrParsed'],
