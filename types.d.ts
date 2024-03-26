@@ -70,7 +70,7 @@ export interface Actions{
     listenForInput(self: this): ProPP;
     //listenForSelect(self: this): ProPP;
     doInitialLoad(self: this): ProPP;
-    initializeWhen(self: this): Promise<void>;
+    initializeWhen(self: this): Promise<PP | undefined>;
 }
 
 // https://github.com/webcomponents-cg/community-protocols/issues/12#issuecomment-872415080

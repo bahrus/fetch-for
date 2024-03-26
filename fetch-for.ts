@@ -40,12 +40,12 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
         const elo = prsElO(when);
         const {event, scope} = elo;
-        if(event === undefined || scope === undefined) throw 'NI';
+        if(scope === undefined) throw 'NI';
         const {findRealm} = await import('trans-render/lib/findRealm.js');
         const srcEl = await findRealm(self, scope);
         if(!srcEl) throw 404;
-        srcEl.addEventListener(event, e => {
-            self.whenCount!++;
+        srcEl.addEventListener(event || 'click', e => {
+            self.whenCount = self.nextWhenCount;
         }, {signal: this.#whenController.signal});
     }
 

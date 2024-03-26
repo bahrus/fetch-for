@@ -35,14 +35,14 @@ export class FetchFor extends HTMLElement {
         const { prsElO } = await import('trans-render/lib/prs/prsElO.js');
         const elo = prsElO(when);
         const { event, scope } = elo;
-        if (event === undefined || scope === undefined)
+        if (scope === undefined)
             throw 'NI';
         const { findRealm } = await import('trans-render/lib/findRealm.js');
         const srcEl = await findRealm(self, scope);
         if (!srcEl)
             throw 404;
-        srcEl.addEventListener(event, e => {
-            self.whenCount++;
+        srcEl.addEventListener(event || 'click', e => {
+            self.whenCount = self.nextWhenCount;
         }, { signal: this.#whenController.signal });
     }
     async parseTarget(self) {
