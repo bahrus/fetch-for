@@ -288,6 +288,9 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             },
             target:{
                 type: 'String'
+            },
+            when:{
+                type: 'String'
             }
         },
         actions:{

@@ -274,6 +274,9 @@ const xe = new XE({
             },
             target: {
                 type: 'String'
+            },
+            when: {
+                type: 'String'
             }
         },
         actions: {

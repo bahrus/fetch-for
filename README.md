@@ -70,11 +70,11 @@ oJsonViewer.object = ...
 
 What this example illustrates is that the target attribute is *not* using simple css selectors to find the target.  Rather it is using a custom syntax that is optimized for creating linkages between elements of peer elements, and/or between elements and its custom element host container.
 
-It uses a custom "irregular expresso" (name pending) syntax for describing, as concisely as possible optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.
+It uses a custom "irregular expresso" (name pending) syntax for describing, as concisely as possible and optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.
 
 ## Specifying dependencies
 
-Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  We can formulate the href to use for the fetch request:
+Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  This also uses "irregular expresso" syntax. We can formulate the href to use for the fetch request:
 
 ## Specify dynamic href in oninput event
 

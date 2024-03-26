@@ -29,6 +29,8 @@ export interface EndUserProps{
 
     stream?: boolean,
 
+    when?: string,
+
 }
 
 export interface OverridableGetters{
