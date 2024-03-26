@@ -21,14 +21,30 @@ export class FetchFor extends HTMLElement {
             forRefs
         };
     }
+    async parseTarget(self) {
+        const { target } = self;
+        if (!target) {
+            return {
+                targetElO: undefined,
+                targetSelf: true,
+            };
+        }
+        const { prsElO } = await import('trans-render/lib/prs/prsElO.js');
+        const targetElO = prsElO(target);
+        return {
+            targetSelf: false,
+            targetElO
+        };
+    }
     async do(self) {
         try {
             const { href } = self;
-            if (!this.validateOn()) {
+            if (!self.validateOn()) {
                 console.error('on* required');
                 return;
             }
-            const { resolvedTarget, noCache, as, stream } = self;
+            const { noCache, as, stream } = self;
+            const resolvedTarget = await self.resolveTarget(self);
             if (resolvedTarget && resolvedTarget.ariaLive === null)
                 resolvedTarget.ariaLive = 'polite';
             let data;
@@ -83,13 +99,13 @@ export class FetchFor extends HTMLElement {
                     this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
-                    await this.setTargetProp(resolvedTarget, data);
+                    await this.setTargetProp(self, resolvedTarget, data);
                     break;
                 case 'html':
                     const { shadow } = this;
                     if (this.target) {
                         this.hidden = true;
-                        await this.setTargetProp(resolvedTarget, data, shadow);
+                        await this.setTargetProp(self, resolvedTarget, data, shadow);
                     }
                     else {
                         const target = this.target || this;
@@ -200,19 +216,17 @@ export class FetchFor extends HTMLElement {
     validateOn() {
         return this.onerror !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
     }
-    async setTargetProp(resolvedTarget, data, shadow) {
+    async setTargetProp(self, resolvedTarget, data, shadow) {
         if (!resolvedTarget)
             return;
-        const { target } = this;
-        if (target === undefined)
+        const { targetElO } = self;
+        if (targetElO === undefined)
             return;
-        const lastPos = target.lastIndexOf('[');
-        if (lastPos === -1)
-            throw 'NI'; //Not implemented
-        const rawPath = target.substring(lastPos + 2, target.length - 1);
-        const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
-        const propPath = lispToCamel(rawPath);
-        if (shadow !== undefined && propPath === 'innerHTML') {
+        const { prop } = targetElO;
+        if (prop === undefined)
+            throw 'NI';
+        console.log({ targetElO });
+        if (shadow !== undefined && prop === 'innerHTML') {
             let root = resolvedTarget.shadowRoot;
             if (root === null) {
                 root = resolvedTarget.attachShadow({ mode: shadow });
@@ -220,14 +234,17 @@ export class FetchFor extends HTMLElement {
             root.innerHTML = data;
         }
         else {
-            resolvedTarget[propPath] = data;
+            resolvedTarget[prop] = data;
         }
     }
-    get resolvedTarget() {
-        const { target } = this;
-        if (!target)
+    async resolveTarget(self) {
+        const { targetSelf, targetElO } = this;
+        if (targetSelf)
             return null;
-        return this.getRootNode().querySelector(target);
+        if (targetElO?.scope === undefined)
+            throw 'NI';
+        const { findRealm } = await import('trans-render/lib/findRealm.js');
+        return await findRealm(self, targetElO.scope);
     }
 }
 const cache = new Map();
@@ -240,6 +257,7 @@ const xe = new XE({
             as: 'json',
             noCache: false,
             stream: false,
+            targetSelf: false,
         },
         propInfo: {
             href: {
@@ -251,13 +269,21 @@ const xe = new XE({
             for: {
                 type: 'String',
             },
+            targetElO: {
+                type: 'Object'
+            },
             target: {
-                type: 'String',
+                type: 'String'
             }
         },
         actions: {
             do: {
-                ifAllOf: ['isAttrParsed', 'href']
+                ifAllOf: ['isAttrParsed', 'href'],
+                ifAtLeastOneOf: ['targetElO', 'targetSelf']
+            },
+            parseTarget: {
+                ifAllOf: ['isAttrParsed'],
+                ifKeyIn: ['target']
             },
             parseFor: {
                 ifAllOf: ['isAttrParsed', 'for'],

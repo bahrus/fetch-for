@@ -1,4 +1,5 @@
 import {ActionOnEventConfigs} from 'trans-render/froop/types';
+import { ElO } from '../trans-render/lib/prs/types';
 /**
  * fetch-for props
  */
@@ -35,6 +36,8 @@ export interface OverridableGetters{
     accept?: string,
     value?: any,
     isAttrParsed?: boolean,
+    targetSelf?: boolean
+    targetElO?: ElO,
 }
 
 export type EventName = string;
@@ -59,6 +62,7 @@ export interface Methods{
 export interface Actions{
     do(self: this): Promise<void>;
     parseFor(self: this): ProPP;
+    parseTarget(self: this): ProPP;
     listenForInput(self: this): ProPP;
     //listenForSelect(self: this): ProPP;
     doInitialLoad(self: this): ProPP;

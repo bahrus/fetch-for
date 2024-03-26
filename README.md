@@ -29,7 +29,7 @@ Required attributes/properties are href and at least one of these attributes/pro
 
 At the risk of getting ahead of ourselves, I want to summarize what this is doing.  Plenty of examples that follow will illustrate  what I mean:  
 
-When the fetch is complete, event "load" is fired, which can allow for manipulation of the data.  The (modified) data is then stored in the "value" field of the fetch-for (or subclassed) instance. Also, event "change" is fired (which is not picked up by the onchange attribute). 
+When the fetch is complete, event "load" is fired (exception -- if stream is enabled, that is not the case), which can allow for manipulation of the data.  The (modified) data is then stored in the "value" field of the fetch-for (or subclassed) instance. 
 
 If as=html, the response is inserted into the innerHTML of the fetch-for element, unless attribute shadow is present, in which case it will first attach a shadowRoot, then insert the innerHTML.
 
@@ -54,7 +54,7 @@ fetch-for automatically caches, in memory, "get's", not POSTS or other HTTP meth
 ```html
 <fetch-for 
     href=https://newton.now.sh/api/v2/integrate/x^2 
-    target=json-viewer[-object]
+    target=-object
     onerror=console.error(href)
 >
 </fetch-for>
@@ -67,6 +67,10 @@ fetch-for passes the results of the fetch to camel cased property obtained from 
 ```JavaScript
 oJsonViewer.object = ...
 ```
+
+What this example illustrates is that the target attribute is *not* using simple css selectors to find the target.  Rather it is using a custom syntax that is optimized for creating linkages between elements of peer elements, and/or between elements and its custom element host container.
+
+It uses a custom "irregular expresso" (name pending) syntax for describing, as concisely as possible optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.
 
 ## Specifying dependencies
 
