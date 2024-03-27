@@ -194,6 +194,8 @@ To specify the closest element to search within, use the ^ character:
 
 ## Progressively routing the hyperlink [TODO]
 
+This may be an invalid use case, better handled with the Navigation api, this might just get in the way of that.
+
 ```html
 <div>I don't care if <a itemprop=monday href="https://example.org/Monday">Monday</a>'s blue</div>
 <div>
