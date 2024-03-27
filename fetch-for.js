@@ -241,7 +241,7 @@ export class FetchFor extends HTMLElement {
         return true;
     }
     validateOn() {
-        return this.onerror !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
+        return this.onerror !== null || this.onload !== null || this.oninput !== null;
     }
     async setTargetProp(self, resolvedTarget, data, shadow) {
         if (!resolvedTarget)

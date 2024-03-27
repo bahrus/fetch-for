@@ -250,7 +250,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         return true;
     }
     validateOn(){
-        return this.onerror !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
+        return this.onerror !== null || this.onload !== null || this.oninput !== null;
     }
 
     async setTargetProp(self: this, resolvedTarget: Element | null | undefined, data: any, shadow?: ShadowRootMode){
