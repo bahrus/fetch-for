@@ -215,7 +215,8 @@ This will create a separate fetch-for tag (or whatever the superclass localName 
 <fetch-for
     for=@bellsAndWhistles
     oninput="
-        event.href = `${event.formData.isVegetarian}
+        event.href = `../${event.formData.isVegetarian}`
+        
     "
 ></fetch-for>
 ```

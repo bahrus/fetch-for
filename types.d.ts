@@ -1,5 +1,6 @@
 import {ActionOnEventConfigs} from 'trans-render/froop/types';
 import { ElO } from '../trans-render/lib/prs/types';
+import { JSONObject } from '../trans-render/lib/types';
 /**
  * fetch-for props
  */
@@ -82,6 +83,8 @@ export interface EventForFetch {
     href?: string;
     trigger?: Element,
     forData: ForData,
+    formData: FormData,
+    body?: string | JSONObject
 }
 
 export type ForData = {[key: string]: HTMLInputElement}
