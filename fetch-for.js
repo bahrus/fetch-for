@@ -60,6 +60,43 @@ export class FetchFor extends HTMLElement {
             targetElO
         };
     }
+    async onForm(self) {
+        const { form } = self;
+        const { prsElO } = await import('trans-render/lib/prs/prsElO.js');
+        return {
+            formElO: prsElO(form)
+        };
+    }
+    async onFormElO(self) {
+        const { findRealm } = await import('trans-render/lib/findRealm.js');
+        const { formElO } = self;
+        const form = await findRealm(self, formElO.scope);
+        if (!(form instanceof HTMLFormElement))
+            throw 404;
+        return {
+            formData: new FormData(form),
+            formRef: new WeakRef(form)
+        };
+    }
+    #formAbortController;
+    async onFormRef(self) {
+        const { formData, formElO, formRef } = self;
+        const form = formRef?.deref();
+        if (!(form instanceof HTMLFormElement))
+            throw 404;
+        if (this.#formAbortController !== undefined) {
+            this.#formAbortController.abort();
+        }
+        this.#formAbortController = new AbortController();
+        form.addEventListener(formElO?.event || 'input', e => {
+            if (!form.checkValidity())
+                return;
+            this.passForData(self, e.target);
+        });
+        if (form.checkValidity()) {
+            this.doInitialLoad(self);
+        }
+    }
     async do(self) {
         try {
             self.nextWhenCount = self.whenCount + 1;
@@ -217,11 +254,8 @@ export class FetchFor extends HTMLElement {
         return {};
     }
     async doInitialLoad(self) {
-        const { oninput, onselect } = self;
+        const { oninput } = self;
         if (oninput) {
-            self.passForData(self, self);
-        }
-        else if (onselect) {
             self.passForData(self, self);
         }
         return {};
@@ -299,6 +333,9 @@ const xe = new XE({
             for: {
                 type: 'String',
             },
+            form: {
+                type: 'String'
+            },
             targetElO: {
                 type: 'Object'
             },
@@ -330,6 +367,15 @@ const xe = new XE({
             doInitialLoad: {
                 ifAllOf: ['isAttrParsed', 'forRefs'],
                 ifAtLeastOneOf: ['oninput', 'onselect'],
+            },
+            onForm: {
+                ifAllOf: ['isAttrParsed', 'form'],
+            },
+            onFormElO: {
+                ifAllOf: ['isAttrParsed', 'formElO']
+            },
+            onFormRef: {
+                ifAllOf: ['isAttrParsed', 'formRef']
             }
         }
     },

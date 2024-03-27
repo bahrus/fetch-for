@@ -103,6 +103,31 @@ By default, oninput will be called on the *input* event of the element being obs
 
 The click event is assumed if not specified.
 
+## Progressively routing the form element
+
+```html
+<form name=newtonService>
+    <input name=op value=integrate>
+    <input name=expr value=x^2>
+    <noscript>
+        <button name=submit>Submit</button>
+    </noscript>
+    
+</form>
+
+<fetch-for
+    form="@newtonService"
+    oninput="event.href=`https://newton.now.sh/api/v2/${formData.get('op')}/${formData.get('expr')}`"
+    target=-object
+    onerror=console.error(href)
+>
+</fetch-for>
+...
+<json-viewer -object></json-viewer>
+```
+
+Only submits when the form is valid
+
 ## Showcasing all the bells and whistles [TODO]
 
 ```html
@@ -206,20 +231,7 @@ To specify the closest element to search within, use the ^ character:
 
 This will create a separate fetch-for tag (or whatever the superclass localName is) with the actual href.  This instance won't actually do the fetching.
 
-## Progressively routing the form element [TODO]
 
-```html
-<form name=bellsAndWhistles>
-</form>
-
-<fetch-for
-    for=@bellsAndWhistles
-    oninput="
-        event.href = `../${event.formData.isVegetarian}`
-        
-    "
-></fetch-for>
-```
 
 ## Specify location of cache [TODO]
 

@@ -32,6 +32,8 @@ export interface EndUserProps{
 
     when?: string,
 
+    form?: string,
+
 }
 
 export interface OverridableGetters{
@@ -50,6 +52,9 @@ export type EventName = string;
 export interface AllProps extends EndUserProps, OverridableGetters{
     resolvedTarget?: Element | null,
     forRefs?: Map<string, [WeakRef<HTMLInputElement>, EventName]>,
+    formData?: FormData,
+    formRef?: WeakRef<HTMLFormElement>,
+    formElO?: ElO,
 }
 
 export type PP = Partial<AllProps>;
@@ -72,6 +77,9 @@ export interface Actions{
     //listenForSelect(self: this): ProPP;
     doInitialLoad(self: this): ProPP;
     initializeWhen(self: this): Promise<PP | undefined>;
+    onForm(self: this): ProPP;
+    onFormElO(self: this): ProPP;
+    onFormRef(self: this): Promise<void>,
 }
 
 // https://github.com/webcomponents-cg/community-protocols/issues/12#issuecomment-872415080
