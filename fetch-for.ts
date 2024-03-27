@@ -221,6 +221,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
             ac.abort();
         }
         if(this.#whenController !== undefined) this.#whenController.abort();
+        if(this.#formAbortController !== undefined) this.#formAbortController.abort();
     }
 
     async passForData(self: this, trigger: Element){

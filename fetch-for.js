@@ -220,6 +220,8 @@ export class FetchFor extends HTMLElement {
         }
         if (this.#whenController !== undefined)
             this.#whenController.abort();
+        if (this.#formAbortController !== undefined)
+            this.#formAbortController.abort();
     }
     async passForData(self, trigger) {
         const forData = this.#forData(self);
