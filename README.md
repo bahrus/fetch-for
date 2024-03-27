@@ -70,7 +70,7 @@ oJsonViewer.object = ...
 
 What this example illustrates is that the target attribute is *not* using simple css selectors to find the target.  Rather it is using a custom syntax that is optimized for creating linkages between elements of peer elements, and/or between elements and its custom element host container.
 
-It uses a custom "irregular expresso" (name pending) syntax for describing, as concisely as possible and optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.
+It uses a custom syntax for describing, as concisely as possible and optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.  This syntax is referred to as "directed scoping specifiers" (DSS).
 
 ## Specifying dependencies
 
