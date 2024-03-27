@@ -155,7 +155,7 @@ To specify the closest element to search within, use the ^ character:
         <div itemscope>
             <fetch-for 
                 href=https://newton.now.sh/api/v2/integrate/x^2 
-                target=json-viewer[-object]
+                target=-object
                 onerror=console.error(href)
                 for="#isVegetarian /myHostElementEventTargetSubObject @greeting! ^section|surname ^section%myPart ^section~myFormAssociatedCustomElement"
                 oninput=...
@@ -167,7 +167,7 @@ To specify the closest element to search within, use the ^ character:
 </form>
 ```
 
-## Progressively enhancing the hyperlink => routing [TODO]
+## Progressively routing the hyperlink [TODO]
 
 ```html
 <div>I don't care if <a itemprop=monday href="https://example.org/Monday">Monday</a>'s blue</div>
@@ -205,6 +205,20 @@ To specify the closest element to search within, use the ^ character:
 ```
 
 This will create a separate fetch-for tag (or whatever the superclass localName is) with the actual href.  This instance won't actually do the fetching.
+
+## Progressively routing the form element [TODO]
+
+```html
+<form name=bellsAndWhistles>
+</form>
+
+<fetch-for
+    for=@bellsAndWhistles
+    oninput="
+        event.href = `${event.formData.isVegetarian}
+    "
+></fetch-for>
+```
 
 ## Specify location of cache [TODO]
 
