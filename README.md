@@ -74,7 +74,7 @@ It uses a custom "irregular expresso" (name pending) syntax for describing, as c
 
 ## Specifying dependencies
 
-Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  This also uses "irregular expresso" syntax. We can formulate the href to use for the fetch request:
+Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  This also uses "directed scoped specifier" syntax (or DSS). We can formulate the href to use for the fetch request:
 
 ## Specify dynamic href in oninput event
 
@@ -84,7 +84,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <fetch-for
     for="@op::change @expr"
     oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
-    target=json-viewer[-object]
+    target=-object
     onerror=console.error(href)
 >
 </fetch-for>
