@@ -1,5 +1,5 @@
 import {
-    Actions, Methods, AllProps, loadEventName, ProPP, PP
+    Actions, Methods, AllProps, loadEventName, ProPP, PP,
     ForData, EventForFetch, inputEventName, EventName
 } from './types';
 import {XE, ActionOnEventConfigs} from 'xtal-element/XE.js';
@@ -366,3 +366,5 @@ export class InputEvent extends Event implements EventForFetch{
         super(InputEvent.EventName);
     }
 }
+
+export interface InputEvent extends EventForFetch{}
