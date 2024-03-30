@@ -56,7 +56,7 @@ export interface AllProps extends EndUserProps, OverridableGetters{
     forRefs?: Map<string, [WeakRef<HTMLInputElement>, EventName]>,
     formData?: FormData,
     formRef?: WeakRef<HTMLFormElement>,
-    formElO?: ElO,
+    formSpecifier?: Specifier,
 }
 
 export type PP = Partial<AllProps>;
@@ -80,7 +80,7 @@ export interface Actions{
     doInitialLoad(self: this): ProPP;
     initializeWhen(self: this): Promise<PP | undefined>;
     onForm(self: this): ProPP;
-    onFormElO(self: this): ProPP;
+    onFormSpecifier(self: this): ProPP;
     onFormRef(self: this): Promise<void>,
 }
 

@@ -70,16 +70,16 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
 
     async onForm(self: this): ProPP {
         const {form} = self;
-        const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
+        const {parse} = await import('trans-render/dss/parse.js');
         return {
-            formElO: prsElO(form!)
-        }
+            formSpecifier: await parse(form!)
+        } as PP
     }
 
-    async onFormElO(self: this): ProPP {
-        const {findRealm} = await import('trans-render/lib/findRealm.js');
-        const {formElO} = self;
-        const form = await findRealm(self, formElO!.scope!);
+    async onFormSpecifier(self: this): ProPP {
+        const {find} = await import('trans-render/dss/find.js');
+        const {formSpecifier} = self;
+        const form = await find(self, formSpecifier!);
         if(!(form instanceof HTMLFormElement)) throw 404;
         return {
             formData: new FormData(form),
@@ -88,14 +88,14 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
     }
     #formAbortController : AbortController | undefined;
     async onFormRef(self: this){
-        const {formData, formElO, formRef} = self;
+        const {formData, formSpecifier, formRef} = self;
         const form = formRef?.deref();
         if(!(form instanceof HTMLFormElement)) throw 404;
         if(this.#formAbortController !== undefined){
             this.#formAbortController.abort();
         }
         this.#formAbortController = new AbortController();
-        form.addEventListener(formElO?.event || 'input', e => {
+        form.addEventListener(formSpecifier?.evt || 'input', e => {
             if(!form.checkValidity()) return;
             this.passForData(self, e.target as HTMLFormElement);
         })
@@ -237,7 +237,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         self.dispatchEvent(eventForFetch);
         if(eventForFetch.href){
             self.href = eventForFetch.href;
-            if(self.when === undefined){
+            if(!self.when){
                 self.whenCount = self.nextWhenCount;
             }
             
@@ -392,8 +392,8 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             onForm: {
                 ifAllOf: ['isAttrParsed', 'form'],
             },
-            onFormElO: {
-                ifAllOf: ['isAttrParsed', 'formElO']
+            onFormSpecifier: {
+                ifAllOf: ['isAttrParsed', 'formSpecifier']
             },
             onFormRef: {
                 ifAllOf: ['isAttrParsed', 'formRef']
