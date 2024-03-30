@@ -232,6 +232,11 @@ export class FetchFor extends HTMLElement {
                 return;
         }
         const eventForFetch = new InputEvent(forData, trigger);
+        const form = self.formRef?.deref();
+        if (form !== undefined) {
+            self.formData = new FormData(form);
+        }
+        console.log(this.formData?.get('op'));
         self.dispatchEvent(eventForFetch);
         if (eventForFetch.href) {
             self.href = eventForFetch.href;
