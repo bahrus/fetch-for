@@ -25,7 +25,7 @@
     <fetch-for
         for="@op @expr"
         oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
-        target=json-viewer[-object]
+        target=-object
         onerror=console.error(href)
     >
     </fetch-for>
