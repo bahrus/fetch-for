@@ -238,7 +238,6 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         if(form !== undefined){
             self.formData = new FormData(form);
         }
-        console.log(this.formData?.get('op'));
         self.dispatchEvent(eventForFetch);
         if(eventForFetch.href){
             self.href = eventForFetch.href;
@@ -306,7 +305,6 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         if(targetSpecifier === undefined) return;
         const {prop} = targetSpecifier;
         if(prop === undefined) throw 'NI';
-        console.log({targetSpecifier});
         if(shadow !== undefined && prop === 'innerHTML'){
             let root = resolvedTarget.shadowRoot;
             if(root === null) {
