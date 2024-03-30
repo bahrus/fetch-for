@@ -237,6 +237,7 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         self.dispatchEvent(eventForFetch);
         if(eventForFetch.href){
             self.href = eventForFetch.href;
+            self.whenCount = self.nextWhenCount;
         }
     }
 

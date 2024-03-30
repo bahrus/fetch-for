@@ -235,6 +235,7 @@ export class FetchFor extends HTMLElement {
         self.dispatchEvent(eventForFetch);
         if (eventForFetch.href) {
             self.href = eventForFetch.href;
+            self.whenCount = self.nextWhenCount;
         }
     }
     async listenForX(self) {
