@@ -11,16 +11,18 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
     async parseFor(self: this){
         const {for: f, } = self;
         const split = f!.split(' ').filter(x => !!x); // remove white spaces
-        const {findRealm} = await import('trans-render/lib/findRealm.js');
-        const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
+        //const {findRealm} = await import('trans-render/lib/findRealm.js');
+        //const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
+        const {parse} = await import('trans-render/dss/parse.js');
+        const {find} = await import('trans-render/dss/find.js');
         const forRefs: Map<string, [WeakRef<HTMLInputElement>, EventName]> = new Map();
         for(const token of split){
-            const parsed = prsElO(token);
-            const {elType, prop, event, scope} = parsed;
-            if(scope === undefined || prop === undefined) throw 'NI';
-            const inputEl = await findRealm(self, scope);
+            const parsed = await parse(token);
+            const {evt, prop} = parsed;
+            //if(scope === undefined || prop === undefined) throw 'NI';
+            const inputEl = await find(self, parsed);
             if(!(inputEl instanceof EventTarget)) throw 404;
-            forRefs.set(prop, [new WeakRef(inputEl as HTMLInputElement), event || 'input']);
+            forRefs.set(prop!, [new WeakRef(inputEl as HTMLInputElement), evt || 'input']);
         }
         return {
             forRefs
@@ -37,14 +39,13 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
         }
         if(this.#whenController !== undefined) this.#whenController.abort();
         this.#whenController = new AbortController();
-        const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
-        const elo = prsElO(when);
-        const {event, scope} = elo;
-        if(scope === undefined) throw 'NI';
-        const {findRealm} = await import('trans-render/lib/findRealm.js');
-        const srcEl = await findRealm(self, scope);
+        const {parse} = await import('trans-render/dss/parse.js');
+        const specifier = await parse(when);
+        const {evt} = specifier;
+        const {find} = await import('trans-render/dss/find.js');
+        const srcEl = await find(self, specifier);
         if(!srcEl) throw 404;
-        srcEl.addEventListener(event || 'click', e => {
+        srcEl.addEventListener(evt || 'click', e => {
             self.whenCount = self.nextWhenCount;
         }, {signal: this.#whenController.signal});
     }
@@ -57,11 +58,13 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
                 targetSelf: true,
             } as PP
         }
-        const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
-        const targetElO = prsElO(target);
+        const {parse} = await import('trans-render/dss/parse.js');
+        const targetSpecifier = await parse(target);
+        // const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
+        // const targetElO = prsElO(target);
         return {
             targetSelf: false,
-            targetElO    
+            targetSpecifier    
         } as PP;
     }
 
@@ -290,11 +293,11 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
 
     async setTargetProp(self: this, resolvedTarget: Element | null | undefined, data: any, shadow?: ShadowRootMode){
         if(!resolvedTarget) return;
-        const {targetElO} = self;
-        if(targetElO === undefined) return;
-        const {prop} = targetElO;
+        const {targetSpecifier} = self;
+        if(targetSpecifier === undefined) return;
+        const {prop} = targetSpecifier;
         if(prop === undefined) throw 'NI';
-        console.log({targetElO});
+        console.log({targetSpecifier});
         if(shadow !== undefined && prop === 'innerHTML'){
             let root = resolvedTarget.shadowRoot;
             if(root === null) {
@@ -308,11 +311,11 @@ export class FetchFor extends HTMLElement implements Actions, Methods{
     }
 
     async resolveTarget(self: this): Promise<Element | null>{
-        const {targetSelf, targetElO} = this;
+        const {targetSelf, targetSpecifier} = this;
         if(targetSelf) return null;
-        if(targetElO?.scope === undefined) throw 'NI';
-        const {findRealm} = await import('trans-render/lib/findRealm.js')
-        return await findRealm(self, targetElO.scope) as Element | null;
+        //if(targetElO?.scope === undefined) throw 'NI';
+        const {find} = await import('trans-render/dss/find.js')
+        return await find(self, targetSpecifier!) as Element | null;
     }
 }
 
@@ -348,7 +351,7 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             form: {
                 type: 'String'
             },
-            targetElO: {
+            targetSpecifier: {
                 type: 'Object'
             },
             target:{
@@ -364,7 +367,7 @@ const xe = new XE<AllProps & HTMLElement, Actions>({
             },
             do: {
                 ifAllOf: ['isAttrParsed', 'href'],
-                ifAtLeastOneOf: ['targetElO', 'targetSelf'],
+                ifAtLeastOneOf: ['targetSpecifier', 'targetSelf'],
                 ifEquals: ['whenCount', 'nextWhenCount']
             },
             parseTarget: {

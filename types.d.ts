@@ -1,6 +1,7 @@
 import {ActionOnEventConfigs} from 'trans-render/froop/types';
 import { ElO } from '../trans-render/lib/prs/types';
 import { JSONObject } from '../trans-render/lib/types';
+import { Specifier } from '../trans-render/dss/types';
 /**
  * fetch-for props
  */
@@ -42,7 +43,8 @@ export interface OverridableGetters{
     value?: any,
     isAttrParsed?: boolean,
     targetSelf?: boolean
-    targetElO?: ElO,
+    //targetElO?: ElO,
+    targetSpecifier?: Specifier
     whenCount?: number,
     nextWhenCount?: number,
 }

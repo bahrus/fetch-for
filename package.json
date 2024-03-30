@@ -5,8 +5,8 @@
   "main": "fetch-for.js",
   "dependencies": {
     "stream-orator": "0.0.22",
-    "xtal-element": "0.0.600",
-    "trans-render": "0.0.752",
+    "xtal-element": "0.0.602",
+    "trans-render": "0.0.756",
     "idb-keyval": "6.2.1"
   },
   "devDependencies": {
