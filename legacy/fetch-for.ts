@@ -1,81 +1,11 @@
-import {O, OConfig} from 'trans-render/froop/O.js';
 import {
     Actions, Methods, AllProps, loadEventName, ProPP, PP,
     ForData, EventForFetch, inputEventName, EventName
-} from './types';
+} from '../types';
+import {XE, ActionOnEventConfigs} from 'xtal-element/XE.js';
 
-export class FetchFor extends O implements Actions{
-    static override config: OConfig<AllProps & GlobalEventHandlers, Actions> = {
-        name: 'fetch-for',
-        propDefaults:{
-            credentials: 'omit',
-            method: 'GET',
-            as: 'json',
-            noCache: false,
-            stream: false,
-            targetSelf: false,
-            whenCount: 0,
-            nextWhenCount: 1,
-            when: '',
-        },
-        propInfo: {
-            href:{
-                type: 'String',
-            },
-            shadow:{
-                type: 'String',
-            },
-            for: {
-                type: 'String',
-            },
-            form: {
-                type: 'String'
-            },
-            targetSpecifier: {
-                type: 'Object'
-            },
-            target:{
-                type: 'String'
-            },
-            
-
-        },
-        actions:{
-            initializeWhen: {
-                ifKeyIn: ['when']
-            },
-            do: {
-                ifAllOf: ['href'],
-                ifAtLeastOneOf: ['targetSpecifier', 'targetSelf'],
-                ifEquals: ['whenCount', 'nextWhenCount']
-            },
-            parseTarget: {
-                ifKeyIn: ['target']
-            },
-            parseFor: {
-                ifAllOf: ['for'],
-                ifAtLeastOneOf: ['oninput', 'onselect']
-            },
-            listenForInput:{
-                ifAllOf: ['forRefs', 'oninput']
-            },
-            doInitialLoad:{
-                ifAllOf: ['forRefs'],
-                ifAtLeastOneOf: ['oninput', 'onselect'],
-            },
-            onForm: {
-                ifAllOf: ['form'],
-            },
-            onFormSpecifier: {
-                ifAllOf: ['formSpecifier']
-            },
-            onFormRef: {
-                ifAllOf: ['formRef']
-            }
-        }
-    };
-
-        
+export class FetchFor extends HTMLElement implements Actions, Methods{
+    
     #abortController: AbortController | undefined;
 
     async parseFor(self: this){
@@ -396,9 +326,85 @@ export class FetchFor extends O implements Actions{
     }
 }
 
+
 export interface FetchFor extends AllProps{}
 
 const cache: Map<string, Map<string, any>> = new Map();
+
+const xe = new XE<AllProps & HTMLElement, Actions>({
+    config:{
+        tagName: 'fetch-for',
+        propDefaults: {
+            credentials: 'omit',
+            method: 'GET',
+            as: 'json',
+            noCache: false,
+            stream: false,
+            targetSelf: false,
+            whenCount: 0,
+            nextWhenCount: 1,
+            when: '',
+        },
+        propInfo: {
+            href:{
+                type: 'String',
+            },
+            shadow:{
+                type: 'String',
+            },
+            for: {
+                type: 'String',
+            },
+            form: {
+                type: 'String'
+            },
+            targetSpecifier: {
+                type: 'Object'
+            },
+            target:{
+                type: 'String'
+            },
+            
+
+        },
+        actions:{
+            initializeWhen: {
+                ifAllOf: ['isAttrParsed'],
+                ifKeyIn: ['when']
+            },
+            do: {
+                ifAllOf: ['isAttrParsed', 'href'],
+                ifAtLeastOneOf: ['targetSpecifier', 'targetSelf'],
+                ifEquals: ['whenCount', 'nextWhenCount']
+            },
+            parseTarget: {
+                ifAllOf: ['isAttrParsed'],
+                ifKeyIn: ['target']
+            },
+            parseFor: {
+                ifAllOf: ['isAttrParsed', 'for'],
+                ifAtLeastOneOf: ['oninput', 'onselect']
+            },
+            listenForInput:{
+                ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
+            },
+            doInitialLoad:{
+                ifAllOf: ['isAttrParsed', 'forRefs'],
+                ifAtLeastOneOf: ['oninput', 'onselect'],
+            },
+            onForm: {
+                ifAllOf: ['isAttrParsed', 'form'],
+            },
+            onFormSpecifier: {
+                ifAllOf: ['isAttrParsed', 'formSpecifier']
+            },
+            onFormRef: {
+                ifAllOf: ['isAttrParsed', 'formRef']
+            }
+        }
+    },
+    superclass: FetchFor
+});
 
 export class LoadEvent extends Event{
 

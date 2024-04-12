@@ -1,5 +1,3 @@
-import {ActionOnEventConfigs} from 'trans-render/froop/types';
-import { ElO } from '../trans-render/lib/prs/types';
 import { JSONObject } from '../trans-render/lib/types';
 import { Specifier } from '../trans-render/dss/types';
 /**
@@ -41,12 +39,13 @@ export interface OverridableGetters{
     init: RequestInit,
     accept?: string,
     value?: any,
-    isAttrParsed?: boolean,
+    //isAttrParsed?: boolean,
     targetSelf?: boolean
-    //targetElO?: ElO,
     targetSpecifier?: Specifier
     whenCount?: number,
     nextWhenCount?: number,
+
+
 }
 
 export type EventName = string;
@@ -63,7 +62,7 @@ export type PP = Partial<AllProps>;
 
 export type ProPP = Promise<PP>
 
-export type PPE = [PP, ActionOnEventConfigs<AllProps, Actions>];
+
 
 export interface Methods{
     validateResp(resp: Response): boolean,
