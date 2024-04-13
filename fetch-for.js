@@ -324,8 +324,6 @@ export class FetchFor extends O {
         }
         const { parse } = await import('trans-render/dss/parse.js');
         const targetSpecifier = await parse(target);
-        // const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
-        // const targetElO = prsElO(target);
         return {
             targetSelf: false,
             targetSpecifier
