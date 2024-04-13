@@ -30,7 +30,21 @@ export class FetchFor extends O implements Actions{
                 ro: true,
             },
             form: {
-                type: 'String'
+                type: 'String',
+                parse: true,
+                attrName: 'form'
+            },
+            formData:{
+                type: 'Object',
+                ro: true,
+            },
+            formRef: {
+                type: 'Object',
+                ro: true,
+            },
+            formSpecifier:{
+              type: 'String',
+              ro: true,  
             },
             href:{
                 type: 'String',
@@ -70,7 +84,7 @@ export class FetchFor extends O implements Actions{
             },
             parseFor: {
                 ifAllOf: ['for'],
-                ifAtLeastOneOf: ['oninput', 'onselect']
+                ifAtLeastOneOf: ['oninput', 'onselect'],
             },
             listenForInput:{
                 ifAllOf: ['forRefs', 'oninput']
@@ -381,7 +395,10 @@ export class FetchFor extends O implements Actions{
         const eventForFetch: Event & EventForFetch = new InputEvent(forData, trigger);
         const form = self.formRef?.deref();
         if(form !== undefined){
-            self.formData = new FormData(form);
+            this.covertAssignment({
+                formData: new FormData(form)
+            });
+            //self.formData = new FormData(form);
         }
         self.dispatchEvent(eventForFetch);
         if(eventForFetch.href){
