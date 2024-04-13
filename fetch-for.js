@@ -15,14 +15,6 @@ export class FetchFor extends O {
             when: '',
         },
         propInfo: {
-            href: {
-                type: 'String',
-                parse: true,
-                attrName: 'href'
-            },
-            shadow: {
-                type: 'String',
-            },
             for: {
                 type: 'String',
                 parse: true,
@@ -35,6 +27,14 @@ export class FetchFor extends O {
             form: {
                 type: 'String'
             },
+            href: {
+                type: 'String',
+                parse: true,
+                attrName: 'href'
+            },
+            shadow: {
+                type: 'String',
+            },
             targetSpecifier: {
                 type: 'Object'
             },
@@ -43,6 +43,11 @@ export class FetchFor extends O {
                 parse: true,
                 attrName: 'target'
             },
+            when: {
+                type: 'String',
+                parse: true,
+                attrName: 'when'
+            }
         },
         actions: {
             initializeWhen: {
