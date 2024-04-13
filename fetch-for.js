@@ -86,6 +86,7 @@ export class FetchFor extends O {
         return defaultVal;
     }
     disconnectedCallback() {
+        super.disconnectedCallback();
         for (const ac of this.#abortControllers) {
             ac.abort();
         }
