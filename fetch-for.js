@@ -1,102 +1,98 @@
-import { XE } from 'xtal-element/XE.js';
-export class FetchFor extends HTMLElement {
-    #abortController;
-    async parseFor(self) {
-        const { for: f, } = self;
-        const split = f.split(' ').filter(x => !!x); // remove white spaces
-        //const {findRealm} = await import('trans-render/lib/findRealm.js');
-        //const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
-        const { parse } = await import('trans-render/dss/parse.js');
-        const { find } = await import('trans-render/dss/find.js');
-        const forRefs = new Map();
-        for (const token of split) {
-            const parsed = await parse(token);
-            const { evt, prop } = parsed;
-            //if(scope === undefined || prop === undefined) throw 'NI';
-            const inputEl = await find(self, parsed);
-            if (!(inputEl instanceof EventTarget))
-                throw 404;
-            forRefs.set(prop, [new WeakRef(inputEl), evt || 'input']);
+import { O } from 'trans-render/froop/O.js';
+export class FetchFor extends O {
+    static config = {
+        name: 'fetch-for',
+        propDefaults: {
+            credentials: 'omit',
+            method: 'GET',
+            as: 'json',
+            noCache: false,
+            stream: false,
+            targetSelf: false,
+            whenCount: 0,
+            nextWhenCount: 1,
+            target: '',
+            when: '',
+        },
+        propInfo: {
+            href: {
+                type: 'String',
+                parse: true,
+                attrName: 'href'
+            },
+            shadow: {
+                type: 'String',
+            },
+            for: {
+                type: 'String',
+            },
+            form: {
+                type: 'String'
+            },
+            targetSpecifier: {
+                type: 'Object'
+            },
+            target: {
+                type: 'String',
+                parse: true,
+                attrName: 'target'
+            },
+        },
+        actions: {
+            initializeWhen: {
+                ifKeyIn: ['when']
+            },
+            do: {
+                ifAllOf: ['href'],
+                ifAtLeastOneOf: ['targetSpecifier', 'targetSelf'],
+                ifEquals: ['whenCount', 'nextWhenCount']
+            },
+            parseTarget: {
+                ifKeyIn: ['target']
+            },
+            parseFor: {
+                ifAllOf: ['for'],
+                ifAtLeastOneOf: ['oninput', 'onselect']
+            },
+            listenForInput: {
+                ifAllOf: ['forRefs', 'oninput']
+            },
+            doInitialLoad: {
+                ifAllOf: ['forRefs'],
+                ifAtLeastOneOf: ['oninput', 'onselect'],
+            },
+            onForm: {
+                ifAllOf: ['form'],
+            },
+            onFormSpecifier: {
+                ifAllOf: ['formSpecifier']
+            },
+            onFormRef: {
+                ifAllOf: ['formRef']
+            }
         }
-        return {
-            forRefs
-        };
+    };
+    #abortController;
+    #abortControllers = [];
+    get accept() {
+        if (this.hasAttribute('accept'))
+            return this.getAttribute('accept');
+        const as = this.as;
+        let defaultVal = 'application/json';
+        switch (as) {
+            case 'html':
+                defaultVal = 'text/html';
+        }
+        return defaultVal;
     }
-    #whenController;
-    async initializeWhen(self) {
-        const { when, nextWhenCount } = self;
-        if (!when) {
-            return {
-                whenCount: nextWhenCount
-            };
+    disconnectedCallback() {
+        for (const ac of this.#abortControllers) {
+            ac.abort();
         }
         if (this.#whenController !== undefined)
             this.#whenController.abort();
-        this.#whenController = new AbortController();
-        const { parse } = await import('trans-render/dss/parse.js');
-        const specifier = await parse(when);
-        const { evt } = specifier;
-        const { find } = await import('trans-render/dss/find.js');
-        const srcEl = await find(self, specifier);
-        if (!srcEl)
-            throw 404;
-        srcEl.addEventListener(evt || 'click', e => {
-            self.whenCount = self.nextWhenCount;
-        }, { signal: this.#whenController.signal });
-    }
-    async parseTarget(self) {
-        const { target } = self;
-        if (!target) {
-            return {
-                targetElO: undefined,
-                targetSelf: true,
-            };
-        }
-        const { parse } = await import('trans-render/dss/parse.js');
-        const targetSpecifier = await parse(target);
-        // const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
-        // const targetElO = prsElO(target);
-        return {
-            targetSelf: false,
-            targetSpecifier
-        };
-    }
-    async onForm(self) {
-        const { form } = self;
-        const { parse } = await import('trans-render/dss/parse.js');
-        return {
-            formSpecifier: await parse(form)
-        };
-    }
-    async onFormSpecifier(self) {
-        const { find } = await import('trans-render/dss/find.js');
-        const { formSpecifier } = self;
-        const form = await find(self, formSpecifier);
-        if (!(form instanceof HTMLFormElement))
-            throw 404;
-        return {
-            formData: new FormData(form),
-            formRef: new WeakRef(form)
-        };
-    }
-    #formAbortController;
-    async onFormRef(self) {
-        const { formData, formSpecifier, formRef } = self;
-        const form = formRef?.deref();
-        if (!(form instanceof HTMLFormElement))
-            throw 404;
-        if (this.#formAbortController !== undefined) {
+        if (this.#formAbortController !== undefined)
             this.#formAbortController.abort();
-        }
-        this.#formAbortController = new AbortController();
-        form.addEventListener(formSpecifier?.evt || 'input', e => {
-            if (!form.checkValidity())
-                return;
-            this.passForData(self, e.target);
-        });
-        if (form.checkValidity()) {
-            this.doInitialLoad(self);
-        }
     }
     async do(self) {
         try {
@@ -188,6 +184,13 @@ export class FetchFor extends HTMLElement {
             this.dispatchEvent(new ErrorEvent('error', err));
         }
     }
+    async doInitialLoad(self) {
+        const { oninput } = self;
+        if (oninput) {
+            self.passForData(self, self);
+        }
+        return {};
+    }
     get init() {
         return {
             method: this.method,
@@ -214,15 +217,119 @@ export class FetchFor extends HTMLElement {
         }
         return returnObj;
     }
-    #abortControllers = [];
-    disconnectedCallback() {
-        for (const ac of this.#abortControllers) {
-            ac.abort();
+    #formAbortController;
+    async initializeWhen(self) {
+        const { when, nextWhenCount } = self;
+        if (!when) {
+            return {
+                whenCount: nextWhenCount
+            };
         }
         if (this.#whenController !== undefined)
             this.#whenController.abort();
-        if (this.#formAbortController !== undefined)
+        this.#whenController = new AbortController();
+        const { parse } = await import('trans-render/dss/parse.js');
+        const specifier = await parse(when);
+        const { evt } = specifier;
+        const { find } = await import('trans-render/dss/find.js');
+        const srcEl = await find(self, specifier);
+        if (!srcEl)
+            throw 404;
+        srcEl.addEventListener(evt || 'click', e => {
+            self.whenCount = self.nextWhenCount;
+        }, { signal: this.#whenController.signal });
+    }
+    async listenForX(self) {
+        const { forRefs } = self;
+        for (const [key, value] of forRefs.entries()) {
+            const [forRef, eventName] = value;
+            const inputEl = forRef.deref();
+            const ac = new AbortController();
+            inputEl.addEventListener(eventName, async (e) => {
+                const inputEl = e.target;
+                if (inputEl.checkValidity && !inputEl.checkValidity())
+                    return;
+                await self.passForData(self, inputEl);
+            }, { signal: ac.signal });
+            this.#abortControllers.push(ac);
+        }
+    }
+    async listenForInput(self) {
+        await self.listenForX(self);
+        return {};
+    }
+    async onForm(self) {
+        const { form } = self;
+        const { parse } = await import('trans-render/dss/parse.js');
+        return {
+            formSpecifier: await parse(form)
+        };
+    }
+    async onFormRef(self) {
+        const { formData, formSpecifier, formRef } = self;
+        const form = formRef?.deref();
+        if (!(form instanceof HTMLFormElement))
+            throw 404;
+        if (this.#formAbortController !== undefined) {
             this.#formAbortController.abort();
+        }
+        this.#formAbortController = new AbortController();
+        form.addEventListener(formSpecifier?.evt || 'input', e => {
+            if (!form.checkValidity())
+                return;
+            this.passForData(self, e.target);
+        });
+        if (form.checkValidity()) {
+            this.doInitialLoad(self);
+        }
+    }
+    async onFormSpecifier(self) {
+        const { find } = await import('trans-render/dss/find.js');
+        const { formSpecifier } = self;
+        const form = await find(self, formSpecifier);
+        if (!(form instanceof HTMLFormElement))
+            throw 404;
+        return {
+            formData: new FormData(form),
+            formRef: new WeakRef(form)
+        };
+    }
+    async parseFor(self) {
+        const { for: f, } = self;
+        const split = f.split(' ').filter(x => !!x); // remove white spaces
+        //const {findRealm} = await import('trans-render/lib/findRealm.js');
+        //const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
+        const { parse } = await import('trans-render/dss/parse.js');
+        const { find } = await import('trans-render/dss/find.js');
+        const forRefs = new Map();
+        for (const token of split) {
+            const parsed = await parse(token);
+            const { evt, prop } = parsed;
+            //if(scope === undefined || prop === undefined) throw 'NI';
+            const inputEl = await find(self, parsed);
+            if (!(inputEl instanceof EventTarget))
+                throw 404;
+            forRefs.set(prop, [new WeakRef(inputEl), evt || 'input']);
+        }
+        return {
+            forRefs
+        };
+    }
+    async parseTarget(self) {
+        const { target } = self;
+        if (!target) {
+            return {
+                targetSelf: true,
+            };
+        }
+        const { parse } = await import('trans-render/dss/parse.js');
+        const targetSpecifier = await parse(target);
+        // const {prsElO} = await import('trans-render/lib/prs/prsElO.js');
+        // const targetElO = prsElO(target);
+        return {
+            targetSelf: false,
+            targetSpecifier
+        };
     }
     async passForData(self, trigger) {
         const forData = this.#forData(self);
@@ -244,48 +351,13 @@ export class FetchFor extends HTMLElement {
             }
         }
     }
-    async listenForX(self) {
-        const { forRefs } = self;
-        for (const [key, value] of forRefs.entries()) {
-            const [forRef, eventName] = value;
-            const inputEl = forRef.deref();
-            const ac = new AbortController();
-            inputEl.addEventListener(eventName, async (e) => {
-                const inputEl = e.target;
-                if (inputEl.checkValidity && !inputEl.checkValidity())
-                    return;
-                await self.passForData(self, inputEl);
-            }, { signal: ac.signal });
-            this.#abortControllers.push(ac);
-        }
-    }
-    async listenForInput(self) {
-        await self.listenForX(self);
-        return {};
-    }
-    async doInitialLoad(self) {
-        const { oninput } = self;
-        if (oninput) {
-            self.passForData(self, self);
-        }
-        return {};
-    }
-    get accept() {
-        if (this.hasAttribute('accept'))
-            return this.getAttribute('accept');
-        const as = this.as;
-        let defaultVal = 'application/json';
-        switch (as) {
-            case 'html':
-                defaultVal = 'text/html';
-        }
-        return defaultVal;
-    }
-    validateResp(resp) {
-        return true;
-    }
-    validateOn() {
-        return this.onerror !== null || this.onload !== null || this.oninput !== null;
+    async resolveTarget(self) {
+        const { targetSelf, targetSpecifier } = this;
+        if (targetSelf)
+            return null;
+        //if(targetElO?.scope === undefined) throw 'NI';
+        const { find } = await import('trans-render/dss/find.js');
+        return await find(self, targetSpecifier);
     }
     async setTargetProp(self, resolvedTarget, data, shadow) {
         if (!resolvedTarget)
@@ -307,88 +379,15 @@ export class FetchFor extends HTMLElement {
             resolvedTarget[prop] = data;
         }
     }
-    async resolveTarget(self) {
-        const { targetSelf, targetSpecifier } = this;
-        if (targetSelf)
-            return null;
-        //if(targetElO?.scope === undefined) throw 'NI';
-        const { find } = await import('trans-render/dss/find.js');
-        return await find(self, targetSpecifier);
+    validateResp(resp) {
+        return true;
     }
+    validateOn() {
+        return this.onerror !== null || this.onload !== null || this.oninput !== null;
+    }
+    #whenController;
 }
 const cache = new Map();
-const xe = new XE({
-    config: {
-        tagName: 'fetch-for',
-        propDefaults: {
-            credentials: 'omit',
-            method: 'GET',
-            as: 'json',
-            noCache: false,
-            stream: false,
-            targetSelf: false,
-            whenCount: 0,
-            nextWhenCount: 1,
-            when: '',
-        },
-        propInfo: {
-            href: {
-                type: 'String',
-            },
-            shadow: {
-                type: 'String',
-            },
-            for: {
-                type: 'String',
-            },
-            form: {
-                type: 'String'
-            },
-            targetSpecifier: {
-                type: 'Object'
-            },
-            target: {
-                type: 'String'
-            },
-        },
-        actions: {
-            initializeWhen: {
-                ifAllOf: ['isAttrParsed'],
-                ifKeyIn: ['when']
-            },
-            do: {
-                ifAllOf: ['isAttrParsed', 'href'],
-                ifAtLeastOneOf: ['targetSpecifier', 'targetSelf'],
-                ifEquals: ['whenCount', 'nextWhenCount']
-            },
-            parseTarget: {
-                ifAllOf: ['isAttrParsed'],
-                ifKeyIn: ['target']
-            },
-            parseFor: {
-                ifAllOf: ['isAttrParsed', 'for'],
-                ifAtLeastOneOf: ['oninput', 'onselect']
-            },
-            listenForInput: {
-                ifAllOf: ['isAttrParsed', 'forRefs', 'oninput']
-            },
-            doInitialLoad: {
-                ifAllOf: ['isAttrParsed', 'forRefs'],
-                ifAtLeastOneOf: ['oninput', 'onselect'],
-            },
-            onForm: {
-                ifAllOf: ['isAttrParsed', 'form'],
-            },
-            onFormSpecifier: {
-                ifAllOf: ['isAttrParsed', 'formSpecifier']
-            },
-            onFormRef: {
-                ifAllOf: ['isAttrParsed', 'formRef']
-            }
-        }
-    },
-    superclass: FetchFor
-});
 export class LoadEvent extends Event {
     data;
     static EventName = 'load';
