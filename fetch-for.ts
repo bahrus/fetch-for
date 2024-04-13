@@ -110,13 +110,15 @@ export class FetchFor extends O implements Actions{
 
     async do(self: this){
         try{
-            self.nextWhenCount = self.whenCount! + 1;
-            const {href} = self;
+            const {whenCount} = self;
+            super.covertAssignment({
+                nextWhenCount: whenCount! + 1
+            } as PP);
             if(!self.validateOn()) {
                 console.error('on* required');
                 return;
             }
-            const {noCache, as, stream} = self;
+            const {noCache, as, stream, href} = self;
             const resolvedTarget = await self.resolveTarget(self);
             if(resolvedTarget && resolvedTarget.ariaLive === null) resolvedTarget.ariaLive = 'polite';
             let data: any;
