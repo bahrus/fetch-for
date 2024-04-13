@@ -1,5 +1,6 @@
 {
   "name": "fetch-for",
+  "type": "module",
   "version": "0.0.3",
   "description": "Base class for web components as a service",
   "main": "fetch-for.js",
@@ -11,7 +12,7 @@
   },
   "devDependencies": {
     "may-it-serve": "0.0.6",
-    "may-it-be": "0.0.171",
+    "may-it-be": "0.0.172",
     "@power-elements/json-viewer": "2.1.1"
   },
   "scripts": {
