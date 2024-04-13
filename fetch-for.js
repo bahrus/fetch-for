@@ -25,6 +25,12 @@ export class FetchFor extends O {
             },
             for: {
                 type: 'String',
+                parse: true,
+                attrName: 'for',
+            },
+            forRefs: {
+                type: 'Object',
+                ro: true,
             },
             form: {
                 type: 'String'
