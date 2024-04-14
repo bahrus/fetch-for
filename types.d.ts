@@ -12,10 +12,15 @@ export interface EndUserProps{
      */
     href?: string,
 
+    /**
+     * Specifier for list of form associated or contentEditable peer elements that 
+     * should partake in forming the URL.
+     */
     for?: string,
     
     changeFor?: string,
 
+    
     as?: 'html' | 'json' | 'text',
 
     method?: string,

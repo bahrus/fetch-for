@@ -13,31 +13,12 @@
           "members": [
             {
               "kind": "field",
-              "name": "for"
-            },
-            {
-              "kind": "field",
-              "name": "forRefs",
-              "description": ""
+              "name": "for",
+              "description": "Specifier for list of form associated or contentEditable peer elements that \nshould partake in forming the URL."
             },
             {
               "kind": "field",
               "name": "form"
-            },
-            {
-              "kind": "field",
-              "name": "formData",
-              "description": ""
-            },
-            {
-              "kind": "field",
-              "name": "formRef",
-              "description": ""
-            },
-            {
-              "kind": "field",
-              "name": "formSpecifier",
-              "description": ""
             },
             {
               "kind": "field",
@@ -47,11 +28,6 @@
             {
               "kind": "field",
               "name": "shadow"
-            },
-            {
-              "kind": "field",
-              "name": "targetSpecifier",
-              "description": ""
             },
             {
               "kind": "field",
@@ -87,29 +63,12 @@
               "kind": "field",
               "name": "stream",
               "default": false
-            },
-            {
-              "kind": "field",
-              "name": "targetSelf",
-              "default": false,
-              "description": ""
-            },
-            {
-              "kind": "field",
-              "name": "whenCount",
-              "default": 0,
-              "description": ""
-            },
-            {
-              "kind": "field",
-              "name": "nextWhenCount",
-              "default": 1,
-              "description": ""
             }
           ],
           "attributes": [
             {
-              "name": "for"
+              "name": "for",
+              "description": "Specifier for list of form associated or contentEditable peer elements that \nshould partake in forming the URL."
             },
             {
               "name": "form"
@@ -138,18 +97,6 @@
             },
             {
               "name": "stream"
-            },
-            {
-              "name": "target-self",
-              "description": ""
-            },
-            {
-              "name": "when-count",
-              "description": ""
-            },
-            {
-              "name": "next-when-count",
-              "description": ""
             }
           ]
         }
