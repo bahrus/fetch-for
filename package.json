@@ -1,7 +1,7 @@
 {
   "name": "fetch-for",
   "type": "module",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Base class for web components as a service",
   "main": "fetch-for.js",
   "dependencies": {
