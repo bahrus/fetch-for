@@ -13,7 +13,7 @@
   "devDependencies": {
     "@power-elements/json-viewer": "2.1.1",
     "may-it-serve": "0.0.6",
-    "may-it-be": "0.0.172"
+    "may-it-be": "0.0.174"
   },
   "scripts": {
     "test": "playwright test",

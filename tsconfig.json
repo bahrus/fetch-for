@@ -9,7 +9,6 @@
 	},
 	"files":[
 		"index.ts",
-		"doc.mts",
 		"doc.ts"
 	],
 	"exclude":[

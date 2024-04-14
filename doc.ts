@@ -1,4 +1,4 @@
-import { analyze } from './may-it-be/analyze.js';
+import { analyze } from './node_modules/may-it-be/analyze.js';
 import { resolve } from "path";
 import {config} from './config.js';
 import * as fs from 'fs';
