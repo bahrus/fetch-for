@@ -29,7 +29,7 @@
             {
               "kind": "field",
               "name": "shadow",
-              "description": "If as=html, specify whether to (stream) the contents into an attached shadow DOM or not.\n            <div>Possible values</div>\n            <ul>\n                <li>closed</li><li>open</li>\n            </ul>\n            "
+              "description": "If as=html, specify whether to (stream) the contents into an attached shadow DOM or not.\n            Possible values:\n\n            closed\\n\\ropen\\n\\r\n\n            "
             },
             {
               "kind": "field",
@@ -47,19 +47,19 @@
               "kind": "field",
               "name": "credentials",
               "default": "omit",
-              "description": "Request credentials\n            <div>Possible values</div>\n            <ul>\n                <li>include</li><li>omit</li><li>same-origin</li>\n            </ul>\n            "
+              "description": "Request credentials\n            Possible values:\n\n            include\\n\\romit\\n\\rsame-origin\\n\\r\n\n            "
             },
             {
               "kind": "field",
               "name": "method",
               "default": "GET",
-              "description": "The http verb to be used for the request\n            <div>Possible values</div>\n            <ul>\n                <li>DELETE</li><li>GET</li><li>HEAD</li><li>OPTIONS</li><li>PATCH</li><li>POST</li><li>PUT</li><li>TRACE</li>\n            </ul>\n            "
+              "description": "The http verb to be used for the request\n            Possible values:\n\n            DELETE\\n\\rGET\\n\\rHEAD\\n\\rOPTIONS\\n\\rPATCH\\n\\rPOST\\n\\rPUT\\n\\rTRACE\\n\\r\n\n            "
             },
             {
               "kind": "field",
               "name": "as",
               "default": "json",
-              "description": "Indicates whether to treat the response as HTML or JSON or Text\n            <div>Possible values</div>\n            <ul>\n                <li>html</li><li>json</li><li>text</li>\n            </ul>\n            "
+              "description": "Indicates whether to treat the response as HTML or JSON or Text\n            Possible values:\n\n            html\\n\\rjson\\n\\rtext\\n\\r\n\n            "
             },
             {
               "kind": "field",
