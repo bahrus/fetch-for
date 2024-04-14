@@ -18,7 +18,8 @@
             },
             {
               "kind": "field",
-              "name": "form"
+              "name": "form",
+              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a form element\nthat we should use to form the url and body from."
             },
             {
               "kind": "field",
@@ -27,42 +28,50 @@
             },
             {
               "kind": "field",
-              "name": "shadow"
+              "name": "shadow",
+              "description": "If as=html, specify whether to (stream) the contents into an attached shadow DOM or not.\n            <div>Possible values</div>\n            <ul>\n                <li>closed</li><li>open</li>\n            </ul>\n            "
             },
             {
               "kind": "field",
               "name": "target",
-              "default": ""
+              "default": "",
+              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to the \nDOM element where the retrieved content should be applied."
             },
             {
               "kind": "field",
               "name": "when",
-              "default": ""
+              "default": "",
+              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a \n(button) element, to delay submitting the fetch request until that button is clicked."
             },
             {
               "kind": "field",
               "name": "credentials",
-              "default": "omit"
+              "default": "omit",
+              "description": "Request credentials\n            <div>Possible values</div>\n            <ul>\n                <li>include</li><li>omit</li><li>same-origin</li>\n            </ul>\n            "
             },
             {
               "kind": "field",
               "name": "method",
-              "default": "GET"
+              "default": "GET",
+              "description": "The http verb to be used for the request\n            <div>Possible values</div>\n            <ul>\n                <li>DELETE</li><li>GET</li><li>HEAD</li><li>OPTIONS</li><li>PATCH</li><li>POST</li><li>PUT</li><li>TRACE</li>\n            </ul>\n            "
             },
             {
               "kind": "field",
               "name": "as",
-              "default": "json"
+              "default": "json",
+              "description": "Indicates whether to treat the response as HTML or JSON or Text\n            <div>Possible values</div>\n            <ul>\n                <li>html</li><li>json</li><li>text</li>\n            </ul>\n            "
             },
             {
               "kind": "field",
               "name": "noCache",
-              "default": false
+              "default": false,
+              "description": "Do not cache results even if the url has been invoked before."
             },
             {
               "kind": "field",
               "name": "stream",
-              "default": false
+              "default": false,
+              "description": "Stream the contents into the target element"
             }
           ],
           "attributes": [
@@ -71,32 +80,40 @@
               "description": "Specifier for list of form associated or contentEditable peer elements that \nshould partake in forming the URL."
             },
             {
-              "name": "form"
+              "name": "form",
+              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a form element\nthat we should use to form the url and body from."
             },
             {
               "name": "href",
               "description": "Url to invoke"
             },
             {
-              "name": "target"
+              "name": "target",
+              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to the \nDOM element where the retrieved content should be applied."
             },
             {
-              "name": "when"
+              "name": "when",
+              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a \n(button) element, to delay submitting the fetch request until that button is clicked."
             },
             {
-              "name": "credentials"
+              "name": "credentials",
+              "description": "Request credentials"
             },
             {
-              "name": "method"
+              "name": "method",
+              "description": "The http verb to be used for the request"
             },
             {
-              "name": "as"
+              "name": "as",
+              "description": "Indicates whether to treat the response as HTML or JSON or Text"
             },
             {
-              "name": "no-cache"
+              "name": "no-cache",
+              "description": "Do not cache results even if the url has been invoked before."
             },
             {
-              "name": "stream"
+              "name": "stream",
+              "description": "Stream the contents into the target element"
             }
           ]
         }

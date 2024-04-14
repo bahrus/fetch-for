@@ -69,10 +69,15 @@ export interface EndUserProps{
     stream?: boolean,
 
     /**
-     * 
+     * <a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a 
+     * (button) element, to delay submitting the fetch request until that button is clicked.
      */
     when?: string,
 
+    /**
+     * <a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a form element
+     * that we should use to form the url and body from.
+     */
     form?: string,
 
 }
