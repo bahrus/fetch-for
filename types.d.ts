@@ -1,5 +1,8 @@
 import { JSONObject } from '../trans-render/lib/types';
 import { Specifier } from '../trans-render/dss/types';
+import {SimpleWCInfo} from 'may-it-be/SimpleWCInfo';
+
+declare class WeakRef<TProps = any>{}
 /**
  * fetch-for props
  */
@@ -63,8 +66,10 @@ export type PP = Partial<AllProps>;
 export type ProPP = Promise<PP>
 
 
-
-export interface Methods{
+/**
+ * methods for fetch-for
+ */
+export interface Methods extends Actions{
     validateResp(resp: Response): boolean,
     validateOn(): boolean,
     setTargetProp(target: Element | null, data: any, shadow?: ShadowRootMode): void,
@@ -97,4 +102,18 @@ export interface EventForFetch {
 }
 
 export type ForData = {[key: string]: HTMLInputElement}
+
+/**
+ * fetch-for web component
+ */
+export abstract class FetchForInfo implements SimpleWCInfo {
+    src: './fetch-for.js';
+    tagName: 'fetch-for';
+    props: EndUserProps;
+    cssParts: {
+        
+    }
+}
+
+export type Package = [FetchForInfo];
 

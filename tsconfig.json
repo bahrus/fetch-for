@@ -9,7 +9,8 @@
 	},
 	"files":[
 		"index.ts",
-		"doc.mts"
+		"doc.mts",
+		"doc.ts"
 	],
 	"exclude":[
 		"node_modules"

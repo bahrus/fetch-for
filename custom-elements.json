@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "./README.md",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "index.js",
+      "declarations": [
+        {
+          "tagName": "fetch-for",
+          "name": "fetch-for",
+          "kind": "class",
+          "members": [
+            {
+              "kind": "field",
+              "name": "for"
+            },
+            {
+              "kind": "field",
+              "name": "forRefs",
+              "description": ""
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "formData",
+              "description": ""
+            },
+            {
+              "kind": "field",
+              "name": "formRef",
+              "description": ""
+            },
+            {
+              "kind": "field",
+              "name": "formSpecifier",
+              "description": ""
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "description": "Url to invoke"
+            },
+            {
+              "kind": "field",
+              "name": "shadow"
+            },
+            {
+              "kind": "field",
+              "name": "targetSpecifier",
+              "description": ""
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "default": ""
+            },
+            {
+              "kind": "field",
+              "name": "when",
+              "default": ""
+            },
+            {
+              "kind": "field",
+              "name": "credentials",
+              "default": "omit"
+            },
+            {
+              "kind": "field",
+              "name": "method",
+              "default": "GET"
+            },
+            {
+              "kind": "field",
+              "name": "as",
+              "default": "json"
+            },
+            {
+              "kind": "field",
+              "name": "noCache",
+              "default": false
+            },
+            {
+              "kind": "field",
+              "name": "stream",
+              "default": false
+            },
+            {
+              "kind": "field",
+              "name": "targetSelf",
+              "default": false,
+              "description": ""
+            },
+            {
+              "kind": "field",
+              "name": "whenCount",
+              "default": 0,
+              "description": ""
+            },
+            {
+              "kind": "field",
+              "name": "nextWhenCount",
+              "default": 1,
+              "description": ""
+            }
+          ],
+          "attributes": [
+            {
+              "name": "for"
+            },
+            {
+              "name": "form"
+            },
+            {
+              "name": "href",
+              "description": "Url to invoke"
+            },
+            {
+              "name": "target"
+            },
+            {
+              "name": "when"
+            },
+            {
+              "name": "credentials"
+            },
+            {
+              "name": "method"
+            },
+            {
+              "name": "as"
+            },
+            {
+              "name": "no-cache"
+            },
+            {
+              "name": "stream"
+            },
+            {
+              "name": "target-self",
+              "description": ""
+            },
+            {
+              "name": "when-count",
+              "description": ""
+            },
+            {
+              "name": "next-when-count",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 export const config = {
     name: 'fetch-for',
     propDefaults: {
+        /**
+         * this is a test
+         */
         credentials: 'omit',
         method: 'GET',
         as: 'json',

@@ -5,21 +5,22 @@
   "description": "Base class for web components as a service",
   "main": "fetch-for.js",
   "dependencies": {
+    "idb-keyval": "6.2.1",
     "stream-orator": "0.0.22",
-    "xtal-element": "0.0.602",
     "trans-render": "0.0.760",
-    "idb-keyval": "6.2.1"
+    "xtal-element": "0.0.602"
   },
   "devDependencies": {
+    "@power-elements/json-viewer": "2.1.1",
     "may-it-serve": "0.0.6",
-    "may-it-be": "0.0.172",
-    "@power-elements/json-viewer": "2.1.1"
+    "may-it-be": "0.0.172"
   },
   "scripts": {
     "test": "playwright test",
     "serve": "node node_modules/may-it-serve/serve.js",
     "safari": "npx playwright wk http://localhost:3030",
-    "update": "ncu -u && npm install"
+    "update": "ncu -u && npm install",
+    "doc": "node doc.js"
   },
   "repository": {
     "type": "git",
