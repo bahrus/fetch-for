@@ -3,5 +3,6 @@ import { resolve } from "path";
 import { config } from './config.js';
 import * as fs from 'fs';
 const info = analyze(resolve("types.d.ts"), config);
+console.log(JSON.stringify(info, null, 2));
 const test = JSON.stringify(info.package, null, 2);
 fs.writeFileSync('./custom-elements.json', test, { encoding: 'utf-8' });

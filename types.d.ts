@@ -7,6 +7,7 @@ declare class WeakRef<TProps = any>{}
  * fetch-for props
  */
 export interface EndUserProps{
+
     /**
      * Url to invoke
      */
@@ -17,26 +18,59 @@ export interface EndUserProps{
      * should partake in forming the URL.
      */
     for?: string,
-    
-    changeFor?: string,
 
-    
+    /**
+     * Indicates whether to treat the response as HTML or JSON or Text
+     */
     as?: 'html' | 'json' | 'text',
 
-    method?: string,
-
+    /**
+     * The http verb to be used for the request
+     */
+    method?: 
+        | 'GET' 
+        | 'HEAD' 
+        | 'POST' 
+        | 'PUT' 
+        | 'DELETE' 
+        | 'OPTIONS' 
+        | 'TRACE'
+        | 'PATCH',
+    /**
+     * Either the JSON stringified or the parsed JSON object 
+     * If parsed, the web component will stringify it.
+     */
     body?: any,
 
+    /**
+     * Request credentials
+     */
     credentials?: RequestCredentials,
 
+    /**
+     * <a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to the 
+     * DOM element where the retrieved content should be applied.
+     */
     target?: string,
 
+    /**
+     * If as=html, specify whether to (stream) the contents into an attached shadow DOM or not.
+     */
     shadow?: ShadowRootMode,
 
+    /**
+     * Do not cache results even if the url has been invoked before.
+     */
     noCache?: boolean,
 
+    /**
+     * Stream the contents into the target element
+     */
     stream?: boolean,
 
+    /**
+     * 
+     */
     when?: string,
 
     form?: string,
