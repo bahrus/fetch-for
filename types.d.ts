@@ -48,7 +48,7 @@ export interface EndUserProps{
     credentials?: RequestCredentials,
 
     /**
-     * <a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to the 
+     * Directed Scoped Specifier to the 
      * DOM element where the retrieved content should be applied.
      */
     target?: string,
@@ -69,13 +69,13 @@ export interface EndUserProps{
     stream?: boolean,
 
     /**
-     * <a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a 
+     * Directed Scoped Specifier to a 
      * (button) element, to delay submitting the fetch request until that button is clicked.
      */
     when?: string,
 
     /**
-     * <a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a form element
+     * Directed Scoped Specifier to a form element
      * that we should use to form the url and body from.
      */
     form?: string,

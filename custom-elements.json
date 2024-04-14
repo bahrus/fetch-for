@@ -19,7 +19,7 @@
             {
               "kind": "field",
               "name": "form",
-              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a form element\nthat we should use to form the url and body from."
+              "description": "Directed Scoped Specifier to a form element\nthat we should use to form the url and body from."
             },
             {
               "kind": "field",
@@ -35,13 +35,13 @@
               "kind": "field",
               "name": "target",
               "default": "",
-              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to the \nDOM element where the retrieved content should be applied."
+              "description": "Directed Scoped Specifier to the \nDOM element where the retrieved content should be applied."
             },
             {
               "kind": "field",
               "name": "when",
               "default": "",
-              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a \n(button) element, to delay submitting the fetch request until that button is clicked."
+              "description": "Directed Scoped Specifier to a \n(button) element, to delay submitting the fetch request until that button is clicked."
             },
             {
               "kind": "field",
@@ -81,7 +81,7 @@
             },
             {
               "name": "form",
-              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a form element\nthat we should use to form the url and body from."
+              "description": "Directed Scoped Specifier to a form element\nthat we should use to form the url and body from."
             },
             {
               "name": "href",
@@ -89,11 +89,11 @@
             },
             {
               "name": "target",
-              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to the \nDOM element where the retrieved content should be applied."
+              "description": "Directed Scoped Specifier to the \nDOM element where the retrieved content should be applied."
             },
             {
               "name": "when",
-              "description": "<a href=https://github.com/bahrus/trans-render/tree/baseline/dss target=_blank>Directed Scoped Specifier</a> to a \n(button) element, to delay submitting the fetch request until that button is clicked."
+              "description": "Directed Scoped Specifier to a \n(button) element, to delay submitting the fetch request until that button is clicked."
             },
             {
               "name": "credentials",
