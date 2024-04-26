@@ -8,4 +8,4 @@ declare global {
     interface HTMLElementTagNameMap {
       'fetch-for': FetchFor;
     }
-  }
+}

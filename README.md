@@ -11,7 +11,7 @@
 
 fetch-for is a small-ish, bare-bones simple fetch web component.  
 
-Like [*k-fetch*](https://github.com/bahrus/k-fetch), *fetch-for* can act as a base web component for "web components as a service".  [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
+*fetch-for* can act as a base web component for "web components as a service".  [be-fetch](https://github.com/bahrus/be-fetching) actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
 ## Example 1 -- Simple html include
 
@@ -75,7 +75,7 @@ It uses a custom syntax for describing, as concisely as possible and optimized f
 
 ## Specifying dependencies
 
-Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  This also uses "directed scoped specifier" syntax (or DSS). We can formulate the href to use for the fetch request:
+Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  This also uses ["directed scoped specifier" syntax (or DSS)](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS)). We can formulate the href to use for the fetch request:
 
 ## Specify dynamic href in oninput event
 
@@ -280,7 +280,7 @@ However, for the less ambitious, the way we can do filtering or other manipulati
         console.log(event);
         event.data.iah = true;
     "
-    target=json-viewer[-object]
+    target=-object
     onerror=console.error(href)
 >
 </fetch-for>
@@ -305,15 +305,7 @@ To opt-in (which imposes a small cost due to needing to load the library first):
 ```
 
 > [!NOTE]
-> This package uses the built-in support for oninput and onload.  It allows the browser to parse the JS, and simply dispatches events "load" and "input" to integrate with the custom code.  One current limitation is that the code inside doesn't assume it is asynchronous.  It is possible to wrap the code in an async IIFE block to achieve this, which could be worth while for particularly complex manipulations.
-
-## Alternatives
-
-For fewer features, but a smaller foot print, consider using [https://github.com/k-fetch].  What k-fetch lacks which this component adopts is form-like support.
-
- For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch), that is in serious need for an update [TODO]. 
-
-fetch-for hopes to be "just the right amount" of size for many purposes. It *may* provide support for streaming HTML.  If not, or for other scenarios where it might work better, see alternatives that focus on that scenario, such as [be-written](https://github.com/bahrus/be-written).
+> This package uses the built-in support for oninput and onload.  It allows the browser to parse the JS, and simply dispatches events "load" and "input" to integrate with the custom code.  One current limitation is that the code inside doesn't assume it is asynchronous.  It is possible to wrap the code in an async IIFE block to achieve this, which could be worthwhile for particularly complex manipulations.
 
 ## Viewing Demos Locally
 
