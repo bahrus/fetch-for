@@ -4,15 +4,25 @@
   "version": "0.0.9",
   "description": "Base class for web components as a service",
   "main": "fetch-for.js",
+  "keywords": [
+    "web-components",
+    "web-component",
+    "custom-element",
+    "custom-elements"
+  ],
   "dependencies": {
     "idb-keyval": "6.2.1",
     "stream-orator": "0.0.22",
-    "trans-render": "0.0.760"
+    "trans-render": "0.0.764"
   },
   "devDependencies": {
     "@power-elements/json-viewer": "2.1.1",
     "may-it-serve": "0.0.6",
-    "may-it-be": "0.0.178"
+    "may-it-be": "0.0.179"
+  },
+  "exports":{
+    "./fetch-for.js": "./fetch-for.js",
+    ".": "./index.js"
   },
   "scripts": {
     "test": "playwright test",

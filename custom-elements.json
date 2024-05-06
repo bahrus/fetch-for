@@ -18,8 +18,24 @@
             },
             {
               "kind": "field",
+              "name": "forRefs"
+            },
+            {
+              "kind": "field",
               "name": "form",
               "description": "Directed Scoped Specifier to a form element\nthat we should use to form the url and body from."
+            },
+            {
+              "kind": "field",
+              "name": "formData"
+            },
+            {
+              "kind": "field",
+              "name": "formRef"
+            },
+            {
+              "kind": "field",
+              "name": "formSpecifier"
             },
             {
               "kind": "field",
@@ -30,6 +46,10 @@
               "kind": "field",
               "name": "shadow",
               "description": "If as=html, specify whether to (stream) the contents into an attached shadow DOM or not.\n            Possible values:\n\n            \n            closed\n            \n            open\n            \n\n            "
+            },
+            {
+              "kind": "field",
+              "name": "targetSpecifier"
             },
             {
               "kind": "field",
@@ -72,6 +92,21 @@
               "name": "stream",
               "default": false,
               "description": "Stream the contents into the target element"
+            },
+            {
+              "kind": "field",
+              "name": "targetSelf",
+              "default": false
+            },
+            {
+              "kind": "field",
+              "name": "whenCount",
+              "default": 0
+            },
+            {
+              "kind": "field",
+              "name": "nextWhenCount",
+              "default": 1
             }
           ],
           "attributes": [
@@ -114,6 +149,15 @@
             {
               "name": "stream",
               "description": "Stream the contents into the target element"
+            },
+            {
+              "name": "target-self"
+            },
+            {
+              "name": "when-count"
+            },
+            {
+              "name": "next-when-count"
             }
           ]
         }
