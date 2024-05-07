@@ -1,7 +1,7 @@
 {
   "name": "fetch-for",
   "type": "module",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Base class for web components as a service",
   "main": "fetch-for.js",
   "keywords": [
@@ -20,7 +20,7 @@
     "may-it-serve": "0.0.6",
     "may-it-be": "0.0.180"
   },
-  "exports":{
+  "exports": {
     "./fetch-for.js": "./fetch-for.js",
     ".": "./index.js"
   },
