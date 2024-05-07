@@ -1,7 +1,6 @@
 import {OConfig} from 'trans-render/froop/types';
 import { Actions, AllProps } from './types';
 export const config: OConfig<AllProps & GlobalEventHandlers, Actions> = {
-    name: 'fetch-for',
     propDefaults:{
         /**
          * this is a test

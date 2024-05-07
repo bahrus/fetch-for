@@ -1,5 +1,4 @@
 export const config = {
-    name: 'fetch-for',
     propDefaults: {
         /**
          * this is a test
