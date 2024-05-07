@@ -10,6 +10,7 @@ export interface EndUserProps{
 
     /**
      * Url to invoke
+     * @readonly true
      */
     href?: string,
 
@@ -98,11 +99,17 @@ export interface OverridableGetters{
 export type EventName = string;
 
 export interface AllProps extends EndUserProps, OverridableGetters{
-    resolvedTarget?: Element | null,
-    forRefs?: Map<string, [WeakRef<HTMLInputElement>, EventName]>,
-    formData?: FormData,
-    formRef?: WeakRef<HTMLFormElement>,
-    formSpecifier?: Specifier,
+
+    readonly resolvedTarget?: Element | null,
+
+    /**
+     * @readonly
+     * Weak references to input elements
+     */
+    readonly forRefs: Map<string, [WeakRef<HTMLInputElement>, EventName]>,
+    readonly formData?: FormData,
+    readonly formRef?: WeakRef<HTMLFormElement>,
+    readonly formSpecifier?: Specifier,
 }
 
 export type PP = Partial<AllProps>;

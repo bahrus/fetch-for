@@ -18,7 +18,8 @@
             },
             {
               "kind": "field",
-              "name": "forRefs"
+              "name": "forRefs",
+              "readonly": true
             },
             {
               "kind": "field",
@@ -27,15 +28,18 @@
             },
             {
               "kind": "field",
-              "name": "formData"
+              "name": "formData",
+              "readonly": true
             },
             {
               "kind": "field",
-              "name": "formRef"
+              "name": "formRef",
+              "readonly": true
             },
             {
               "kind": "field",
-              "name": "formSpecifier"
+              "name": "formSpecifier",
+              "readonly": true
             },
             {
               "kind": "field",
