@@ -85,7 +85,7 @@ export interface EndUserProps{
 }
 
 export interface OverridableGetters{
-    init: RequestInit,
+    request$: RequestInit,
     //accept$?: string,
     value?: any,
     //isAttrParsed?: boolean,

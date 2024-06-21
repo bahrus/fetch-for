@@ -47,15 +47,15 @@ export class FetchFor extends O {
                     this.#abortController = new AbortController();
                 }
                 this.#abortController = new AbortController();
-                this.init.signal = this.#abortController?.signal;
+                this.request$.signal = this.#abortController?.signal;
                 if (as === 'html' && stream) {
                     const { streamOrator } = await import('stream-orator/StreamOrator.js');
                     const { target } = self;
                     const targetEl = this.getRootNode().querySelector(target);
-                    streamOrator(href, this.init, targetEl);
+                    streamOrator(href, this.request$, targetEl);
                     return;
                 }
-                const resp = await fetch(href, this.init);
+                const resp = await fetch(href, this.request$);
                 if (!this.validateResp(resp)) {
                     throw [resp.statusText, resp.status];
                 }
@@ -119,7 +119,7 @@ export class FetchFor extends O {
         }
         return {};
     }
-    get init() {
+    get requestInit$() {
         return {
             method: this.method,
             headers: {
