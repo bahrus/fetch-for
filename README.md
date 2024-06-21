@@ -307,6 +307,27 @@ To opt-in (which imposes a small cost due to needing to load the library first):
 > [!NOTE]
 > This package uses the built-in support for oninput and onload.  It allows the browser to parse the JS, and simply dispatches events "load" and "input" to integrate with the custom code.  One current limitation is that the code inside doesn't assume it is asynchronous.  It is possible to wrap the code in an async IIFE block to achieve this, which could be worthwhile for particularly complex manipulations.
 
+## Reflecting attributes?
+
+This web component is based on a [web component library](https://github.com/bahrus/trans-render/wiki/III.--O-components#attributes-on-demand) that prefers to only reflect attributes "on demand", so as to reduce unnecessary greenhouse emissions.  To see the values of the properties passed in directly (i.e. not via attributes) or calculated internally, specify which ones you want reflected via css.  The following example asks that **all** such attributes be reflected:
+
+```html
+<html>
+    <head>
+        ...
+        <style>
+            fetch-for {
+                --attrs-to-reflect: href method for form target when credentials as no-cache stream target-self when-count next-when-count;
+            }
+            fetch-for * {
+                --attrs-to-reflect: initial;
+            }
+        </style>
+    </head>
+    ...
+</html>
+```
+
 ## Viewing Demos Locally
 
 Any web server that can serve static files will do, but...
