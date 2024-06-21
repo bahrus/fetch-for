@@ -4,7 +4,7 @@ export class FetchFor extends O {
     static config = config;
     #abortController;
     #abortControllers = [];
-    get accept() {
+    get accept$() {
         if (this.hasAttribute('accept'))
             return this.getAttribute('accept');
         const as = this.as;
@@ -128,7 +128,7 @@ export class FetchFor extends O {
         return {
             method: this.method,
             headers: {
-                'Accept': this.accept,
+                'Accept': this.accept$,
             },
             credentials: this.credentials,
             body: typeof this.body === 'object' ? JSON.stringify(this.body) : this.body,
