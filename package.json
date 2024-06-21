@@ -13,7 +13,7 @@
   "dependencies": {
     "idb-keyval": "6.2.1",
     "stream-orator": "0.0.22",
-    "trans-render": "0.0.764"
+    "trans-render": "0.0.784"
   },
   "devDependencies": {
     "@power-elements/json-viewer": "2.1.1",
