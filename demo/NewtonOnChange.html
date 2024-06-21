@@ -32,7 +32,7 @@
         for="@op::change @expr::change"
         oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
         target=-object
-        onerror=console.error(href)
+        onerror="console.error(href, event.err)"
     >
     </fetch-for>
     ...

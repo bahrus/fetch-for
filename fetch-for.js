@@ -47,7 +47,7 @@ export class FetchFor extends O {
                     this.#abortController = new AbortController();
                 }
                 this.#abortController = new AbortController();
-                this.request$.signal = this.#abortController?.signal;
+                this.request$(self).signal = this.#abortController?.signal;
                 if (as === 'html' && stream) {
                     const { streamOrator } = await import('stream-orator/StreamOrator.js');
                     const { target } = self;
@@ -119,14 +119,15 @@ export class FetchFor extends O {
         }
         return {};
     }
-    get requestInit$() {
+    request$(self) {
+        const { method, body, credentials } = self;
         return {
-            method: this.method,
+            method: method,
             headers: {
-                'Accept': this.accept$(this),
+                'Accept': self.accept$(this),
             },
-            credentials: this.credentials,
-            body: typeof this.body === 'object' ? JSON.stringify(this.body) : this.body,
+            credentials: credentials,
+            body: typeof body === 'object' ? JSON.stringify(body) : body,
         };
     }
     #forData(self) {

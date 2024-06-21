@@ -18,6 +18,11 @@ export const config: OConfig<AllProps & GlobalEventHandlers, Actions> = {
         when: '',
     },
     propInfo: {
+        accept: {
+            type: 'String',
+            parse: true,
+            attrName: 'accept'
+        },
         for: {
             type: 'String',
             parse: true,
