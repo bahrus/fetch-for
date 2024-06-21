@@ -8,6 +8,7 @@ declare class WeakRef<TProps = any>{}
  */
 export interface EndUserProps{
 
+    accept?: string,
     /**
      * Url to invoke
      * @readonly true
@@ -85,7 +86,7 @@ export interface EndUserProps{
 
 export interface OverridableGetters{
     init: RequestInit,
-    accept$?: string,
+    //accept$?: string,
     value?: any,
     //isAttrParsed?: boolean,
     targetSelf?: boolean

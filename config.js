@@ -1,5 +1,6 @@
 export const config = {
     propDefaults: {
+        accept: '',
         /**
          * this is a test
          */

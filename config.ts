@@ -2,6 +2,7 @@ import {OConfig} from 'trans-render/froop/types';
 import { Actions, AllProps } from './types';
 export const config: OConfig<AllProps & GlobalEventHandlers, Actions> = {
     propDefaults:{
+        accept: '',
         /**
          * this is a test
          */

@@ -16,15 +16,11 @@ export class FetchFor extends O implements Actions, AllProps{
 
     #abortControllers: Array<AbortController> = [];
 
-    get accept$(){
-        if(this.hasAttribute('accept')) return this.getAttribute('accept')!;
-        const as = this.as;
-        let defaultVal = 'application/json';
-        switch(as){
-            case 'html':
-                defaultVal = 'text/html';
-        }
-        return defaultVal;
+    accept$(self: this){
+        const {accept, as} = self;
+        if(accept !== undefined) return accept;
+        return as === 'html' ? 'text/html' : 'application/json';
+    
     }
 
 
@@ -141,7 +137,7 @@ export class FetchFor extends O implements Actions, AllProps{
         return {
             method: this.method,
             headers: {
-                'Accept': this.accept$,
+                'Accept': this.accept$(this),
             },
             credentials: this.credentials,
             body: typeof this.body === 'object' ? JSON.stringify(this.body) : this.body,
