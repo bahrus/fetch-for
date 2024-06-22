@@ -317,6 +317,27 @@ This web component is based on a [web component library](https://github.com/bahr
         ...
         <style>
             fetch-for {
+                --attrs-to-reflect: *;
+            }
+            fetch-for * {
+                --attrs-to-reflect: initial;
+            }
+        </style>
+    </head>
+    ...
+</html>
+```
+
+However, this is somewhat wasteful, to emit every single attribute if no one cares what they are.  Each attribute change can trigger the browser having to figure out if any of them affect any styling rules, plus the memory consumption etc.
+
+So you can list the specif ones you would like to see reflected for your specific scenario:
+
+```html
+<html>
+    <head>
+        ...
+        <style>
+            fetch-for {
                 --attrs-to-reflect: href method for form target when credentials as no-cache stream target-self when-count next-when-count;
             }
             fetch-for * {
