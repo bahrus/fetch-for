@@ -11,7 +11,7 @@
 
 fetch-for is a small-ish, bare-bones simple fetch web component.  
 
-*fetch-for* can act as a base web component for "web components as a service".  [be-fetch](https://github.com/bahrus/be-fetching) actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
+*fetch-for* can act as a base web component for "web components as a service".  [be-fetch](https://github.com/bahrus/be-fetch) actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
 ## Example 1 -- Simple html include
 
