@@ -11,7 +11,7 @@
 
 fetch-for is a small-ish, bare-bones simple fetch web component.  
 
-*fetch-for* can act as a base web component for "web components as a service".  [be-fetch](https://github.com/bahrus/be-fetching) actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
+*fetch-for* can act as a base web component for "web components as a service".  [be-fetch](https://github.com/bahrus/be-fetch) actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
 ## Example 1 -- Simple html include
 
@@ -73,7 +73,7 @@ oJsonViewer.object = ...
 
 What this example illustrates is that the target attribute is *not* using simple css selectors to find the target.  Rather it is using a custom syntax that is optimized for creating linkages between elements of peer elements, and/or between elements and its custom element host container.
 
-It uses a custom syntax for describing, as concisely as possible and optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.  This syntax is referred to as "directed scoping specifiers" (DSS).
+It uses a custom syntax for describing, as concisely as possible and optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.  This syntax is referred to as ["directed scoping specifiers" (DSS)](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS).
 
 ## Specifying dependencies
 
