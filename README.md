@@ -28,6 +28,8 @@ For this very specific example shown above, due to restrictions of the cors-anyw
 
 Required attributes/properties are href and at least one of these attributes/properties being set: onerror, oninput, onload.  The reason for insisting on at least one of these on* attributes/properties is this:  Since these attributes can't pass through any decent sanitizer that prevents xss attacks, the presence of one or more of them indicates that the web site trusts the content from which the data is being retrieved.
 
+## The web's catch-22
+
 At the risk of getting ahead of ourselves, I want to summarize what this is doing.  Plenty of examples that follow will illustrate  what I mean:  
 
 When the fetch is complete, event "load" is fired (exception -- if stream is enabled, that is not the case), which can allow for manipulation of the data.  The (modified) data is then stored in the "value" field of the fetch-for (or subclassed) instance. 
