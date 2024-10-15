@@ -20,13 +20,26 @@ Markup:
 ```html
 <fetch-for 
 href=https://cors-anywhere.herokuapp.com/https://www.theonion.com/ 
-as=html shadow=open onerror="console.error(href)"></fetch-for>
+as=html shadow=open></fetch-for>
     
 ```
 
 For this very specific example shown above, due to restrictions of the cors-anywhere utility the link above uses, you will first need to go to https://cors-anywhere.herokuapp.com/corsdemo to unlock the service for a limited amount of time.
 
-Required attributes/properties are href and at least one of these attributes/properties being set: onerror, oninput, onload.  The reason for insisting on at least one of these on* attributes/properties is this:  Since these attributes can't pass through any decent sanitizer that prevents xss attacks, the presence of one or more of them indicates that the web site trusts the content from which the data is being retrieved.
+## Alternatives
+
+There are a huge number of alternatives to this component to consider.
+
+Among them:
+
+1.  [HTMX](https://htmx.org/docs/)
+2.  [i-html](https://www.keithcirkel.co.uk/i-html/)
+3.  [sl-include](https://shoelace.style/components/include/)
+4.  [html-include-element](https://www.npmjs.com/package/html-include-element)
+5.  [htmz](https://leanrada.com/htmz/)
+6.  [include-fragment-element](https://www.npmjs.com/package/@github/include-fragment-element)
+
+and many more
 
 ## The web's catch-22
 
