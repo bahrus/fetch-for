@@ -13,6 +13,8 @@ fetch-for is a small-ish, bare-bones simple fetch web component.
 
 *fetch-for* can act as a base web component for "web components as a service".  [be-fetch](https://github.com/bahrus/be-fetch) actually does just that - it can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
+# Part 1 -- HTML inclusion
+
 ## Example 1 -- Simple html include
 
 Markup:
@@ -41,7 +43,23 @@ Among them:
 
 and many more
 
-## The web's catch-22
+## Security
+
+The platform provides plenty of built-in elements with attributes that can load url's.  But the fundamental difference is those components open as a separate page, or in the case of iframes, the content is restricted to a rectangle, which significantly reduces the possibility of abuse.  
+
+When we lift those restrictions, the security / safety concern becomes more pronounced.
+
+As pointed out by the [i-html discussion on security](https://www.keithcirkel.co.uk/i-html/#security):
+
+> Injecting arbitrary HTML into a page can pose some security risks, so it's important that there's a defence in depth approach to mitigating the risk surface area...
+
+> \<i-html\> will never explicitly append certain elements into the page, unless you opt in. For example if a response contains an \<iframe\> element, this will simply be deleted before the contents are injected. If you want \<iframe\> elements to be injected, you'll need to add the allow="iframe" attribute to the element.
+
+
+To support this kind of selective inclusion, consider using *i-html* or other components instead of this component.  This component has a slightly different emphasis.  One thing this component supports which i-html may not, is HTML streaming via a fetch request (as opposed to via server-sent events).  Due to [current platform limitations](https://github.com/whatwg/dom/issues/1222) as far as adjusting server-streamed content, the ability to finesse the content the way *i-html* and *sl-include* alternatives do (for example) is nearly impossible.
+
+So for that reason, *fetch-for* provides more support for clamping down permissioning 
+
 
 ```html
 <script>
