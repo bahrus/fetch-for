@@ -64,7 +64,7 @@ As pointed out by the [i-html discussion on security](https://www.keithcirkel.co
 > \<i-html\> will never explicitly append certain elements into the page, unless you opt in. For example if a response contains an \<iframe\> element, this will simply be deleted before the contents are injected. If you want \<iframe\> elements to be injected, you'll need to add the allow="iframe" attribute to the element.
 
 
-To support this kind of selective inclusion, consider using *i-html* or the other alternatives linked to above, instead of this component.  *fetch-for* has a slightly different emphasis when it comes to including HTML.  One thing this component supports which the others may not, is HTML streaming API's that become available accross the board in all three major browser engines in 2022.  The streaming is done via a fetch request (as opposed to via server-sent events).  Due to [current platform limitations](https://github.com/whatwg/dom/issues/1222) as far as adjusting server-streamed content, the ability to finesse the content the way *i-html* and *sl-include* alternatives do (for example) is nearly impossible.  (Other differences is this component emphasizes the "fetch" underlying protocol, so that it supports HTML as well as restful services).
+To support this kind of selective inclusion, consider using *i-html* or the other alternatives linked to above, instead of this component.  *fetch-for* has a slightly different emphasis when it comes to including HTML.  One thing this component supports which the others may not, is HTML streaming API's that become available across the board in all three major browser engines in 2022.  The streaming is done via a fetch request (as opposed to via server-sent events).  Due to [current platform limitations](https://github.com/whatwg/dom/issues/1222) as far as adjusting server-streamed content, the ability to finesse the content the way *i-html* and *sl-include* alternatives do (for example) is nearly impossible.  (Other differences is this component emphasizes the "fetch" underlying protocol, so that it supports HTML as well as restful services).
 
 So for that reason, *fetch-for* provides more support for clamping down on the allowed attributes, by allowing the developer to integrate the [*be-hashing-out*](https://github.com/bahrus/be-hashing-out) enhancement: 
 
@@ -104,7 +104,7 @@ oJsonViewer.object = ...
 
 What this example illustrates is that the target attribute is *not* using simple css selectors to find the target.  Rather it is using a custom syntax that is optimized for creating linkages between elements of peer elements, and/or between elements and its custom element host container.
 
-It uses a custom syntax for describing, as concisely as possible and optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.  This syntax is referred to as ["directed scoping specifiers" (DSS)](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS).
+It uses a custom syntax for describing, as concisely as possible and optimized for common scenarios, how to search for a nearby element, and also what event to respond to if applicable.  This syntax is referred to as ["directed scoping specifiers" (DSS)](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS)).
 
 ## Specifying dependencies
 
