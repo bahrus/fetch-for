@@ -71,7 +71,7 @@ So for that reason, *fetch-for* provides more support for clamping down on the a
 
 ```html
 <script blocking=render>
-    (await import('be-hashing-out/register.js'));
+    (await import('be-hashing-out/register.js'))
     .register('63c93d6c1dbef1929c0320ef1c4396cce1e0485ec743fe877b12e35a66b9f228');
 </script>
 
