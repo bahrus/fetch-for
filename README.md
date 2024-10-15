@@ -1,4 +1,4 @@
-# fetch-for [WIP]
+# fetch-for [TODO]
 
 [![NPM version](https://badge.fury.io/js/fetch-for.png)](http://badge.fury.io/js/fetch-for)
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/fetch-for?style=for-the-badge)](https://bundlephobia.com/result?p=fetch-for)
@@ -15,7 +15,7 @@ fetch-for is a small-ish, bare-bones simple fetch web component.
 
 # Part 1 -- HTML inclusion
 
-## Example 1 -- Simple html include
+## Example 1 -- Simple html include [TODO]
 
 Markup:
 
@@ -68,6 +68,7 @@ To support this kind of selective inclusion, consider using *i-html* or the othe
 
 So for that reason, *fetch-for* provides more support for clamping down on the allowed attributes, by allowing the developer to integrate the [*be-hashing-out*](https://github.com/bahrus/be-hashing-out) enhancement: 
 
+## Example 2 -- Optional security check [TODO]
 
 ```html
 <script blocking=render>
@@ -83,13 +84,12 @@ as=html shadow=open ></fetch-for>
 This support is opt-in.  Unlike the initial implementation of this component (which relied on an assumption the platform has regrettably not met), the component will "work" at your own risk without the be-hashing-out attribute, which is probably fine for intranet, authenticated sites.
 
 
-## Example 2 - Sending data to a target:
+## Example 3 - Sending data to a target: [TODO]
 
 ```html
 <fetch-for 
     href=https://newton.now.sh/api/v2/integrate/x^2 
     target=-object
-    onerror=console.error(href)
 >
 </fetch-for>
 ...
