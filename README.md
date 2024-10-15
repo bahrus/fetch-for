@@ -80,7 +80,7 @@ href=https://cors-anywhere.herokuapp.com/https://www.theonion.com/
 as=html shadow=open ></fetch-for>
 ```
 
-
+This support is opt-in.  Unlike the initial implementation of this component (which relied on an assumption the platform has regrettably not met), the component will "work" at your own risk without the be-hashing-out attribute, which is probably fine for intranet sites.
 
 
 ## Example 2 - Stream HTML to a target
