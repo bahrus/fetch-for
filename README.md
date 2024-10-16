@@ -110,15 +110,11 @@ It uses a custom syntax for describing, as concisely as possible and optimized f
 
 Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  This also uses ["directed scoped specifier" syntax (or DSS)](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS)). We can formulate the href to use for the fetch request:
 
-## Specify dynamic href
+## Specify dynamic href [TODO]
 
 ```html
 <input name=op value=integrate>
 <input name=expr value=x^2>
-<script type=module blocking=render>
-    (await import('fetch-for'))
-    .register
-</script>
 <fetch-for
     for="@op::change @expr"
     href=https://newton.now.sh/api/v2/:op/:expr
@@ -131,7 +127,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 
 Syntax adheres to the [URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) which unfortunately doesn't support [going in the opposite direction](https://github.com/whatwg/urlpattern/issues/73).
 
-## Block fetch without user interaction
+## Block fetch without user interaction [TODO]
 
 ```html
 <button type=button name=submit>Submit</button>
@@ -154,9 +150,8 @@ The click event is assumed if not specified.
 
 <fetch-for
     form="@newtonService"
-    oninput="event.href=`https://newton.now.sh/api/v2/${formData.get('op')}/${formData.get('expr')}`"
+    href=https://newton.now.sh/api/v2/:op/:expr
     target=-object
-    onerror=console.error(href)
 >
 </fetch-for>
 ...
@@ -186,9 +181,7 @@ Only submits when the form is valid
             <fetch-for 
                 href=https://newton.now.sh/api/v2/integrate/x^2 
                 target=json-viewer[-object]
-                onerror=console.error(href)
                 for="#isVegetarian /myHostElementEventTargetSubObject @greeting! |surname %myPart ~myFormAssociatedCustomElement ~sl-input::sl-input"
-                oninput=...
             >
             </fetch-for>
         </div>
@@ -302,26 +295,40 @@ Then the service worker could add a special header in the response indicating wh
 
 This web component already does support headers, but perhaps some better visibility could be added for this functionality.
 
-## Filtering with the onload event
+## Filtering with the onload event / import maps
 
 However, for the less ambitious, the way we can do filtering or other manipulation of the results in the main thread is via the onload event:
 
 ```html
-<input name=op value=integrate>
-<input name=expr value=x^2>
-<fetch-for
-    for="@op @expr"
-    oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
-    onload="
-        console.log(event);
-        event.data.iah = true;
-    "
-    target=-object
-    onerror=console.error(href)
->
-</fetch-for>
-...
-<json-viewer -object></json-viewer>
+<html>
+    <head>
+        <script type=importmap>
+        {
+            "newton-svc/": "https://newton.now.sh/api/v2/"
+        }
+        </script>
+    </head>
+    <body>
+
+        <input name=op value=integrate>
+        <input name=expr value=x^2>
+        <script type=module blocking=render>
+            (await import('fetch-for'))
+            .filter(['newton-svc/', ':op/:expr'], async resp => {
+                ...
+            })
+
+        </script>
+        <fetch-for
+            for="@op @expr"
+            href='["newton-svc", ":op/:expr"]'
+            target=-object
+        >
+        </fetch-for>
+        ...
+        <json-viewer -object></json-viewer>
+        
+    </body>
 ```
 
 ## Connecting to indexed db in the filter code [TODO]
