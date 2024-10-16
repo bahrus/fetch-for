@@ -110,16 +110,19 @@ It uses a custom syntax for describing, as concisely as possible and optimized f
 
 Like the built-in Form and Output elements, fetch-for supports integrating input from peer elements (form elements, form associated elements, contenteditable elements) by [id](https://github.com/whatwg/html/issues/10143), name, itemprop, class and part.  This also uses ["directed scoped specifier" syntax (or DSS)](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS)). We can formulate the href to use for the fetch request:
 
-## Specify dynamic href in oninput event
+## Specify dynamic href
 
 ```html
 <input name=op value=integrate>
 <input name=expr value=x^2>
+<script type=module blocking=render>
+    (await import('fetch-for'))
+    .register
+</script>
 <fetch-for
     for="@op::change @expr"
-    oninput="event.href=`https://newton.now.sh/api/v2/${event.forData.op.value}/${event.forData.expr.value}`"
+    href=https://newton.now.sh/api/v2/:op/:expr
     target=-object
-    onerror=console.error(href)
 >
 </fetch-for>
 ...
