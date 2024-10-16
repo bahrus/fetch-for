@@ -129,7 +129,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <json-viewer -object></json-viewer>
 ```
 
-By default, oninput will be called on the *input* event of the element being observed.  But this can be overridden by specifying the name of the event after two colons (::) as shown above.
+Syntax adheres to the [URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) which unfortunately doesn't support going in the opposite direction.
 
 ## Block fetch without user interaction
 
