@@ -129,7 +129,7 @@ Like the built-in Form and Output elements, fetch-for supports integrating input
 <json-viewer -object></json-viewer>
 ```
 
-Syntax adheres to the [URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) which unfortunately doesn't support going in the opposite direction.
+Syntax adheres to the [URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) which unfortunately doesn't support [going in the opposite direction](https://github.com/whatwg/urlpattern/issues/73).
 
 ## Block fetch without user interaction
 
