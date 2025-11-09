@@ -1,9 +1,5 @@
 # fetch-for [TODO]
 
-Current functionality deprecated in favor of for-fetch.
-
-This package may be used for other purposes in the future.
-
 [![NPM version](https://badge.fury.io/js/fetch-for.png)](http://badge.fury.io/js/fetch-for)
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/fetch-for?style=for-the-badge)](https://bundlephobia.com/result?p=fetch-for)
 <img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/fetch-for?compression=gzip">
