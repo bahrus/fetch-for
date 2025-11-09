@@ -1,4 +1,4 @@
-import { JSONObject } from '../trans-render/lib/types';
+import { JSONObject } from '../../../trans-render/lib/types';
 import { Specifier } from '../trans-render/dss/types';
 import {SimpleWCInfo} from 'may-it-be/SimpleWCInfo';
 

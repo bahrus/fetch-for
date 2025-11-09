@@ -2,8 +2,8 @@ import {O, OConfig} from 'trans-render/froop/O.js';
 import {
     Actions, AllProps, loadEventName, ProPP, PP,
     ForData, EventForFetch, inputEventName, EventName, EndUserProps
-} from './types';
-import {config} from './config.js';
+} from './types.js';
+import {config} from '../../config.js';
 
 export class FetchFor extends O implements Actions, AllProps{
 

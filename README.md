@@ -1,4 +1,4 @@
-# fetch-for [TODO]
+# fetch-for (🐶) [TODO]
 
 [![NPM version](https://badge.fury.io/js/fetch-for.png)](http://badge.fury.io/js/fetch-for)
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/fetch-for?style=for-the-badge)](https://bundlephobia.com/result?p=fetch-for)
@@ -17,11 +17,10 @@ fetch-for is a small-ish, bare-bones simple fetch web component.
         "baseLink": "base-api-services",
         "path": "med_orders/prescriptions/patient?id=zero"
     }'
-        #
+        fetch-for=#prescriptions?.ish
     >
     </form>
-    <fetch-for defer-hydration fetch=#{{form}} for=#{{prescriptions}}></fetch-for>
-    <div itemscope=prescriptions #>
+    <div id=prescriptions itemscope=prescriptions>
 
     </div>
 </div>
