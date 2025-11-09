@@ -10,26 +10,33 @@
     "custom-element",
     "custom-elements"
   ],
-  "dependencies": {
-    "idb-keyval": "6.2.1",
-    "stream-orator": "0.0.22",
-    "trans-render": "0.0.786"
-  },
-  "devDependencies": {
-    "@power-elements/json-viewer": "2.1.1",
-    "may-it-serve": "0.0.6",
-    "may-it-be": "0.0.180"
-  },
   "exports": {
+    ".": "./fetch-for.js",
     "./fetch-for.js": "./fetch-for.js",
-    ".": "./index.js"
+    "./emc.js": "./emc.js",
+    "./🐶.js": "./🐶.js"
   },
+  "files": [
+    "*.js",
+    "./ts-refs/fetch-for/types.d.ts",
+    "README.md"
+  ],
+  "types": "./ts-refs/fetch-for/types.d.ts",
   "scripts": {
     "test": "playwright test",
-    "serve": "node node_modules/may-it-serve/serve.js",
-    "safari": "npx playwright wk http://localhost:3030",
-    "update": "ncu -u && npm install",
-    "doc": "node doc.js"
+    "serve": "node ./node_modules/spa-ssi/serve.js",
+    "safari": "npx playwright wk http://localhost:8000",
+    "update": "ncu -u && npm install"
+  },
+  "dependencies": {
+    "be-enhanced": "0.0.189",
+    "be-hive": "0.0.267",
+    "mount-observer": "0.0.105",
+    "trans-render": "0.0.960"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "spa-ssi": "0.0.23"
   },
   "repository": {
     "type": "git",

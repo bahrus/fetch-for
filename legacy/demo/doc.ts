@@ -1,6 +1,6 @@
 import { analyze } from 'may-it-be/analyze.js';
 import { resolve } from "path";
-import {config} from '../../config.js';
+import {config} from './config.js';
 import * as fs from 'fs';
 const info = analyze(resolve("types.d.ts"), config);
 const cem =  JSON.stringify(info.package, null, 2);

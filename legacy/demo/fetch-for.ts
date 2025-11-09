@@ -3,7 +3,7 @@ import {
     Actions, AllProps, loadEventName, ProPP, PP,
     ForData, EventForFetch, inputEventName, EventName, EndUserProps
 } from './types.js';
-import {config} from '../../config.js';
+import {config} from './config.js';
 
 export class FetchFor extends O implements Actions, AllProps{
 
