@@ -17,7 +17,7 @@ fetch-for is a small-ish, bare-bones simple fetch web component.
         "baseLink": "base-api-services",
         "path": "med_orders/prescriptions/patient?id=zero"
     }'
-        fetch-for=#prescriptions?.ish
+        fetch-for-target=#prescriptions?.ish
     >
     </form>
     <div id=prescriptions itemscope=prescriptions>
