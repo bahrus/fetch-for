@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton Microservice => BaseLink</title>
+    <!-- #include virtual="/imports.html" -->
+</head>
+<body>
+    <link id=newton-microservice rel=preconnect href=https://newton.now.sh/ >
+    <form id=form be-reformable='{
+        "baseLink": "newton-microservice",
+        "path": "api/v2/:operation/:expression"
+    }'
+    fetch-for="iamhere"
+    >
+    <label>
+        Operation:
+        <input :operation value=integrate>
+    </label>
+    
+    <label>
+        Expression:
+        <input :expression value="x^2">
+    </label>
+        <input name="hello" value=test>
+    </form>
+    <script>
+        form.addEventListener('fetch-ready', e => {
+            console.log({e});
+        });
+    </script>
+    <script type=module>
+        import 'be-reformable/emc.js';
+        import '/emc.js';
+    </script>
+</body>
+</html>

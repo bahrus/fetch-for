@@ -31,12 +31,13 @@
   "dependencies": {
     "be-enhanced": "0.0.189",
     "be-hive": "0.0.267",
+    "fetch-ready": "0.0.1",
     "mount-observer": "0.0.105",
     "trans-render": "0.0.960"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
-    "be-reformable": "0.0.79",
+    "be-reformable": "0.0.80",
     "spa-ssi": "0.0.23"
   },
   "repository": {
