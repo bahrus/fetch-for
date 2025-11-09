@@ -4,7 +4,7 @@ import { BE } from 'be-enhanced/BE.js';
 import {dispatchEvent as de} from 'trans-render/positractions/dispatchEvent.js';
 import {FetchReadyEvent} from 'fetch-ready/FetchReadyEvent.js';
 /** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
-/** @import {Actions, PAP, AllProps, AP, BAP} from './ts-refs/fetch-for/types' */;
+/** @import {Actions, PAP, AllProps, AP, BAP, FetchReadyEvent as FRE} from './ts-refs/fetch-for/types' */;
 
 /**
  * @implements {Actions}
@@ -63,7 +63,12 @@ class FetchFor extends BE {
     handleEvent(e) {
         const self = /** @type {BAP} */ (/** @type {any} */ (this));
         const {enhancedElement} = self;
-        self.fetchReadyEvent = e;
+        const {url, options} = e;
+        /**
+         * @type {FRE}
+         */
+        const fetchReadyEvent ={url, options};
+        self.fetchReadyEvent = fetchReadyEvent;
         //self.evtCount++;
     }
 
@@ -71,8 +76,12 @@ class FetchFor extends BE {
      * 
      * @param {BAP} self 
      */
-    doFetch(self) {
-        debugger;
+    async doFetch(self) {
+        const {fetchReadyEvent} = self;
+        const {url, options} = fetchReadyEvent;
+        const response = await fetch(url, options);
+        const result = await response.json();
+        console.log({result});
     }
 }
 
