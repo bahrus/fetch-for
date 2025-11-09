@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
+    "be-reformable": "0.0.79",
     "spa-ssi": "0.0.23"
   },
   "repository": {
