@@ -13,7 +13,7 @@
         "baseLink": "newton-microservice",
         "path": "api/v2/:operation/:expression"
     }'
-    fetch-for="iamhere"
+        fetch-for=#json-viewer?.object
     >
     <label>
         Operation:
@@ -26,6 +26,7 @@
     </label>
         <input name="hello" value=test>
     </form>
+    <json-viewer id=json-viewer></json-viewer>
     <script>
         form.addEventListener('fetch-ready', e => {
             console.log({e});
@@ -34,6 +35,7 @@
     <script type=module>
         import 'be-reformable/emc.js';
         import '/emc.js';
+         import '@power-elements/json-viewer/json-viewer.js';
     </script>
 </body>
 </html>

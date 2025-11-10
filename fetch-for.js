@@ -77,11 +77,16 @@ class FetchFor extends BE {
      * @param {BAP} self 
      */
     async doFetch(self) {
-        const {fetchReadyEvent} = self;
+        const {fetchReadyEvent, target, enhancedElement} = self;
         const {url, options} = fetchReadyEvent;
         const response = await fetch(url, options);
         const result = await response.json();
-        console.log({result});
+        const {parse} = await import('trans-render/dss/parse.js');
+        const parsedTarget = parse(target);
+        const {find} = await import('trans-render/dss/find.js');
+        const targetEl = await find(enhancedElement, parsedTarget);
+        targetEl[parsedTarget.prop] = result;
+        console.log({result, parsedTarget});
     }
 }
 

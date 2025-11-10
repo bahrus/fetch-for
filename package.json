@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
+    "@power-elements/json-viewer": "2.1.1",
     "be-reformable": "0.0.80",
     "spa-ssi": "0.0.23"
   },
