@@ -9,7 +9,7 @@
 
 ## [Demo](https://jsfiddle.net/bahrus/ma0vtbnx/1/)
 
-fetch-for is a small-ish, bare-bones simple fetch web component.  
+*fetch-for* is a small-ish, bare-bones simple fetch web component.  
 
 ```html
 <div itemscope=prescription-management>
@@ -25,3 +25,8 @@ fetch-for is a small-ish, bare-bones simple fetch web component.
     </div>
 </div>
 ```
+
+*fetch-for* works seamlessly with [be-reformable](https://github.com/bahrus/be-reformable), as illustrated above but can work ith any other component/library that:
+
+1.  Dispatches common event [fetch-ready](https://github.com/bahrus/fetch-ready) from the form element when the form is ready to be invoked on the client side (passes validity tests, has had a "submit" button clicked, etc).
+2.  Checks if the form is ready for invoking on any input event ([TODO]: make this configurable)

@@ -69,7 +69,6 @@ class FetchFor extends BE {
          */
         const fetchReadyEvent ={url, options};
         self.fetchReadyEvent = fetchReadyEvent;
-        //self.evtCount++;
     }
 
     /**
@@ -89,12 +88,7 @@ class FetchFor extends BE {
             const targetEl = /** @type {any} */ (await find(enhancedElement, remoteSpecifier));
             targetEl[prop] = result;
         }
-        // const {parse} = await import('trans-render/dss/parse.js');
-        // const parsedTarget = parse(target);
-        // 
-        // const targetEl = await find(enhancedElement, parsedTarget);
-        // targetEl[parsedTarget.prop] = result;
-        //console.log({result, parsedTarget});
+        
     }
 }
 
