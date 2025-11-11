@@ -21,12 +21,12 @@ class FetchFor extends BE {
     static config = {
         propInfo: {
             ...propInfo,
-            target: {},
+            fetchForParams: {},
             fetchReadyEvent: {},
         },
         positractions: [resolved, rejected],
         compacts: {
-            when_target_changes_call_hydrate: 0,
+            when_fetchForParams_changes_call_hydrate: 0,
             when_fetchReadyEvent_changes_call_doFetch: 0,
         }
     };
@@ -77,16 +77,24 @@ class FetchFor extends BE {
      * @param {BAP} self 
      */
     async doFetch(self) {
-        const {fetchReadyEvent, target, enhancedElement} = self;
+        const {fetchReadyEvent, fetchForParams, enhancedElement} = self;
         const {url, options} = fetchReadyEvent;
         const response = await fetch(url, options);
         const result = await response.json();
-        const {parse} = await import('trans-render/dss/parse.js');
-        const parsedTarget = parse(target);
         const {find} = await import('trans-render/dss/find.js');
-        const targetEl = await find(enhancedElement, parsedTarget);
-        targetEl[parsedTarget.prop] = result;
-        console.log({result, parsedTarget});
+        for(const fetchForParam of fetchForParams){
+            const {remoteSpecifier} = fetchForParam;
+            const {prop} = remoteSpecifier;
+            if(prop === undefined) throw 'NI';
+            const targetEl = /** @type {any} */ (await find(enhancedElement, remoteSpecifier));
+            targetEl[prop] = result;
+        }
+        // const {parse} = await import('trans-render/dss/parse.js');
+        // const parsedTarget = parse(target);
+        // 
+        // const targetEl = await find(enhancedElement, parsedTarget);
+        // targetEl[parsedTarget.prop] = result;
+        //console.log({result, parsedTarget});
     }
 }
 
