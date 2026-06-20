@@ -9,7 +9,7 @@
 
 ## [Demo](https://jsfiddle.net/bahrus/ma0vtbnx/1/)
 
-*fetch-for* is a small-ish, bare-bones simple fetch web component.  
+*fetch-for* is a small-ish, bare-bones simple fetch enhancement that waits for a form to emit event 'fetch-ready' with structure defined in package fetch-ready, does the fetch, and passes the result to the specified target.  
 
 ```html
 <div itemscope=prescription-management>
