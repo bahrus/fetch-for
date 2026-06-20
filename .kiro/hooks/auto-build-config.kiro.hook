@@ -1,0 +1,13 @@
+{
+    "name": "Auto-build Configuration",
+    "version": "1.0.0",
+    "description": "Automatically runs npm run build when emc.mjs or emoji .mjs files are saved, regenerating the JSON configuration files",
+    "when": {
+        "type": "fileEdited",
+        "patterns": ["emc.mjs", "🍺.mjs"]
+    },
+    "then": {
+        "type": "runCommand",
+        "command": "npm run build"
+    }
+}

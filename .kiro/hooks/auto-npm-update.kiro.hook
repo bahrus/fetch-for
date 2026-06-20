@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Auto NPM Update",
+  "description": "Automatically runs npm run update when package.json is saved, ensuring dependencies are always up-to-date",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "package.json"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npm run update",
+    "timeout": 120
+  }
+}
