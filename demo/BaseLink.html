@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newton Microservice => BaseLink</title>
     <!-- #include virtual="/imports.html" -->
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-pattern-statements.js" 
+                parser-name=parse-pattern-statements></script>
+        <script type=emc 
+                src="fetch-for/emc.json" 
+                wait-for-parsers=parse-pattern-statements></script>
+    </be-hive>
+    <script type=module>
+        import 'be-hive/be-hive.js';
+        import 'be-reformable/emc.js';
+        import '@power-elements/json-viewer/json-viewer.js';
+    </script>
 </head>
 <body>
     <link id=newton-microservice rel=preconnect href=https://newton.now.sh/ >
@@ -27,15 +40,5 @@
         <input name="hello" value=test>
     </form>
     <json-viewer id=json-viewer></json-viewer>
-    <script>
-        form.addEventListener('fetch-ready', e => {
-            console.log({e});
-        });
-    </script>
-    <script type=module>
-        import 'be-reformable/emc.js';
-        import '/emc.js';
-         import '@power-elements/json-viewer/json-viewer.js';
-    </script>
 </body>
 </html>

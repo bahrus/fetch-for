@@ -1,0 +1,32 @@
+{
+    "enhConfig": {
+        "enhKey": "🐶",
+        "spawn": "fetch-for/fetch-for.js",
+        "withAttrs": {
+            "base": "🐶",
+            "_base": {
+                "mapsTo": "fetchForParams",
+                "parser": "parse-pattern-statements",
+                "instanceOf": "Array",
+                "parserConfig": [
+                    {
+                        "name": "targetPart",
+                        "pattern": "^(?<targetPart>.*)",
+                        "description": "Target specifier for where to deliver fetch results"
+                    }
+                ]
+            }
+        }
+    },
+    "customData": {
+        "weakRef": {
+            "properties": [
+                "enhancedElement"
+            ]
+        },
+        "compacts": {
+            "when_fetchForParams_changes_call_hydrate": 0,
+            "when_fetchReadyEvent_changes_call_doFetch": 0
+        }
+    }
+}

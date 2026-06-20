@@ -13,33 +13,36 @@
   "exports": {
     ".": "./fetch-for.js",
     "./fetch-for.js": "./fetch-for.js",
-    "./emc.js": "./emc.js",
-    "./🐶.js": "./🐶.js"
+    "./emc.mjs": "./emc.mjs",
+    "./🐶.mjs": "./🐶.mjs"
   },
   "files": [
     "*.js",
-    "./ts-refs/fetch-for/types.d.ts",
+    "*.mjs",
+    "*.json",
+    "./types/fetch-for/types.d.ts",
     "README.md"
   ],
-  "types": "./ts-refs/fetch-for/types.d.ts",
+  "types": "./types/fetch-for/types.d.ts",
   "scripts": {
-    "test": "playwright test",
+    "build": "node emc.mjs > emc.json && node 🐶.mjs > 🐶.json",
     "serve": "node ./node_modules/spa-ssi/serve.js",
+    "test": "playwright test",
     "safari": "npx playwright wk http://localhost:8000",
     "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "be-enhanced": "0.0.189",
-    "be-hive": "0.0.267",
+    "be-hive": "0.1.15",
     "fetch-ready": "0.0.1",
-    "mount-observer": "0.0.105",
-    "trans-render": "0.0.960"
+    "mount-observer": "0.1.41",
+    "roundabout-lib": "0.0.23",
+    "nested-regex-groups": "0.0.7"
   },
   "devDependencies": {
-    "@playwright/test": "1.56.1",
+    "@playwright/test": "1.61.0",
     "@power-elements/json-viewer": "2.1.1",
     "be-reformable": "0.0.80",
-    "spa-ssi": "0.0.23"
+    "spa-ssi": "0.0.27"
   },
   "repository": {
     "type": "git",

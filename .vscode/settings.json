@@ -1,0 +1,6 @@
+{
+    "explorer.fileNesting.patterns": {
+        "*.mjs": "${capture}.json"
+    },
+    "explorer.fileNesting.enabled": true
+}
